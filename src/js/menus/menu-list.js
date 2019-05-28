@@ -65,5 +65,8 @@ MenuConstructors.video = Video
 import Image from './img/index.js'
 MenuConstructors.image = Image
 
+import Youtube from './youtube/index.js'
+MenuConstructors.youbute = Youtube
+
 // 吐出所有菜单集合
 export default MenuConstructors

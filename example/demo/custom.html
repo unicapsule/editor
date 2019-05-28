@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义编辑器</title>
+</head>
+<body>
+    <p>自定义编辑器</p>
+    <div id="div3">
+        <p>欢迎使用 wangEditor 富文本编辑器</p>
+    </div>
+    <div>
+        <button id="btn">获取html内容</button>
+    </div>
+
+    <script type="text/javascript" src="/wangEditor.js"></script>
+    <script type="text/javascript">
+        var E = window.wangEditor
+        var editor2 = new E('#div3')
+
+        editor2.customConfig.debug = true;
+        editor2.customConfig.menus = [
+            'head',
+            'bold',
+            'italic',
+            'strikeThrough',
+            'underline',
+            'fontSize',
+            'foreColor',
+            'backColor', // TODO: 颜色合到一起
+            // TODO: 清除格式
+            'justify', // TODO: 对齐拆分开来
+            'list', // TODO: list拆分开来
+            'quote',
+            'youbute',
+        ]
+        editor2.create()
+
+        document.getElementById('btn').addEventListener('click', function () {
+            console.log(editor2.txt.html())
+        }, false)
+    </script>
+</body>
+</html>

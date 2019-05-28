@@ -168,8 +168,23 @@
   content: "\ea5f";
 }
 
+.me-media-container {
+  position: relative;
+}
+.me-media-container .me-media-container--placeholder {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#33000000', endColorstr='#33000000');
+}
+:root .me-media-container .me-media-container--placeholder {
+  filter: none\9;
+}
+
 .w-e-toolbar {
-  display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   padding: 0 5px;
@@ -221,7 +236,6 @@
 }
 .w-e-text-container .w-e-panel-container .w-e-panel-tab-title {
   list-style: none;
-  display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   font-size: 14px;
