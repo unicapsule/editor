@@ -4,7 +4,8 @@
 import $ from '../../util/dom-core.js'
 import { getRandom } from '../../util/util.js'
 import Panel from '../panel.js'
-import ContentWrapper from '../../util/content-wrapper.js'
+import ContentWrapper from '../../tool/media-wrapper.js'
+import FloatingToolbar from '../../tool/floating-toolbar.js'
 
 // 获取视频id
 // videoLink示例： https://www.youtube.com/watch?v=-2r83aFgdBg&a=b
@@ -24,9 +25,6 @@ function Youtube(editor) {
     this.editor = editor
     this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-play"></i></div>')
     this.type = 'panel'
-
-    this.videoHeight = 184
-    this.videoWidth = 332
 
     // 当前是否 active 状态
     this._active = false
@@ -50,7 +48,8 @@ Youtube.prototype = {
                 {
                     title: '插入Youtube链接',
                     tpl: `<div>
-                        <input id="${textValId}" type="text" class="block" placeholder="https://www.youtube.com/watch?v=-2r83aFgdBg"/>
+                        <input id="${textValId}" type="text" class="block" placeholder="https://www.youtube.com/watch?v=-2r83aFgdBg"
+                        value="https://www.youtube.com/watch?v=IKAk3nV7hY4&t=15s"/>
                         <div class="w-e-button-container">
                             <button id="${btnId}" class="right">插入</button>
                         </div>
@@ -68,14 +67,30 @@ Youtube.prototype = {
                                 // result: <iframe width="560" height="315" src="https://www.youtube.com/embed/-2r83aFgdBg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 if (val) {
                                     const embedLink = getEmbedLink(val)
-                                    const htmlStr = `<iframe width="100%" height="${this.videoHeight}" src="${embedLink}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                                    const htmlStr = `<iframe width="100%" height="${this.editor.config.youbute.height}" src="${embedLink}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                                    let fToolbar
                                     const videoWithWrapper = new ContentWrapper({
                                         contentHtml: htmlStr,
                                         contentType: 'video',
-                                        maxHeight: this.videoHeight,
-                                        maxWidth: this.videoWidth,
+                                        maxHeight: this.editor.config.youbute.height,
+                                        maxWidth: this.editor.config.youbute.width,
+                                        onFocus: ($wrapper) => {
+                                            if (!fToolbar) {
+                                                fToolbar = new FloatingToolbar({
+                                                    tools: ['justify'],
+                                                })
+                                                fToolbar.appendTo($wrapper[0])
+                                                console.log($wrapper)
+                                            }
+                                        },
+                                        onBlur: ($wrapper) => {
+                                            if (fToolbar) {
+                                                fToolbar.destroy()
+                                                fToolbar = null
+                                            }
+                                        }
                                     })
-                                    this._insert(videoWithWrapper.generateHtml())
+                                    this._insert(videoWithWrapper.generateDom())
                                 }
 
                                 // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
@@ -92,9 +107,13 @@ Youtube.prototype = {
         this.panel = p
     },
 
-    _insert: function (val) {
-        this.editor.cmd.do('insertHTML', val + '<p><br></p>')
-    }
+    _insert: function (el) {
+        this.editor.cmd.do('insertElem', [el])
+        this.editor.selection.createRangeByElem([el], false) // 设置选取到结束位置
+        this.editor.selection.restoreSelection()
+        // this.editor.cmd.do('insertElem', [document.createElement('p')])
+        this.editor.cmd.do('insertHTML', '<p><br></p>')
+    },
 }
 
 export default Youtube

@@ -1,0 +1,26 @@
+.me-media-wrapper {
+    // display: inline-block;
+    position: relative;
+
+    &>figure {
+        position: relative;
+        display: inline-block;
+    }
+
+    .me-media-wrapper--placeholder {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(0,0,0,.1);
+        z-index: 1;
+    }
+}
+
+.me-media-wrapper.is-active {
+    iframe {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .7);
+        border: 1px solid orange;
+    }
+}
