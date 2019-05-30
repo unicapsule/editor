@@ -1,7 +1,25 @@
 .me-floating-toolbar {
     position: absolute;
     top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
     padding: 10px;
-    box-shadow: 0 5px 18px rgba(0, 0, 0, .1);
+    box-shadow: 0 5px 18px rgba(0, 0, 0, .2);
     background: #fff;
+
+    .clickable { cursor: pointer; }
+
+    .me-floating-toolbar--inner > span {
+        margin-right: 6px;
+        white-space: nowrap;
+    }
+
+    .tool--justify {
+        i {
+            margin-right: 6px;
+        }
+        i:last-of-type {
+            margin-right: 0;
+        }
+    }
 }

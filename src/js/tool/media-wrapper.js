@@ -10,8 +10,8 @@ const WRAPPER_NAME = 'me-media-wrapper'
 function MediaWrapper(options) {
     this.contentHtml = options.contentHtml
     this.contentType = options.contentType || 'video'
-    this.maxHeight = options.maxHeight || ''
-    this.maxWidth = options.maxWidth || ''
+    this.height = options.height
+    this.width = options.width || ''
     this.onFocus = options.onFocus
     this.onBlur = options.onBlur
     this.id = getRandom(WRAPPER_NAME)
@@ -24,8 +24,8 @@ MediaWrapper.prototype = {
         const isFigureType = this.checkFigureType()
         let style = ''
 
-        if (this.maxHeight) style += `max-height: ${this.maxHeight}px;`
-        if (this.maxWidth) style += `max-width: ${this.maxWidth}px;`
+        if (this.height) style += `height: ${this.height}px;`
+        if (this.width) style += `width: ${this.width}px;`
 
         const htmlStrArr = [
             // `<div class="${WRAPPER_NAME}" id="${this.id}" contenteditable="false">`,
@@ -35,7 +35,7 @@ MediaWrapper.prototype = {
         ]
 
         if (isFigureType) htmlStrArr.push(`
-        <figcaption class="imageCaption" contenteditable="true" data-default-value="Type caption for embed (optional)">
+        <figcaption contenteditable="true" data-default-value="Type caption for embed (optional)">
         <span class="defaultValue">Type caption for embed (optional)</span>
         <br></figcaption>
         `)
@@ -47,6 +47,7 @@ MediaWrapper.prototype = {
         const divDom = document.createElement('div')
         divDom.className = WRAPPER_NAME
         divDom.id = this.id
+        divDom.setAttribute('contenteditable', 'false')
         divDom.innerHTML = htmlStrArr.join('')
 
         this.eventsBind(divDom)
@@ -57,20 +58,21 @@ MediaWrapper.prototype = {
         return ['image'].includes(this.contentType)
     },
 
-    eventsBind: function (e) {
-        console.log('22222')
-        const $e = $(e)
+    eventsBind: function (el) {
+        // console.log('22222')
+        const $el = $(el)
 
-        $e.on('click', (e) => {
+        $el.on('click', (e) => {
+            console.log(e.target)
             $(`.${WRAPPER_NAME}`).removeClass('is-active')
-            $e.addClass('is-active')
-            this.onFocus && this.onFocus($e)
+            $el.addClass('is-active')
+            this.onFocus && this.onFocus($el)
             console.log('1111111')
             e.stopPropagation()
         })
         $('body').on('click', () => {
-            $e.removeClass('is-active')
-            this.onBlur && this.onBlur($e)
+            $el.removeClass('is-active')
+            this.onBlur && this.onBlur($el)
         })
     }
 }

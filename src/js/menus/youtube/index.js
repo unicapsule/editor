@@ -69,18 +69,22 @@ Youtube.prototype = {
                                     const embedLink = getEmbedLink(val)
                                     const htmlStr = `<iframe width="100%" height="${this.editor.config.youbute.height}" src="${embedLink}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                                     let fToolbar
+                                    let videoWrapperEl
                                     const videoWithWrapper = new ContentWrapper({
                                         contentHtml: htmlStr,
                                         contentType: 'video',
-                                        maxHeight: this.editor.config.youbute.height,
-                                        maxWidth: this.editor.config.youbute.width,
+                                        // height: this.editor.config.youbute.height,
+                                        width: this.editor.config.youbute.width,
                                         onFocus: ($wrapper) => {
                                             if (!fToolbar) {
                                                 fToolbar = new FloatingToolbar({
-                                                    tools: ['justify'],
+                                                    tools: ['justify', 'fullsize', 'autoplay', 'del'],
+                                                    editor: this.editor,
+                                                    justifyContainer: videoWrapperEl,
                                                 })
-                                                fToolbar.appendTo($wrapper[0])
-                                                console.log($wrapper)
+                                                fToolbar.appendTo($wrapper.find('figure')[0])
+                                                this.editor.selection.createRangeByElem($wrapper, false) // 设置选取到结束位置
+                                                this.editor.selection.restoreSelection()
                                             }
                                         },
                                         onBlur: ($wrapper) => {
@@ -90,7 +94,8 @@ Youtube.prototype = {
                                             }
                                         }
                                     })
-                                    this._insert(videoWithWrapper.generateDom())
+                                    videoWrapperEl = videoWithWrapper.generateDom()
+                                    this._insert(videoWrapperEl)
                                 }
 
                                 // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
@@ -108,9 +113,10 @@ Youtube.prototype = {
     },
 
     _insert: function (el) {
+        this.editor.cmd.do('insertHTML', '<p><br></p>')
         this.editor.cmd.do('insertElem', [el])
-        this.editor.selection.createRangeByElem([el], false) // 设置选取到结束位置
-        this.editor.selection.restoreSelection()
+        this.editor.selection.createRangeByElem([el.parentNode], false) // 设置选取到结束位置
+        // this.editor.selection.restoreSelection()
         // this.editor.cmd.do('insertElem', [document.createElement('p')])
         this.editor.cmd.do('insertHTML', '<p><br></p>')
     },
