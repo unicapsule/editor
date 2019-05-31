@@ -10,6 +10,7 @@ function Toolbar(options) {
     this.tools = options.tools || [] // array
     this.editor = options.editor
     this.justifyContainer = options.justifyContainer
+    this.className = options.className
     this.container = null
 
     this.allTools = {
@@ -74,7 +75,7 @@ Toolbar.prototype = {
 
         const htmlStr = `${htmlArr.join('')}</div>`
         const div = document.createElement('div')
-        div.className = NAME
+        div.className = this.className ? `${NAME} ${this.className}` : NAME
         div.innerHTML = htmlStr
         return div
     },

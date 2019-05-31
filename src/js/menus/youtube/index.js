@@ -68,7 +68,6 @@ Youtube.prototype = {
                                 if (val) {
                                     const embedLink = getEmbedLink(val)
                                     const htmlStr = `<iframe width="100%" height="${this.editor.config.youbute.height}" src="${embedLink}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-                                    let fToolbar
                                     let videoWrapperEl
                                     const videoWithWrapper = new ContentWrapper({
                                         contentHtml: htmlStr,
@@ -76,22 +75,15 @@ Youtube.prototype = {
                                         // height: this.editor.config.youbute.height,
                                         width: this.editor.config.youbute.width,
                                         onFocus: ($wrapper) => {
-                                            if (!fToolbar) {
-                                                fToolbar = new FloatingToolbar({
-                                                    tools: ['justify', 'fullsize', 'autoplay', 'del'],
-                                                    editor: this.editor,
-                                                    justifyContainer: videoWrapperEl,
-                                                })
-                                                fToolbar.appendTo($wrapper.find('figure')[0])
-                                                this.editor.selection.createRangeByElem($wrapper, false) // 设置选取到结束位置
-                                                this.editor.selection.restoreSelection()
-                                            }
+                                            const fToolbar = new FloatingToolbar({
+                                                tools: ['justify', 'fullsize', 'autoplay', 'del'],
+                                                editor: this.editor,
+                                                justifyContainer: videoWrapperEl,
+                                            })
+                                            fToolbar.appendTo($wrapper.find('figure')[0])
                                         },
                                         onBlur: ($wrapper) => {
-                                            if (fToolbar) {
-                                                fToolbar.destroy()
-                                                fToolbar = null
-                                            }
+                                            $wrapper.find('.me-floating-toolbar').remove()
                                         }
                                     })
                                     videoWrapperEl = videoWithWrapper.generateDom()

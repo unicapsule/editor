@@ -12,6 +12,7 @@ function MediaWrapper(options) {
     this.contentType = options.contentType || 'video'
     this.height = options.height
     this.width = options.width || ''
+    this.className = options.className
     this.onFocus = options.onFocus
     this.onBlur = options.onBlur
     this.id = getRandom(WRAPPER_NAME)
@@ -30,8 +31,8 @@ MediaWrapper.prototype = {
         const htmlStrArr = [
             // `<div class="${WRAPPER_NAME}" id="${this.id}" contenteditable="false">`,
             `<figure contenteditable="false" style="${style}">`,
-            `<div class="${WRAPPER_NAME}--placeholder"></div>`,
             `<div class="${WRAPPER_NAME}--content">${this.contentHtml}</div>`,
+            `<div class="${WRAPPER_NAME}--placeholder"></div>`,
         ]
 
         if (isFigureType) htmlStrArr.push(`
@@ -42,12 +43,11 @@ MediaWrapper.prototype = {
 
         htmlStrArr.push('</figure>')
 
-        // this.eventsBind()
-
         const divDom = document.createElement('div')
-        divDom.className = WRAPPER_NAME
+        divDom.className = this.className ? `${WRAPPER_NAME} ${this.className}` : WRAPPER_NAME
         divDom.id = this.id
         divDom.setAttribute('contenteditable', 'false')
+        divDom.setAttribute('tabindex', '0')
         divDom.innerHTML = htmlStrArr.join('')
 
         this.eventsBind(divDom)
@@ -59,18 +59,13 @@ MediaWrapper.prototype = {
     },
 
     eventsBind: function (el) {
-        // console.log('22222')
         const $el = $(el)
 
-        $el.on('click', (e) => {
-            console.log(e.target)
+        $el.on('focus', (e) => {
             $(`.${WRAPPER_NAME}`).removeClass('is-active')
             $el.addClass('is-active')
             this.onFocus && this.onFocus($el)
-            console.log('1111111')
-            e.stopPropagation()
-        })
-        $('body').on('click', () => {
+        }).on('blur', (e) => {
             $el.removeClass('is-active')
             this.onBlur && this.onBlur($el)
         })

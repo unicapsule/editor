@@ -62,6 +62,7 @@
 
 .me-floating-toolbar {
   position: absolute;
+  z-index: 1;
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
@@ -193,6 +194,7 @@
 
 .me-media-wrapper {
   position: relative;
+  outline: none;
 }
 .me-media-wrapper > figure {
   position: relative;
@@ -208,7 +210,6 @@
   width: 100%;
   background: rgba(0, 0, 0, 0.1);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#19000000', endColorstr='#19000000');
-  z-index: 1;
 }
 :root .me-media-wrapper .me-media-wrapper--placeholder {
   filter: none\9;
