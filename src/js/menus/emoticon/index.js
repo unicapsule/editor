@@ -3,6 +3,7 @@
 */
 import $ from '../../util/dom-core.js'
 import Panel from '../panel.js'
+import emojiUnicode from '../../tool/emoji-unicode'
 
 // 构造函数
 function Emoticon(editor) {
@@ -78,8 +79,10 @@ Emoticon.prototype = {
                                 // 插入图片
                                 insertHtml = $target.parent().html()
                             } else {
-                                // 插入 emoji
-                                insertHtml = '<span>' + $target.html() + '</span>'
+                                // 插入 emoji 图形
+                                // insertHtml = '<span>' + $target.html() + '</span>'
+                                // 插入 emoji unicode
+                                insertHtml = `<span>0x${emojiUnicode($target.html())}</span>`
                             }
 
                             this._insert(insertHtml)

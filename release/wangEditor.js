@@ -562,45 +562,56 @@ var config = {
     // },
 
     // 表情
-    emotions: [{
+    emotions: [
+    // {
+    //     // tab 的标题
+    //     title: '默认',
+    //     // type -> 'emoji' / 'image'
+    //     type: 'image',
+    //     // content -> 数组
+    //     content: [
+    //         {
+    //             alt: '[坏笑]',
+    //             src: 'http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/50/pcmoren_huaixiao_org.png'
+    //         },
+    //         {
+    //             alt: '[舔屏]',
+    //             src: 'http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/40/pcmoren_tian_org.png'
+    //         },
+    //         {
+    //             alt: '[污]',
+    //             src: 'http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/3c/pcmoren_wu_org.png'
+    //         }
+    //     ]
+    // },
+    // {
+    //     // tab 的标题
+    //     title: '新浪',
+    //     // type -> 'emoji' / 'image'
+    //     type: 'image',
+    //     // content -> 数组
+    //     content: [
+    //         {
+    //             src: 'http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/7a/shenshou_thumb.gif',
+    //             alt: '[草泥马]'
+    //         },
+    //         {
+    //             src: 'http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/60/horse2_thumb.gif',
+    //             alt: '[神马]'
+    //         },
+    //         {
+    //             src: 'http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/bc/fuyun_thumb.gif',
+    //             alt: '[浮云]'
+    //         }
+    //     ]
+    // },
+    {
         // tab 的标题
-        title: '默认',
-        // type -> 'emoji' / 'image'
-        type: 'image',
-        // content -> 数组
-        content: [{
-            alt: '[坏笑]',
-            src: 'http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/50/pcmoren_huaixiao_org.png'
-        }, {
-            alt: '[舔屏]',
-            src: 'http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/40/pcmoren_tian_org.png'
-        }, {
-            alt: '[污]',
-            src: 'http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/3c/pcmoren_wu_org.png'
-        }]
-    }, {
-        // tab 的标题
-        title: '新浪',
-        // type -> 'emoji' / 'image'
-        type: 'image',
-        // content -> 数组
-        content: [{
-            src: 'http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/7a/shenshou_thumb.gif',
-            alt: '[草泥马]'
-        }, {
-            src: 'http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/60/horse2_thumb.gif',
-            alt: '[神马]'
-        }, {
-            src: 'http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/bc/fuyun_thumb.gif',
-            alt: '[浮云]'
-        }]
-    }, {
-        // tab 的标题
-        title: 'emoji',
+        title: '插入表情',
         // type -> 'emoji' / 'image'
         type: 'emoji',
         // content -> 数组
-        content: '😀 😃 😄 😁 😆 😅 😂 😊 😇 🙂 🙃 😉 😓 😪 😴 🙄 🤔 😬 🤐'.split(/\s/)
+        content: '😀 😁 😂 🤣 😃 😄 😅 😆 😉 😊 😋 😎 😍 😘 🥰 😗 😙 😚 ☺️ 🙂 🤗 🤩 🤔 🤨 😐 😑 😶 🙄 😏 😣 😥 😮 🤐 😯 😪 😫 😴 😌 😛 😜 😝 🤤 😒 😓 😔 😕 🙃 🤑 😲 ☹️ 🙁 😖 😞 😟 😤 😢 😭 😦 😧 😨 😩 🤯 😬 😰 😱 🥵 🥶 😳 🤪 😵 😡 😠 🤬 😷 🤒 🤕 🤢 🤮 🤧 😇 🤠 🤡 🥳 🥴 🥺 🤥 🤫 🤭 🧐 🤓 😈 👿 👹 👺 💀 👻 👽 🤖 💩 😺 😸 😹 😻 😼 😽 🙀 😿 😾'.split(/\s/)
     }],
 
     // 编辑区域的 z-index
@@ -2119,6 +2130,40 @@ Code.prototype = {
     }
 };
 
+// https://github.com/IonicaBizau/emoji-unicode/blob/master/lib/index.js
+/**
+ * emojiUnicode
+ * Get the unicode code of an emoji in base 16.
+ *
+ * @name emojiUnicode
+ * @function
+ * @param {String} input The emoji character.
+ * @returns {String} The base 16 unicode code.
+ */
+function emojiUnicode(input) {
+    return emojiUnicode.raw(input).toString('16');
+}
+
+/**
+ * emojiunicode.raw
+ * Get the unicode code of an emoji in base 16.
+ *
+ * @name emojiunicode.raw
+ * @function
+ * @param {String} input The emoji character.
+ * @returns {Number} The unicode code.
+ */
+emojiUnicode.raw = function (input) {
+    if (input.length === 1) {
+        return input.charCodeAt(0);
+    }
+    var comp = (input.charCodeAt(0) - 0xD800) * 0x400 + (input.charCodeAt(1) - 0xDC00) + 0x10000;
+    if (comp < 0) {
+        return input.charCodeAt(0);
+    }
+    return comp;
+};
+
 /*
     menu - emoticon
 */
@@ -2193,8 +2238,10 @@ Emoticon.prototype = {
                             // 插入图片
                             insertHtml = $target.parent().html();
                         } else {
-                            // 插入 emoji
-                            insertHtml = '<span>' + $target.html() + '</span>';
+                            // 插入 emoji 图形
+                            // insertHtml = '<span>' + $target.html() + '</span>'
+                            // 插入 emoji unicode
+                            insertHtml = '<span>0x' + emojiUnicode($target.html()) + '</span>';
                         }
 
                         _this._insert(insertHtml);
