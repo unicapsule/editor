@@ -80,9 +80,9 @@ Emoticon.prototype = {
                                 insertHtml = $target.parent().html()
                             } else {
                                 // 插入 emoji 图形
-                                // insertHtml = '<span>' + $target.html() + '</span>'
+                                insertHtml = '<span>' + $target.html() + '</span>'
                                 // 插入 emoji unicode
-                                insertHtml = `<span>0x${emojiUnicode($target.html())}</span>`
+                                // insertHtml = `<span>0x${emojiUnicode($target.html())}</span>`
                             }
 
                             this._insert(insertHtml)
