@@ -39,6 +39,7 @@ Command.prototype = {
             this[_name](value)
         } else {
             // 默认 command
+            console.log('默认 command', name)
             this._execCommand(name, value)
         }
 
@@ -68,7 +69,7 @@ Command.prototype = {
         } else if (range.pasteHTML) {
             // IE <= 10
             range.pasteHTML(html)
-        } 
+        }
     },
 
     // 插入 elem

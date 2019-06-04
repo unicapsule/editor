@@ -3145,6 +3145,88 @@ Youtube.prototype = {
     }
 };
 
+function Inst(editor) {
+    this.editor = editor;
+    this.$elem = $('<div class="w-e-menu"><i class="iconfont icon-inst"></i></div>');
+    this.type = 'panel';
+
+    // 当前是否 active 状态
+    this._active = false;
+}
+
+Inst.prototype = {
+    constructor: Inst,
+
+    onClick: function onClick(e) {
+        this._createPanel();
+    },
+
+    _createPanel: function _createPanel() {
+        // 创建 id
+        var textValId = getRandom('text-val');
+        var btnId = getRandom('btn');
+
+        var p = new Panel(this, {
+            width: 350,
+            tabs: [{
+                title: '插入Instagram',
+                tpl: '<div>\n                        <input id="' + textValId + '" type="text" class="block" placeholder="aaa"\n                        value=""/>\n                        <div class="w-e-button-container">\n                            <button id="' + btnId + '" class="right">\u63D2\u5165</button>\n                        </div>\n                    </div>\n                    ',
+                events: [{
+                    selector: '#' + btnId,
+                    type: 'click',
+                    fn: function fn() {
+                        console.log(11111);
+
+                        // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
+                        return true;
+                    }
+                }]
+            }]
+        });
+
+        p.show();
+
+        this.panel = p;
+    }
+};
+
+function Location(editor) {
+    this.editor = editor;
+    this.type = 'click';
+    this.$elem = $('<div class="w-e-menu">\n            <i class="iconfont icon-location1" style="font-size:18px"></i>\n        </div>');
+    // 当前是否 active 状态
+    this._active = false;
+}
+
+Location.prototype = {
+    onClick: function onClick(e) {
+        console.log(123);
+    }
+};
+
+/*
+    清除格式
+*/
+function RemoveFormat(editor) {
+    this.editor = editor;
+    this.type = 'click';
+    this.$elem = $('<div class="w-e-menu">\n            <i class="iconfont icon-710bianjiqi_qingchugeshi" style="font-size:18px"></i>\n        </div>');
+    // 当前是否 active 状态
+    this._active = false;
+}
+
+RemoveFormat.prototype = {
+    onClick: function onClick(e) {
+        var editor = this.editor;
+        console.log(e);
+        // document.execCommand('formatBlock', false, 'p')
+        // editor.cmd.do('formatBlock')
+        var range = editor.selection.getRange();
+        var el = editor.selection.getSelectionContainerElem(range);
+        console.log(el);
+    }
+};
+
 /*
     所有菜单的汇总
 */
@@ -3193,6 +3275,12 @@ MenuConstructors.video = Video;
 MenuConstructors.image = Image;
 
 MenuConstructors.youbute = Youtube;
+
+MenuConstructors.instagram = Inst;
+
+MenuConstructors.location = Location;
+
+MenuConstructors.removeformat = RemoveFormat;
 
 /*
     菜单集合
@@ -3990,6 +4078,7 @@ Command.prototype = {
             this[_name](value);
         } else {
             // 默认 command
+            console.log('默认 command', name);
             this._execCommand(name, value);
         }
 

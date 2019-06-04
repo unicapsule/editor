@@ -68,5 +68,14 @@ MenuConstructors.image = Image
 import Youtube from './youtube/index.js'
 MenuConstructors.youbute = Youtube
 
+import Inst from './instagram/index.js'
+MenuConstructors.instagram = Inst
+
+import Location from './location/index.js'
+MenuConstructors.location = Location
+
+import RemoveFormat from './removeFormat/index.js'
+MenuConstructors.removeformat = RemoveFormat
+
 // 吐出所有菜单集合
 export default MenuConstructors
