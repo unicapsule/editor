@@ -744,6 +744,11 @@ var config = {
     youbute: {
         width: 332,
         height: 184
+    },
+
+    instagram: {
+        width: 350,
+        height: 500
     }
 };
 
@@ -3162,6 +3167,8 @@ Inst.prototype = {
     },
 
     _createPanel: function _createPanel() {
+        var _this = this;
+
         // 创建 id
         var textValId = getRandom('text-val');
         var btnId = getRandom('btn');
@@ -3170,12 +3177,39 @@ Inst.prototype = {
             width: 350,
             tabs: [{
                 title: '插入Instagram',
-                tpl: '<div>\n                        <input id="' + textValId + '" type="text" class="block" placeholder="aaa"\n                        value=""/>\n                        <div class="w-e-button-container">\n                            <button id="' + btnId + '" class="right">\u63D2\u5165</button>\n                        </div>\n                    </div>\n                    ',
+                tpl: '<div>\n                        <input id="' + textValId + '" type="text" class="block" placeholder="aaa"\n                        value="https://www.instagram.com/p/ByPDop1Bmwa"/>\n                        <div class="w-e-button-container">\n                            <button id="' + btnId + '" class="right">\u63D2\u5165</button>\n                        </div>\n                    </div>\n                    ',
                 events: [{
                     selector: '#' + btnId,
                     type: 'click',
                     fn: function fn() {
-                        console.log(11111);
+                        var $text = $('#' + textValId);
+                        var val = $text.val().trim();
+
+                        if (val) {
+                            var htmlStr = '<iframe src="' + val + '/embed/" width="' + _this.editor.config.instagram.width + '" height="' + _this.editor.config.instagram.height + '" frameborder="0" scrolling="no" allowtransparency="true">';
+
+                            var insWrapperEl = void 0;
+                            // FIXME: 没有蒙层
+                            var insWithWrapper = new MediaWrapper({
+                                contentHtml: htmlStr,
+                                contentType: 'video',
+                                // height: this.editor.config.youbute.height,
+                                width: _this.editor.config.youbute.width,
+                                onFocus: function onFocus($wrapper) {
+                                    var fToolbar = new Toolbar({
+                                        tools: ['justify', 'del'],
+                                        editor: _this.editor,
+                                        justifyContainer: insWrapperEl
+                                    });
+                                    fToolbar.appendTo($wrapper.find('figure')[0]);
+                                },
+                                onBlur: function onBlur($wrapper) {
+                                    $wrapper.find('.me-floating-toolbar').remove();
+                                }
+                            });
+                            insWrapperEl = insWithWrapper.generateDom();
+                            _this._insert(insWrapperEl);
+                        }
 
                         // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
                         return true;
@@ -3187,6 +3221,15 @@ Inst.prototype = {
         p.show();
 
         this.panel = p;
+    },
+
+    _insert: function _insert(el) {
+        this.editor.cmd.do('insertHTML', '<p><br></p>');
+        this.editor.cmd.do('insertElem', [el]);
+        this.editor.selection.createRangeByElem([el.parentNode], false); // 设置选取到结束位置
+        // this.editor.selection.restoreSelection()
+        // this.editor.cmd.do('insertElem', [document.createElement('p')])
+        this.editor.cmd.do('insertHTML', '<p><br></p>');
     }
 };
 

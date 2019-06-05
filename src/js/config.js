@@ -252,6 +252,11 @@ const config = {
         width: 332,
         height: 184,
     },
+
+    instagram: {
+        width: 350,
+        height: 500,
+    },
 }
 
 export default config

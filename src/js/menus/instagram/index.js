@@ -1,6 +1,8 @@
 import $ from '../../util/dom-core.js'
 import Panel from '../panel.js'
 import { getRandom } from '../../util/util.js'
+import ContentWrapper from '../../tool/media-wrapper.js'
+import FloatingToolbar from '../../tool/floating-toolbar.js'
 
 function Inst(editor) {
     this.editor = editor
@@ -30,7 +32,7 @@ Inst.prototype = {
                     title: '插入Instagram',
                     tpl: `<div>
                         <input id="${textValId}" type="text" class="block" placeholder="aaa"
-                        value=""/>
+                        value="https://www.instagram.com/p/ByPDop1Bmwa"/>
                         <div class="w-e-button-container">
                             <button id="${btnId}" class="right">插入</button>
                         </div>
@@ -41,7 +43,34 @@ Inst.prototype = {
                             selector: '#' + btnId,
                             type: 'click',
                             fn: () => {
-                                console.log(11111)
+                                const $text = $('#' + textValId)
+                                const val = $text.val().trim()
+
+                                if (val) {
+                                    const htmlStr = `<iframe src="${val}/embed/" width="${this.editor.config.instagram.width}" height="${this.editor.config.instagram.height}" frameborder="0" scrolling="no" allowtransparency="true">`
+
+                                    let insWrapperEl
+                                    // FIXME: 没有蒙层
+                                    const insWithWrapper = new ContentWrapper({
+                                        contentHtml: htmlStr,
+                                        contentType: 'video',
+                                        // height: this.editor.config.youbute.height,
+                                        width: this.editor.config.youbute.width,
+                                        onFocus: ($wrapper) => {
+                                            const fToolbar = new FloatingToolbar({
+                                                tools: ['justify', 'del'],
+                                                editor: this.editor,
+                                                justifyContainer: insWrapperEl,
+                                            })
+                                            fToolbar.appendTo($wrapper.find('figure')[0])
+                                        },
+                                        onBlur: ($wrapper) => {
+                                            $wrapper.find('.me-floating-toolbar').remove()
+                                        }
+                                    })
+                                    insWrapperEl = insWithWrapper.generateDom()
+                                    this._insert(insWrapperEl)
+                                }
 
                                 // 返回 true，表示该事件执行完之后，panel 要关闭。否则 panel 不会关闭
                                 return true
@@ -55,6 +84,15 @@ Inst.prototype = {
         p.show()
 
         this.panel = p
+    },
+
+    _insert: function (el) {
+        this.editor.cmd.do('insertHTML', '<p><br></p>')
+        this.editor.cmd.do('insertElem', [el])
+        this.editor.selection.createRangeByElem([el.parentNode], false) // 设置选取到结束位置
+        // this.editor.selection.restoreSelection()
+        // this.editor.cmd.do('insertElem', [document.createElement('p')])
+        this.editor.cmd.do('insertHTML', '<p><br></p>')
     },
 }
 
