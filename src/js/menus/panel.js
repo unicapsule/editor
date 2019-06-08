@@ -55,7 +55,7 @@ Panel.prototype = {
         if (height) {
             $tabContentContainer.css('height', height + 'px').css('overflow-y', 'auto')
         }
-        
+
         // tabs
         const tabs = opt.tabs || []
         const tabTitleArr = []
@@ -134,6 +134,8 @@ Panel.prototype = {
                 const type = event.type
                 const fn = event.fn || emptyFn
                 const $content = tabContentArr[index]
+                console.log(selector, fn)
+                console.log($content.find(selector))
                 $content.find(selector).on(type, (e) => {
                     e.stopPropagation()
                     const needToHide = fn(e)

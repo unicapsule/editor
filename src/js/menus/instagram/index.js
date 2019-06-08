@@ -55,7 +55,7 @@ Inst.prototype = {
                                         contentHtml: htmlStr,
                                         contentType: 'video',
                                         // height: this.editor.config.youbute.height,
-                                        width: this.editor.config.youbute.width,
+                                        width: this.editor.config.instagram.width,
                                         onFocus: ($wrapper) => {
                                             const fToolbar = new FloatingToolbar({
                                                 tools: ['justify', 'del'],

@@ -62,7 +62,8 @@ MenuConstructors.table = Table
 import Video from './video/index.js'
 MenuConstructors.video = Video
 
-import Image from './img/index.js'
+// import Image from './img/index.js'
+import Image from './image/index.js'
 MenuConstructors.image = Image
 
 import Youtube from './youtube/index.js'

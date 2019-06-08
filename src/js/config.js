@@ -242,11 +242,13 @@ const config = {
     // },
 
     // // 自定义上传图片
-    // customUploadImg: function (files, insert) {
-    //     // files 是 input 中选中的文件列表
-    //     // insert 是获取图片 url 后，插入到编辑器的方法
-    //     insert(imgUrl)
-    // }
+    customUploadImg: function (files, insert) {
+        // files 是 input 中选中的文件列表
+        // insert 是获取图片 url 后，插入到编辑器的方法
+        console.log(files)
+        var imgUrl = 'https://www.baidu.com/img/xinshouye_1aa82cd448e4c0aee0961ed6e290baaf.gif'
+        insert(imgUrl)
+    },
 
     youbute: {
         width: 332,
