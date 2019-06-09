@@ -756,8 +756,8 @@ var config = {
     },
 
     geoService: {
-        baidu: 'aaa',
-        weather: 'bbb'
+        baidu: 'rQbEQBxGQw1xEU94D7qXA1TrX8nbdkT3',
+        weather: '49ed074129991973727340d6e9d61ed8'
     }
 };
 
