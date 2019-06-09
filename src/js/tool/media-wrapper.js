@@ -12,10 +12,15 @@ function MediaWrapper(options) {
     this.contentType = options.contentType || 'video'
     this.height = options.height
     this.width = options.width || ''
+    this.progress = options.progress || false // 显示进度条
+    this.background = options.background || 'rgba(0,0,0,.1)' // 蒙层背景色
     this.className = options.className
     this.onFocus = options.onFocus
     this.onBlur = options.onBlur
     this.id = getRandom(WRAPPER_NAME)
+    this.el = null
+
+    if (this.progress) this.background = 'rgba(181,181,181,1)' // 有进度条时自定义background无效
 }
 
 MediaWrapper.prototype = {
@@ -26,18 +31,30 @@ MediaWrapper.prototype = {
         let style = ''
 
         if (this.height) style += `height: ${this.height}px;`
-        if (this.width) style += `width: ${this.width}px;`
+        if (this.width) {
+            if (this.contentType === 'image') {
+                style += `max-width: ${this.width}px;`
+            } else {
+                style += `width: ${this.width}px;`
+            }
+        }
 
         const htmlStrArr = [
             // `<div class="${WRAPPER_NAME}" id="${this.id}" contenteditable="false">`,
-            `<figure contenteditable="false" style="${style}">`,
-            `<div class="${WRAPPER_NAME}--content">${this.contentHtml}</div>`,
-            `<div class="${WRAPPER_NAME}--placeholder"></div>`,
+            `<figure contenteditable="false" class="${WRAPPER_NAME}--type-${this.contentType}" style="${style}">`,
+            `<div class="${WRAPPER_NAME}--content" style="text-align:center">${this.contentHtml}`,
         ]
+
+        if (this.progress) {
+            htmlStrArr.push('<span class="progress-bar"><i style="width:0"></i></span><span class="progress-bar-text">0%</span>')
+        }
+
+        htmlStrArr.push('</div>')
+        htmlStrArr.push(`<div class="${WRAPPER_NAME}--placeholder" style="text-align:center;background:${this.background}"></div>`)
 
         if (isFigureType) htmlStrArr.push(`
         <figcaption contenteditable="true" data-default-value="Type caption for embed (optional)">
-        <span class="defaultValue">Type caption for embed (optional)</span>
+        <span class="defaultValue">Caption</span>
         <br></figcaption>
         `)
 
@@ -51,6 +68,7 @@ MediaWrapper.prototype = {
         divDom.innerHTML = htmlStrArr.join('')
 
         this.eventsBind(divDom)
+        this.el = divDom
         return divDom
     },
 
@@ -69,6 +87,17 @@ MediaWrapper.prototype = {
             $el.removeClass('is-active')
             this.onBlur && this.onBlur($el)
         })
+    },
+
+    // 设置进度条，传入参数 0.1, 0.2, 0,3 ... 1
+    setProgress: function (num) {
+        const percentText = (num * 100) + '%'
+        $('#' + this.id).find('.progress-bar i')[0].style.width = percentText
+        $('#' + this.id).find('.progress-bar-text')[0].innerHTML = percentText
+
+        $('#' + this.id).find('.progress-bar')[0].style.opacity = 1 - num
+        $('#' + this.id).find('.progress-bar-text')[0].style.opacity = 1 - num
+        $('#' + this.id).find(`.${WRAPPER_NAME}--placeholder`)[0].style.background = `rgba(181,181,181,${1 - num})`
     }
 }
 

@@ -50,14 +50,14 @@ const config = {
     ],
 
     // // 语言配置
-    // lang: {
-    //     '设置标题': 'title',
-    //     '正文': 'p',
-    //     '链接文字': 'link text',
-    //     '链接': 'link',
-    //     '插入': 'insert',
-    //     '创建': 'init'
-    // },
+    lang: {
+        '设置标题': 'title',
+        '正文': 'p',
+        '链接文字': 'link text',
+        '链接': 'link',
+        '插入': 'insert',
+        '创建': 'init'
+    },
 
     // 表情
     emotions: [
@@ -250,6 +250,8 @@ const config = {
         insert(imgUrl)
     },
 
+    customUploadImgWidth: 500,
+
     youbute: {
         width: 332,
         height: 184,
@@ -259,6 +261,11 @@ const config = {
         width: 350,
         height: 500,
     },
+
+    geoService: {
+        baidu: 'aaa',
+        weather: 'bbb'
+    }
 }
 
 export default config

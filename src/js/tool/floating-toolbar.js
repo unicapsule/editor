@@ -33,15 +33,68 @@ function Toolbar(options) {
             },
         },
         fullsize: {
-            html: '<span class="tool--fullsize clickable"><i class="w-e-icon-font"></i></span>',
+            html: '<span class="tool--fullsize clickable"><i class="iconfont icon-Groupshi"></i></span>',
             events: () => {
                 console.log('全屏')
             }
         },
         autoplay: {
-            html: '<span class="tool--autoplay clickable"><i class="w-e-icon-bold"></i>自动播放</span>',
+            html: '<span class="tool--autoplay clickable"><i class="iconfont icon-checkmarktickse"></i>自动播放</span>',
             events: () => {
-                console.log('自动播放')
+                // TODO
+                $('.tool--autoplay').on('click', (e) => {
+                    if (Array.from(e.target.classList).includes('active')) {
+                        $(e.target).removeClass('active')
+                    } else {
+                        $(e.target).addClass('active')
+                    }
+                })
+            }
+        },
+        rotate: {
+            html: '<span class="tool--rotate"><i class="J-r-1 iconfont icon-xuanzhuan2 clickable"></i><i class="J-r-2 iconfont icon-Rotationangle clickable"></i></span>',
+            events: () => {
+                // TODO
+                $('.J-r-1').on('click', (e) => {
+                    const p = e.target.parentElement.parentElement.parentElement.parentElement.parentElement
+                    const $img = p.querySelector('img')
+                    const r = $img.getAttribute('data-rotate')
+                    if (!r) {
+                        $img.setAttribute('data-rotate', '90')
+                        $img.style.transform = 'rotate(90deg)'
+                    } else {
+                        const r2 = parseInt(r) + 90
+                        $img.setAttribute('data-rotate', r2)
+                        $img.style.transform = `rotate(${r2}deg)`
+                    }
+                })
+                $('.J-r-2').on('click', (e) => {
+                    const p = e.target.parentElement.parentElement.parentElement.parentElement.parentElement
+                    const $img = p.querySelector('img')
+                    const r = $img.getAttribute('data-rotate')
+                    if (!r) {
+                        $img.setAttribute('data-rotate', '-90')
+                        $img.style.transform = 'rotate(-90deg)'
+                    } else {
+                        const r2 = parseInt(r) - 90
+                        $img.setAttribute('data-rotate', r2)
+                        $img.style.transform = `rotate(${r2}deg)`
+                    }
+                })
+            }
+        },
+        caption: {
+            html: '<span class="tool--caption"><i class="iconfont icon-text1 clickable"></i></span>',
+            events: () => {
+                // TODO
+                console.log('icon-text1')
+                $('.tool--caption').on('click', (e) => {
+                    const p = e.target.parentElement.parentElement.parentElement.parentElement
+                    p.querySelector('.me-media-wrapper--placeholder').style.display = 'none'
+                    p.querySelector('figcaption span').innerHTML = ''
+                    p.querySelector('figcaption').focus()
+                    this.destroy()
+                })
             }
         },
         del: {

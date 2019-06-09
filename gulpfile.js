@@ -22,6 +22,11 @@ gulp.task('copy-fonts', () => {
         .pipe(gulp.dest('./release/fonts'))
 })
 
+gulp.task('copy-lib', () => {
+    gulp.src('./src/lib/*')
+        .pipe(gulp.dest('./release/lib'))
+})
+
 // 处理 css
 gulp.task('css', () => {
     gulp.src('./src/less/**/*.less')
@@ -105,6 +110,7 @@ gulp.task('script', () => {
 // 默认任务配置
 gulp.task('default', () => {
     gulp.run('copy-fonts', 'css', 'script')
+    gulp.run('copy-lib')
 
     // 监听 js 原始文件的变化
     gulp.watch('./src/js/**/*.js', () => {

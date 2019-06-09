@@ -72,8 +72,8 @@ MenuConstructors.youbute = Youtube
 import Inst from './instagram/index.js'
 MenuConstructors.instagram = Inst
 
-import Location from './location/index.js'
-MenuConstructors.location = Location
+import Geo from './geo/index.js'
+MenuConstructors.geo = Geo
 
 import RemoveFormat from './removeFormat/index.js'
 MenuConstructors.removeformat = RemoveFormat

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>自定义编辑器</title>
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_1222619_68swz371nsx.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1222619_h7tqhf38l7h.css">
     <style>
         .toolbar {
             border: 1px solid #ccc;
@@ -27,8 +27,10 @@
         <button id="btn">获取html内容</button>
     </div>
 
-    <!-- <script type="text/javascript" src="../../release/wangEditor.min.js"></script> -->
-    <script type="text/javascript" src="/wangEditor.min.js"></script>
+    <script type="text/javascript" src="../../release/lib/axios.min.js"></script>
+    <script type="text/javascript" src="../../release/lib/JSONP-min.js"></script>
+    <script type="text/javascript" src="../../release/wangEditor.min.js"></script>
+    <!-- <script type="text/javascript" src="/wangEditor.min.js"></script> -->
     <script type="text/javascript">
         var E = window.wangEditor
         var editor2 = new E('#div1', '#div2')
@@ -53,7 +55,7 @@
             'image',
             'emoticon',
             'image',
-            'location',
+            'geo',
         ]
         editor2.create()
 

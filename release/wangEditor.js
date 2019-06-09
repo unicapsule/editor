@@ -552,14 +552,14 @@ var config = {
     colors: ['#000000', '#eeece0', '#1c487f', '#4d80bf', '#c24f4a', '#8baa4a', '#7b5ba1', '#46acc8', '#f9963b', '#ffffff'],
 
     // // 语言配置
-    // lang: {
-    //     '设置标题': 'title',
-    //     '正文': 'p',
-    //     '链接文字': 'link text',
-    //     '链接': 'link',
-    //     '插入': 'insert',
-    //     '创建': 'init'
-    // },
+    lang: {
+        '设置标题': 'title',
+        '正文': 'p',
+        '链接文字': 'link text',
+        '链接': 'link',
+        '插入': 'insert',
+        '创建': 'init'
+    },
 
     // 表情
     emotions: [
@@ -743,6 +743,8 @@ var config = {
         insert(imgUrl);
     },
 
+    customUploadImgWidth: 500,
+
     youbute: {
         width: 332,
         height: 184
@@ -751,6 +753,11 @@ var config = {
     instagram: {
         width: 350,
         height: 500
+    },
+
+    geoService: {
+        baidu: 'aaa',
+        weather: 'bbb'
     }
 };
 
@@ -1304,8 +1311,6 @@ Panel.prototype = {
                 var type = event.type;
                 var fn = event.fn || emptyFn;
                 var $content = tabContentArr[index];
-                console.log(selector, fn);
-                console.log($content.find(selector));
                 $content.find(selector).on(type, function (e) {
                     e.stopPropagation();
                     var needToHide = fn(e);
@@ -2677,150 +2682,6 @@ Video.prototype = {
     }
 };
 
-/*
-    menu - img
-*/
-// 构造函数
-function Image(editor) {
-    this.editor = editor;
-    var imgMenuId = getRandom('w-e-img');
-    this.$elem = $('<div class="w-e-menu" id="' + imgMenuId + '"><i class="w-e-icon-image"></i></div>');
-    editor.imgMenuId = imgMenuId;
-    this.type = 'panel';
-
-    // 当前是否 active 状态
-    this._active = false;
-}
-
-// 原型
-Image.prototype = {
-    constructor: Image,
-
-    onClick: function onClick() {
-        var editor = this.editor;
-        var config = editor.config;
-
-        this._createInsertPanel();
-    },
-
-    _createInsertPanel: function _createInsertPanel() {
-        var editor = this.editor;
-        var uploadImg = editor.uploadImg;
-        var config = editor.config;
-
-        // id
-        var upTriggerId = getRandom('up-trigger');
-        var upFileId = getRandom('up-file');
-        var linkUrlId = getRandom('link-url');
-        var linkBtnId = getRandom('link-btn');
-
-        // tabs 的配置
-        var tabsConfig = [{
-            title: '上传图片',
-            tpl: '<div class="w-custom-up-img-container">\n                    <div id="' + upTriggerId + '" class="w-custom-up-img-container-inner">\n                    <div class="w-custom-up-btn">\n                        <i class="w-custom-icon-upload2"></i>\n                        <p class="w-custom-up-img-tip">\u62D6\u52A8\u56FE\u7247\u5230\u6B64\u6216\u70B9\u51FB\u6B64\u5904\u4E0A\u4F20<br>\n                        \uFF08\u6700\u591A\u53EF\u540C\u65F6\u4E0A\u4F2010\u5F20\u56FE\u7247\uFF09</p>\n                        <p class="w-custom-up-img-tip-focus">\u677E\u4E0B\u9F20\u6807\u5F00\u59CB\u4E0A\u4F20</p>\n                    </div>\n                    <div style="display:none;">\n                        <input id="' + upFileId + '" type="file" multiple="multiple" accept="image/jpg,image/jpeg,image/png,image/gif,image/bmp"/>\n                    </div>\n                    </div>\n                </div>',
-            events: [{
-                // 触发选择图片
-                selector: '#' + upTriggerId,
-                type: 'click',
-                fn: function fn() {
-                    var $file = $('#' + upFileId);
-                    var fileElem = $file[0];
-                    if (fileElem) {
-                        fileElem.click();
-                    } else {
-                        // 返回 true 可关闭 panel
-                        return true;
-                    }
-                }
-            },
-            // {
-            //     // 选择图片完毕
-            //     selector: '#' + upFileId,
-            //     type: 'change',
-            //     fn: () => {
-            //         const $file = $('#' + upFileId)
-            //         const fileElem = $file[0]
-            //         if (!fileElem) {
-            //             // 返回 true 可关闭 panel
-            //             return true
-            //         }
-
-            //         // 获取选中的 file 对象列表
-            //         const fileList = fileElem.files
-            //         if (fileList.length) {
-            //             uploadImg.uploadImg(fileList)
-            //         }
-
-            //         // 返回 true 可关闭 panel
-            //         return true
-            //     }
-            // },
-            {
-                selector: '#' + upTriggerId,
-                type: 'dragenter',
-                fn: function fn(e) {
-                    // e.stopPropagation()
-                    console.log('11122');
-
-                    // Makes it possible to drag files from chrome's download bar
-                    // http://stackoverflow.com/questions/19526430/drag-and-drop-file-uploads-from-chrome-downloads-bar
-                    // Try is required to prevent bug in Internet Explorer 11 (SCRIPT65535 exception)
-                    var efct = void 0;
-                    try {
-                        efct = e.dataTransfer.effectAllowed;
-                    } catch (error) {
-                        //
-                    }
-                    e.dataTransfer.dropEffect = 'move' === efct || 'linkMove' === efct ? 'move' : 'copy';
-
-                    $('#' + upTriggerId).addClass('active');
-                }
-            }, {
-                selector: '#' + upTriggerId,
-                type: 'dragleave',
-                fn: function fn(e) {
-                    console.log('2323');
-                    // e.stopPropagation()
-                    $('#' + upTriggerId).removeClass('active');
-                }
-            }, {
-                selector: '#' + upTriggerId,
-                type: 'drop',
-                fn: function fn(e) {
-                    e.preventDefault(); //取消默认浏览器拖拽效果
-                    console.log('drop');
-
-                    var fileList = e.dataTransfer.files; //获取文件对象
-                    console.log('fileList');
-                    console.log(fileList);
-                }
-            }] // first tab end
-        }]; // tabs end
-
-        // 判断 tabs 的显示
-        var tabsConfigResult = [];
-        if ((config.uploadImgShowBase64 || config.uploadImgServer || config.customUploadImg) && window.FileReader) {
-            // 显示“上传图片”
-            tabsConfigResult.push(tabsConfig[0]);
-        }
-        // if (config.showLinkImg) {
-        //     // 显示“网络图片”
-        //     tabsConfigResult.push(tabsConfig[1])
-        // }
-
-        // 创建 panel 并显示
-        var panel = new Panel(this, {
-            width: 400,
-            tabs: tabsConfigResult
-        });
-        panel.show();
-
-        // 记录属性
-        this.panel = panel;
-    }
-
-};
-
 /**
  * 多媒体内容容器
  * 使用此容器包裹多媒体内容，可屏蔽媒体自带的按钮（如播放、全屏），提供figcaption功能
@@ -2832,10 +2693,15 @@ function MediaWrapper(options) {
     this.contentType = options.contentType || 'video';
     this.height = options.height;
     this.width = options.width || '';
+    this.progress = options.progress || false; // 显示进度条
+    this.background = options.background || 'rgba(0,0,0,.1)'; // 蒙层背景色
     this.className = options.className;
     this.onFocus = options.onFocus;
     this.onBlur = options.onBlur;
     this.id = getRandom(WRAPPER_NAME);
+    this.el = null;
+
+    if (this.progress) this.background = 'rgba(181,181,181,1)'; // 有进度条时自定义background无效
 }
 
 MediaWrapper.prototype = {
@@ -2846,13 +2712,26 @@ MediaWrapper.prototype = {
         var style = '';
 
         if (this.height) style += 'height: ' + this.height + 'px;';
-        if (this.width) style += 'width: ' + this.width + 'px;';
+        if (this.width) {
+            if (this.contentType === 'image') {
+                style += 'max-width: ' + this.width + 'px;';
+            } else {
+                style += 'width: ' + this.width + 'px;';
+            }
+        }
 
         var htmlStrArr = [
         // `<div class="${WRAPPER_NAME}" id="${this.id}" contenteditable="false">`,
-        '<figure contenteditable="false" style="' + style + '">', '<div class="' + WRAPPER_NAME + '--content">' + this.contentHtml + '</div>', '<div class="' + WRAPPER_NAME + '--placeholder"></div>'];
+        '<figure contenteditable="false" class="' + WRAPPER_NAME + '--type-' + this.contentType + '" style="' + style + '">', '<div class="' + WRAPPER_NAME + '--content" style="text-align:center">' + this.contentHtml];
 
-        if (isFigureType) htmlStrArr.push('\n        <figcaption contenteditable="true" data-default-value="Type caption for embed (optional)">\n        <span class="defaultValue">Type caption for embed (optional)</span>\n        <br></figcaption>\n        ');
+        if (this.progress) {
+            htmlStrArr.push('<span class="progress-bar"><i style="width:0"></i></span><span class="progress-bar-text">0%</span>');
+        }
+
+        htmlStrArr.push('</div>');
+        htmlStrArr.push('<div class="' + WRAPPER_NAME + '--placeholder" style="text-align:center;background:' + this.background + '"></div>');
+
+        if (isFigureType) htmlStrArr.push('\n        <figcaption contenteditable="true" data-default-value="Type caption for embed (optional)">\n        <span class="defaultValue">Caption</span>\n        <br></figcaption>\n        ');
 
         htmlStrArr.push('</figure>');
 
@@ -2864,6 +2743,7 @@ MediaWrapper.prototype = {
         divDom.innerHTML = htmlStrArr.join('');
 
         this.eventsBind(divDom);
+        this.el = divDom;
         return divDom;
     },
 
@@ -2884,6 +2764,17 @@ MediaWrapper.prototype = {
             $el.removeClass('is-active');
             _this.onBlur && _this.onBlur($el);
         });
+    },
+
+    // 设置进度条，传入参数 0.1, 0.2, 0,3 ... 1
+    setProgress: function setProgress(num) {
+        var percentText = num * 100 + '%';
+        $('#' + this.id).find('.progress-bar i')[0].style.width = percentText;
+        $('#' + this.id).find('.progress-bar-text')[0].innerHTML = percentText;
+
+        $('#' + this.id).find('.progress-bar')[0].style.opacity = 1 - num;
+        $('#' + this.id).find('.progress-bar-text')[0].style.opacity = 1 - num;
+        $('#' + this.id).find('.' + WRAPPER_NAME + '--placeholder')[0].style.background = 'rgba(181,181,181,' + (1 - num) + ')';
     }
 };
 
@@ -2922,15 +2813,68 @@ function Toolbar(options) {
             }
         },
         fullsize: {
-            html: '<span class="tool--fullsize clickable"><i class="w-e-icon-font"></i></span>',
+            html: '<span class="tool--fullsize clickable"><i class="iconfont icon-Groupshi"></i></span>',
             events: function events() {
                 console.log('全屏');
             }
         },
         autoplay: {
-            html: '<span class="tool--autoplay clickable"><i class="w-e-icon-bold"></i>自动播放</span>',
+            html: '<span class="tool--autoplay clickable"><i class="iconfont icon-checkmarktickse"></i>自动播放</span>',
             events: function events() {
-                console.log('自动播放');
+                // TODO
+                $('.tool--autoplay').on('click', function (e) {
+                    if (Array.from(e.target.classList).includes('active')) {
+                        $(e.target).removeClass('active');
+                    } else {
+                        $(e.target).addClass('active');
+                    }
+                });
+            }
+        },
+        rotate: {
+            html: '<span class="tool--rotate"><i class="J-r-1 iconfont icon-xuanzhuan2 clickable"></i><i class="J-r-2 iconfont icon-Rotationangle clickable"></i></span>',
+            events: function events() {
+                // TODO
+                $('.J-r-1').on('click', function (e) {
+                    var p = e.target.parentElement.parentElement.parentElement.parentElement.parentElement;
+                    var $img = p.querySelector('img');
+                    var r = $img.getAttribute('data-rotate');
+                    if (!r) {
+                        $img.setAttribute('data-rotate', '90');
+                        $img.style.transform = 'rotate(90deg)';
+                    } else {
+                        var r2 = parseInt(r) + 90;
+                        $img.setAttribute('data-rotate', r2);
+                        $img.style.transform = 'rotate(' + r2 + 'deg)';
+                    }
+                });
+                $('.J-r-2').on('click', function (e) {
+                    var p = e.target.parentElement.parentElement.parentElement.parentElement.parentElement;
+                    var $img = p.querySelector('img');
+                    var r = $img.getAttribute('data-rotate');
+                    if (!r) {
+                        $img.setAttribute('data-rotate', '-90');
+                        $img.style.transform = 'rotate(-90deg)';
+                    } else {
+                        var r2 = parseInt(r) - 90;
+                        $img.setAttribute('data-rotate', r2);
+                        $img.style.transform = 'rotate(' + r2 + 'deg)';
+                    }
+                });
+            }
+        },
+        caption: {
+            html: '<span class="tool--caption"><i class="iconfont icon-text1 clickable"></i></span>',
+            events: function events() {
+                // TODO
+                console.log('icon-text1');
+                $('.tool--caption').on('click', function (e) {
+                    var p = e.target.parentElement.parentElement.parentElement.parentElement;
+                    p.querySelector('.me-media-wrapper--placeholder').style.display = 'none';
+                    p.querySelector('figcaption span').innerHTML = '';
+                    p.querySelector('figcaption').focus();
+                    _this.destroy();
+                });
             }
         },
         del: {
@@ -2983,6 +2927,323 @@ Toolbar.prototype = {
         if (this.container) {
             $(this.container).find('.' + NAME).remove();
         }
+    }
+};
+
+/**
+ * 上传
+ */
+var upload = (function (files, globalOptions) {
+    if (!files || !files.length) {
+        console.error('no files');
+        return;
+    }
+
+    var maxSizeM = 5;
+    var maxSize = maxSizeM * 1024 * 1024;
+    var maxLength = 5;
+    var resultFiles = [];
+    var errInfo = [];
+
+    // ------------------------------ 验证文件信息 ------------------------------
+    arrForEach(files, function (file) {
+        var name = file.name;
+        var size = file.size;
+
+        // chrome 低版本 name === undefined
+        if (!name || !size) {
+            return;
+        }
+
+        if (/\.(jpg|jpeg|png|bmp|gif|webp)$/i.test(name) === false) {
+            // 后缀名不合法，不是图片
+            errInfo.push('\u3010' + name + '\u3011\u4E0D\u662F\u56FE\u7247');
+            return;
+        }
+        if (maxSize < size) {
+            // 上传图片过大
+            errInfo.push('\u3010' + name + '\u3011\u5927\u4E8E ' + maxSizeM + 'M');
+            return;
+        }
+
+        // 验证通过的加入结果列表
+        resultFiles.push(file);
+    });
+
+    // 抛出验证信息
+    if (errInfo.length) {
+        // TODO
+        alert('图片验证未通过: \n' + errInfo.join('\n'));
+        return;
+    }
+    if (resultFiles.length > maxLength) {
+        alert('一次最多上传' + maxLength + '张图片');
+        return;
+    }
+
+    var uploadImgServer = 'https://uploader2.49miles.cn'; // 开发环境 http://unicapsule.local http://jodi.local http://jodi-admin.local
+    // const uploadImgServer = 'https://uploadr.49miles.cn'     // 生产环境 https://unicapsule.com https://jodi.mobi
+
+    // ------------------------------ 标记上传成功 ------------------------------
+    function markSuccess2Server(id) {
+        window.axios({
+            method: 'post',
+            url: uploadImgServer + '/saveFileToDb',
+            data: {
+                id: id
+            },
+            timeout: 600000
+        }).then(function (res) {
+            globalOptions.success && globalOptions.success(res.data.fileInfo);
+        });
+    }
+
+    // ------------------------------ 上传图片 ------------------------------
+    function ajaxUpload(files, options) {
+        var ossData = new FormData();
+        ossData.append('ossAccessKeyId', options.ossAccessKeyId);
+        ossData.append('policy', options.policy);
+        ossData.append('signature', options.signature);
+        ossData.append('key', options.key);
+        ossData.append('success_action_status', '200');
+        ossData.append('fileType', 'avator');
+
+        arrForEach(files, function (file) {
+            ossData.append('file', file, file.name);
+        });
+
+        window.axios({
+            method: 'post',
+            url: options.host,
+            data: ossData,
+            onUploadProgress: function onUploadProgress(e) {
+                var percent = e.loaded / e.total;
+                globalOptions.onProcess && globalOptions.onProcess(percent, e);
+            },
+            timeout: 600000
+        }).then(function (res) {
+            console.log(res.status);
+            if (res.status === 200) {
+                markSuccess2Server(options.id);
+            }
+        });
+    }
+
+    // ------------------------------ 获取上传host ------------------------------
+    window.axios.post(uploadImgServer + '/getPolicy', {
+        fileName: 'a.png',
+        maxSize: 1024 * 1024 * 15,
+        fileType: 'avator',
+        filePath: 'unicapsule'
+    }).then(function (res) {
+        console.log(res);
+        var jsonData = res.data;
+        ajaxUpload(resultFiles, {
+            host: jsonData.ossHost,
+            ossAccessKeyId: jsonData.ossAccessKeyId,
+            policy: jsonData.policy,
+            signature: jsonData.signature,
+            key: jsonData.key,
+            id: jsonData.id
+        });
+    });
+});
+
+/*
+    menu - img
+*/
+// 构造函数
+function Image(editor) {
+    this.editor = editor;
+    var imgMenuId = getRandom('w-e-img');
+    this.$elem = $('<div class="w-e-menu" id="' + imgMenuId + '"><i class="w-e-icon-image"></i></div>');
+    editor.imgMenuId = imgMenuId;
+    this.type = 'panel';
+
+    // 当前是否 active 状态
+    this._active = false;
+}
+
+// 原型
+Image.prototype = {
+    constructor: Image,
+
+    onClick: function onClick() {
+        var editor = this.editor;
+        var config = editor.config;
+
+        this._createInsertPanel();
+    },
+
+    _createInsertPanel: function _createInsertPanel() {
+        var _this = this;
+
+        var editor = this.editor;
+        var uploadImg = editor.uploadImg;
+        var config = editor.config;
+
+        // id
+        var upTriggerId = getRandom('up-trigger');
+        var upFileId = getRandom('up-file');
+        var linkUrlId = getRandom('link-url');
+        var linkBtnId = getRandom('link-btn');
+
+        // tabs 的配置
+        var tabsConfig = [{
+            title: '上传图片',
+            tpl: '<div class="w-custom-up-img-container">\n                    <div id="' + upTriggerId + '" class="w-custom-up-img-container-inner">\n                    <div class="w-custom-up-btn">\n                        <i class="w-custom-icon-upload2"></i>\n                        <p class="w-custom-up-img-tip">\u62D6\u52A8\u56FE\u7247\u5230\u6B64\u6216\u70B9\u51FB\u6B64\u5904\u4E0A\u4F20<br>\n                        \uFF08\u6700\u591A\u53EF\u540C\u65F6\u4E0A\u4F2010\u5F20\u56FE\u7247\uFF09</p>\n                        <p class="w-custom-up-img-tip-focus">\u677E\u4E0B\u9F20\u6807\u5F00\u59CB\u4E0A\u4F20</p>\n                    </div>\n                    <div style="display:none;">\n                        <input id="' + upFileId + '" type="file" multiple="multiple" accept="image/jpg,image/jpeg,image/png,image/gif,image/bmp"/>\n                    </div>\n                    </div>\n                </div>',
+            events: [{
+                // 触发选择图片
+                selector: '#' + upTriggerId,
+                type: 'click',
+                fn: function fn() {
+                    var $file = $('#' + upFileId);
+                    var fileElem = $file[0];
+                    if (fileElem) {
+                        fileElem.click();
+                    } else {
+                        // 返回 true 可关闭 panel
+                        return true;
+                    }
+                }
+            }, {
+                selector: '#' + upTriggerId,
+                type: 'dragenter',
+                fn: function fn(e) {
+                    // Makes it possible to drag files from chrome's download bar
+                    // http://stackoverflow.com/questions/19526430/drag-and-drop-file-uploads-from-chrome-downloads-bar
+                    // Try is required to prevent bug in Internet Explorer 11 (SCRIPT65535 exception)
+                    var efct = void 0;
+                    try {
+                        efct = e.dataTransfer.effectAllowed;
+                    } catch (error) {
+                        //
+                    }
+                    e.dataTransfer.dropEffect = 'move' === efct || 'linkMove' === efct ? 'move' : 'copy';
+
+                    $('#' + upTriggerId).addClass('active');
+                }
+            }, {
+                selector: '#' + upTriggerId,
+                type: 'dragleave',
+                fn: function fn(e) {
+                    $('#' + upTriggerId).removeClass('active');
+                }
+            }, {
+                selector: '#' + upTriggerId,
+                type: 'drop',
+                fn: function fn(e) {
+                    e.preventDefault(); //取消默认浏览器拖拽效果
+
+                    var fileList = e.dataTransfer.files; //获取文件对象
+                    _this._generateHTML(fileList);
+                    // 返回 true 可关闭 panel
+                    return true;
+                }
+            }, {
+                // 选择图片完毕
+                selector: '#' + upFileId,
+                type: 'change',
+                fn: function fn() {
+                    var $file = $('#' + upFileId);
+                    var fileElem = $file[0];
+                    if (!fileElem) {
+                        // 返回 true 可关闭 panel
+                        return true;
+                    }
+
+                    // 获取选中的 file 对象列表
+                    var fileList = fileElem.files;
+                    if (fileList.length) {
+                        _this._generateHTML(fileList);
+                    }
+
+                    // 返回 true 可关闭 panel
+                    return true;
+                }
+            }] // first tab end
+        }]; // tabs end
+
+        // 判断 tabs 的显示
+        var tabsConfigResult = [];
+        if ((config.uploadImgShowBase64 || config.uploadImgServer || config.customUploadImg) && window.FileReader) {
+            // 显示“上传图片”
+            tabsConfigResult.push(tabsConfig[0]);
+        }
+        // if (config.showLinkImg) {
+        //     // 显示“网络图片”
+        //     tabsConfigResult.push(tabsConfig[1])
+        // }
+
+        // 创建 panel 并显示
+        var panel = new Panel(this, {
+            width: 400,
+            tabs: tabsConfigResult
+        });
+        panel.show();
+
+        // 记录属性
+        this.panel = panel;
+    },
+
+    _generateHTML: function _generateHTML(fileList) {
+        var self = this;
+        function insertImg() {
+            var reader = new FileReader();
+            reader.readAsDataURL(fileList[0]);
+            reader.onload = function () {
+                var imgWrapperEl = void 0;
+                var videoWithWrapper = new MediaWrapper({
+                    contentHtml: '<img src="' + reader.result + '" style="max-width:500px">',
+                    contentType: 'image',
+                    width: self.editor.config.customUploadImgWidth,
+                    progress: true,
+                    onFocus: function onFocus($wrapper) {
+                        var fToolbar = new Toolbar({
+                            tools: ['justify', 'fullsize', 'rotate', 'del', 'caption'],
+                            editor: self.editor,
+                            justifyContainer: imgWrapperEl
+                        });
+                        fToolbar.appendTo($wrapper.find('figure')[0]);
+                        $wrapper.find('.me-media-wrapper--placeholder')[0].style.display = 'block';
+                    },
+                    onBlur: function onBlur($wrapper) {
+                        $wrapper.find('.me-floating-toolbar').remove();
+                    }
+                });
+                imgWrapperEl = videoWithWrapper.generateDom();
+                self._insert(imgWrapperEl);
+                self._upload(fileList, videoWithWrapper);
+            };
+            reader.onerror = function (error) {
+                console.log('Error: ', error);
+            };
+        }
+
+        insertImg();
+    },
+
+    _insert: function _insert(el) {
+        this.editor.cmd.do('insertHTML', '<p><br></p>');
+        this.editor.cmd.do('insertElem', [el]);
+        this.editor.selection.createRangeByElem([el.parentNode], false); // 设置选取到结束位置
+        // this.editor.selection.restoreSelection()
+        // this.editor.cmd.do('insertElem', [document.createElement('p')])
+        this.editor.cmd.do('insertHTML', '<p><br></p>');
+    },
+
+    _upload: function _upload(fileList, videoWithWrapper) {
+        upload(fileList, {
+            onProcess: function onProcess(per) {
+                videoWithWrapper.setProgress(per);
+            },
+            success: function success(fileInfo) {
+                console.log(fileInfo);
+                videoWithWrapper.setProgress(1);
+                console.log(videoWithWrapper.el.querySelector('img'));
+                videoWithWrapper.el.querySelector('img').setAttribute('src', fileInfo.url);
+            }
+        });
     }
 };
 
@@ -3170,17 +3431,265 @@ Inst.prototype = {
     }
 };
 
-function Location(editor) {
+// import $ from '../../util/dom-core.js'
+
+// function Location(editor) {
+//     this.editor = editor
+//     this.type = 'click'
+//     this.$elem = $(
+//         `<div class="w-e-menu">
+//             <i class="iconfont icon-location1" style="font-size:18px"></i>
+//         </div>`
+//     )
+//     // 当前是否 active 状态
+//     this._active = false
+// }
+
+// Location.prototype = {
+//     onClick: function (e) {
+//         console.log(123)
+//     },
+// }
+
+// export default Location
+
+/*
+    menu - geo
+*/
+// import jsonpAdapter from "axios-jsonp"
+// 构造函数
+function Geo(editor) {
     this.editor = editor;
+    var config = editor.config;
+    var tpl = '';
+    var geoMenuIdBaidu = void 0;
+    var geoMenuIdGoogle = void 0;
+    if (config.geoService.baidu && config.geoService.google) {
+        console.warn('确定要使用两个地图服务吗？');
+    }
+    if (config.geoService.baidu) {
+        geoMenuIdBaidu = getRandom('w-e-geo-baidu');
+        tpl += '<div class="w-e-menu" id="' + geoMenuIdBaidu + '" title="\u63D2\u5165\u4F4D\u7F6E" data-type="baidu"><i class="iconfont icon-location1" data-type="baidu"></i></div>';
+        editor.geoMenuIdBaidu = geoMenuIdBaidu;
+    }
+    if (config.geoService.google) {
+        geoMenuIdGoogle = getRandom('w-e-geo-google');
+        tpl += '<div class="w-e-menu" id="' + geoMenuIdGoogle + '" title="\u63D2\u5165\u4F4D\u7F6E" data-type="google"><i class="editor-icon-direction" data-type="google"></i></div>';
+        editor.geoMenuIdGoogle = geoMenuIdGoogle;
+    }
+    this.$elem = $(tpl);
+    // this.editor.$geo = this.$elem
     this.type = 'click';
-    this.$elem = $('<div class="w-e-menu">\n            <i class="iconfont icon-location1" style="font-size:18px"></i>\n        </div>');
+
     // 当前是否 active 状态
     this._active = false;
+    this._alert = editor._alert;
+    this._bindEvent();
+    // this._createEditToolbar()
 }
 
-Location.prototype = {
+// 原型
+Geo.prototype = {
+    constructor: Geo,
+
     onClick: function onClick(e) {
-        console.log(123);
+        var _this = this;
+
+        var editor = this.editor;
+        var config = editor.config;
+        var type = e.target.dataset.type;
+
+        if (type == 'baidu') {
+            editor.address = {};
+
+            $('#' + editor.geoMenuIdBaidu + ' i').attr('class', 'editor-icon-spin5 spin');
+            window.JSONP('https://api.map.baidu.com/location/ip?ak=' + config.geoService.baidu, function (res) {
+                // console.log(res)
+                editor.address.city = res.content.address_detail.city;
+                editor.address.address = res.content.address;
+                if (config.geoService.weather) {
+                    _this.getWeather().then(function (_) {
+                        _this.insertAddress();
+                    });
+                } else {
+                    _this.insertAddress();
+                }
+            });
+            // window.axios({
+            //     url: `https://api.map.baidu.com/location/ip?ak=${config.geoService.baidu}`,
+            //     adapter: jsonpAdapter
+            // })
+            //     .then(res => {
+            //         editor.address.city = res.data.content.address_detail.city
+            //         editor.address.address = res.data.content.address
+            //         if (config.geoService.weather) {
+            //             this.getWeather().then(_ => {
+            //                 this.insertAddress()
+            //             })
+            //         } else {
+            //             this.insertAddress()
+            //         }
+            //     })
+            //     .catch(err => {
+            //         this._alert("获取地理位置失败", {
+            //             errorType: "getPostionFailed",
+            //             service: "baidu",
+            //             err: err
+            //         })
+            //         $("#" + editor.geoMenuIdBaidu + " i").attr(
+            //             "class",
+            //             "editor-icon-direction"
+            //         )
+            //     })
+        } else {
+            editor.address = {};
+
+            $('#' + editor.geoMenuIdGoogle + ' i').attr('class', 'editor-icon-spin5 spin');
+
+            var getPositionSuccess = function getPositionSuccess(position) {
+                var lat = position.coords.latitude;
+                var lng = position.coords.longitude;
+                editor.address.lat = lat;
+                editor.address.lng = lng;
+                window.axios({
+                    url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&key=' + config.geoService.google
+                }).then(function (res) {
+                    editor.address.address = res.data.results[0] && res.data.results[0].formatted_address;
+                    if (config.geoService.weather) {
+                        _this.getWeather().then(function (_) {
+                            _this.insertAddress();
+                        });
+                    } else {
+                        _this.insertAddress();
+                    }
+                }).catch(function (err) {
+                    _this._alert('获取地理位置失败', {
+                        errorType: 'getPostionFailed',
+                        service: 'google',
+                        err: err
+                    });
+                    $('#' + editor.geoMenuIdGoogle + ' i').attr('class', 'editor-icon-direction');
+                });
+            };
+            var getPositionFailed = function getPositionFailed(err) {
+                _this._alert('获取地理位置失败', {
+                    errorType: 'getPostionFailed',
+                    service: 'google',
+                    err: err
+                });
+                $('#' + editor.geoMenuIdGoogle + ' i').attr('class', 'editor-icon-direction');
+            };
+            navigator.geolocation.getCurrentPosition(getPositionSuccess, getPositionFailed, {
+                enableHighAccuracy: true,
+                maximumAge: 30000,
+                timeout: 27000
+            });
+        }
+    },
+
+    transformWeatherCode: function transformWeatherCode(code) {
+        if (code >= 200 && code < 300) {
+            return 'cloud-flash';
+        }
+        if (code >= 300 && code < 400) {
+            return 'drizzle';
+        }
+        if (code >= 500 && code < 600) {
+            return 'rain';
+        }
+        if (code >= 600 && code < 700) {
+            return 'snow';
+        }
+        if (code >= 700 && code < 800) {
+            return 'fog-sun';
+        }
+        if (code == 800) {
+            return 'sun-filled';
+        }
+        if (code > 800 && code < 900) {
+            return 'cloud-sun';
+        }
+        if (code >= 900 && code <= 906) {
+            return 'bomb';
+        }
+        if (code >= 951 && code <= 962) {
+            return 'wind';
+        }
+        return 'cloud-sun';
+    },
+    insertAddress: function insertAddress() {
+        var editor = this.editor;
+        var config = editor.config;
+        $('#' + editor.geoMenuIdBaidu + ' i').attr('class', 'editor-icon-direction');
+        $('#' + editor.geoMenuIdGoogle + ' i').attr('class', 'editor-icon-direction');
+        var tpl = '<p><i class="editor-icon-location"></i><span id="address">' + editor.address.address + '</span></p>';
+        if (editor.address.weather) {
+            tpl += '<p id="weather"><i class="editor-icon-' + editor.address.weather.weatherCode + '"></i><span>' + editor.address.weather.temp + ' \u2103</span></p>';
+        }
+        editor.cmd.do('insertHTML', tpl);
+    },
+
+    getWeather: function getWeather() {
+        var _this2 = this;
+
+        var editor = this.editor;
+        var city = this.city;
+        var config = editor.config;
+        var query = editor.address.city ? 'q=' + editor.address.city : 'lat=' + editor.address.lat + '&lon=' + editor.address.lng;
+        return new Promise(function (resolve, reject) {
+            window.axios({
+                url: 'https://api.openweathermap.org/data/2.5/weather?' + query + '&appid=' + config.geoService.weather + '&units=metric'
+            }).then(function (res) {
+                if (res.data.weather && res.data.weather[0] && res.data.weather[0].id) {
+                    editor.address.weather = {
+                        weatherCode: _this2.transformWeatherCode(res.data.weather[0].id),
+                        temp: res.data.main.temp.toFixed(0)
+                    };
+                    resolve();
+                } else {
+                    editor.address.weather = {};
+                    resolve();
+                }
+            }).catch(function (err) {
+                resolve();
+                _this2._alert('获取天气信息失败', {
+                    errorType: 'getWeatherFaild',
+                    err: err
+                });
+            });
+        });
+    },
+
+    _bindEvent: function _bindEvent() {
+        var _this3 = this;
+
+        var editor = this.editor;
+        var $geo = editor.$geo;
+        var $toolbar = $(editor.$toolbarElem);
+        $($geo).on('click', function (e) {
+            $toolbar.addClass('w-e-toolbar-active');
+            $geo.addClass('w-e-active');
+            _this3._createEditToolbar();
+        });
+        var $textElem = editor.$textElem;
+        $textElem.on('click keyup', function () {
+            $toolbar.removeClass('w-e-toolbar-active');
+            $geo.removeClass('w-e-active');
+        });
+        $('#removeAddress').on('click', function () {
+            editor.address = {};
+            $geo.html('');
+            $toolbar.removeClass('w-e-toolbar-active');
+            $geo.removeClass('w-e-active');
+        });
+    },
+    _createEditToolbar: function _createEditToolbar() {
+        var editor = this.editor;
+        var config = editor.config;
+        var lang = config.lang;
+        var tpl = '\n        <span class="title w-e-menu" id="removeAddress">' + (lang.removeAddress || '删除位置') + '</span>';
+        editor.$toolbar2.html(tpl);
+        this._bindEvent();
     }
 };
 
@@ -3259,7 +3768,7 @@ MenuConstructors.youbute = Youtube;
 
 MenuConstructors.instagram = Inst;
 
-MenuConstructors.location = Location;
+MenuConstructors.geo = Geo;
 
 MenuConstructors.removeformat = RemoveFormat;
 
@@ -5029,7 +5538,7 @@ try {
 polyfill();
 
 // 这里的 `inlinecss` 将被替换成 css 代码的内容，详情可去 ./gulpfile.js 中搜索 `inlinecss` 关键字
-var inlinecss = '.w-e-toolbar,.w-e-text-container,.w-e-menu-panel {  padding: 0;  margin: 0;  box-sizing: border-box;}.w-e-toolbar *,.w-e-text-container *,.w-e-menu-panel * {  padding: 0;  margin: 0;  box-sizing: border-box;}.w-e-clear-fix:after {  content: "";  display: table;  clear: both;}.w-e-toolbar .w-e-droplist {  position: absolute;  left: 0;  top: 0;  background-color: #fff;  border: 1px solid #f1f1f1;  border-right-color: #ccc;  border-bottom-color: #ccc;}.w-e-toolbar .w-e-droplist .w-e-dp-title {  text-align: center;  color: #999;  line-height: 2;  border-bottom: 1px solid #f1f1f1;  font-size: 13px;}.w-e-toolbar .w-e-droplist ul.w-e-list {  list-style: none;  line-height: 1;}.w-e-toolbar .w-e-droplist ul.w-e-list li.w-e-item {  color: #333;  padding: 5px 0;}.w-e-toolbar .w-e-droplist ul.w-e-list li.w-e-item:hover {  background-color: #f1f1f1;}.w-e-toolbar .w-e-droplist ul.w-e-block {  list-style: none;  text-align: left;  padding: 5px;}.w-e-toolbar .w-e-droplist ul.w-e-block li.w-e-item {  display: inline-block;  *display: inline;  *zoom: 1;  padding: 3px 5px;}.w-e-toolbar .w-e-droplist ul.w-e-block li.w-e-item:hover {  background-color: #f1f1f1;}.me-floating-toolbar {  position: absolute;  z-index: 1;  top: 100%;  left: 50%;  transform: translateX(-50%);  padding: 10px;  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.2);  background: #fff;}.me-floating-toolbar .clickable {  cursor: pointer;}.me-floating-toolbar .me-floating-toolbar--inner > span {  margin-right: 6px;  white-space: nowrap;}.me-floating-toolbar .tool--justify i {  margin-right: 6px;}.me-floating-toolbar .tool--justify i:last-of-type {  margin-right: 0;}@font-face {  font-family: \'w-e-icon\';  src: url(data:application/x-font-woff;charset=utf-8;base64,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) format(\'truetype\');  font-weight: normal;  font-style: normal;}[class^="w-e-icon-"],[class*=" w-e-icon-"] {  /* use !important to prevent issues with browser extensions that change fonts */  font-family: \'w-e-icon\' !important;  speak: none;  font-style: normal;  font-weight: normal;  font-variant: normal;  text-transform: none;  line-height: 1;  /* Better Font Rendering =========== */  -webkit-font-smoothing: antialiased;  -moz-osx-font-smoothing: grayscale;}.w-e-icon-close:before {  content: "\\f00d";}.w-e-icon-upload2:before {  content: "\\e9c6";}.w-e-icon-trash-o:before {  content: "\\f014";}.w-e-icon-header:before {  content: "\\f1dc";}.w-e-icon-pencil2:before {  content: "\\e906";}.w-e-icon-paint-brush:before {  content: "\\f1fc";}.w-e-icon-image:before {  content: "\\e90d";}.w-e-icon-play:before {  content: "\\e912";}.w-e-icon-location:before {  content: "\\e947";}.w-e-icon-undo:before {  content: "\\e965";}.w-e-icon-redo:before {  content: "\\e966";}.w-e-icon-quotes-left:before {  content: "\\e977";}.w-e-icon-list-numbered:before {  content: "\\e9b9";}.w-e-icon-list2:before {  content: "\\e9bb";}.w-e-icon-link:before {  content: "\\e9cb";}.w-e-icon-happy:before {  content: "\\e9df";}.w-e-icon-bold:before {  content: "\\ea62";}.w-e-icon-underline:before {  content: "\\ea63";}.w-e-icon-italic:before {  content: "\\ea64";}.w-e-icon-strikethrough:before {  content: "\\ea65";}.w-e-icon-table2:before {  content: "\\ea71";}.w-e-icon-paragraph-left:before {  content: "\\ea77";}.w-e-icon-paragraph-center:before {  content: "\\ea78";}.w-e-icon-paragraph-right:before {  content: "\\ea79";}.w-e-icon-terminal:before {  content: "\\f120";}.w-e-icon-page-break:before {  content: "\\ea68";}.w-e-icon-cancel-circle:before {  content: "\\ea0d";}.w-e-icon-font:before {  content: "\\ea5c";}.w-e-icon-text-heigh:before {  content: "\\ea5f";}.w-custom-icon-upload2 {  display: inline-block;  *display: inline;  *zoom: 1;  width: 68px;  height: 68px;  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAABECAYAAAA4E5OyAAAAAXNSR0IArs4c6QAABBtJREFUeAHtnM9PU0EQx3mvhRT+ATV60H9CjB69myCCJDStLaVcxIt6wRseNB5FD9B6syZGRW9482IEjCEx8eSFRiUIBxJNSNRC63dKH5Shr7uvb0lp37yk2Z3Zedudz87Obn9aHezKZDKXi8XiMNS9eBzDI8xMWlq0LGu7VCr9RPkRjuRGR0dnUS85TllOBSBOwfA5HucdXRBKwFgIh8ODyWTyO/lbBkIwEBULkE8GAUINH1c7Ozt7CYpNjRQZKIIKgxCcKBQKL8DBsio54xVpg35h+VyxKwk06Cwc/4dpydBuIhcIYMmctREmx4XGDgFiYYNKSIDsECAW5V1GgOwRECB7LMo1ASJAGAEmSoQIEEaAiRIhAoQRYKJEiABhBJgoESJAGAEmSoQIEEaAiRIhAoQRYKJEiABhBJgoESJAGAEmSoQIEEaAiRIhAoQRYKJESKsCwceMG7ZtD6D8x3wwKrZKhBQBYxhff3qJjxtvGiXAOmsJIIAxmUql3tLYx8bGHqGYZX4YE488ECyROcCYZB4noV9mOiPiUQeSR3RE4fzutwTJa0TJr1AoNHgY+eQwgKybmCo4+wf99CM6Nmr1NzIy8gn6W7Xa/OiMAoETm5i5iyjv+RkU3Ys+riMSlur1k06np9BuNJ8YBYIdII0Z/YLd4A4G+qaeM4q2LPp4orBxmo3mE2NAMKNTmNFnNErUS93d3VFUPzuj9lAudXV1jevam84npoDM8/NBLBbbhFOXAGdN1znYbgBGfyKRoPyhfZnMJyaArEcikQHMVIF7AN035JQ+6P/ythpyEbooYORrtClVpvKJLyCY0W2MdCgej6+4jRizN4+tM+XW7ujp8AWn5hy5wdJ3PvEFBMtkAlHwTjV4JMinsLnvZgewdPi669auqzeRTxoGAideYwAPdAeL2Z+Aba2dxzl80ZLxffnNJw0BAYyvPT0917yMHvcc2Hmgq3v48tJ/ta2ffOIZCJzYxHrvj0ajv6sHoVPnOw/6Uh6+dPp1sWkon3gG4hy+XAahVFftPI89HL6U/XKDRvOJNT09ve+FE++4WsaMTiEcb1Trjnp9ZmZmHJP4UHecXiLkwOFL90maaec1n+gCcT18NdNZD8+tnU+UQLBMlIcvDwNriqmXfKIEonv4aoqnHp6Uzifw5bbqFtVvcvOIkDwS74CqoxZpX4U/ywBzxm28KiCncTP9YrNtLvhT1xflkql7dxs2ChA2qQRki+mCLG4REO13tAJAao2ALAbAUV0XF/HC1c7pWre7HbGwsA3R7//fowzU32TwycX55ANe91ywUcFfIlhXYeD6vii/uQ3llQqDjvK2i/clfiBczhGlNnS2rkvkM/lODMhw9x9mSKDlk81m+9r5L3fgJh0zaGelBJoDiH0fhf4HBzM5Pr2eG/sAAAAASUVORK5CYII=\') center no-repeat;  background-size: 68px;}.w-custom-up-img-container-inner {  padding: 30px;  border: 3px dashed #999;  text-align: center;}.w-custom-up-img-container-inner.active {  border: 3px dashed #08D7B8;}.w-custom-up-img-tip,.w-custom-up-img-tip-focus {  margin-top: 20px;  height: 44px;}.w-custom-up-img-container-inner .w-custom-up-img-tip-focus {  display: none;}.w-custom-up-img-container-inner.active .w-custom-up-img-tip {  display: none;}.w-custom-up-img-container-inner.active .w-custom-up-img-tip-focus {  display: block;}.w-custom-up-img-container-inner * {  pointer-events: none;}.me-media-wrapper {  position: relative;  outline: none;}.me-media-wrapper > figure {  position: relative;  display: inline-block;  *display: inline;  *zoom: 1;}.me-media-wrapper .me-media-wrapper--placeholder {  position: absolute;  top: 0;  bottom: 0;  left: 0;  width: 100%;  background: rgba(0, 0, 0, 0.1);  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=\'#19000000\', endColorstr=\'#19000000\');}:root .me-media-wrapper .me-media-wrapper--placeholder {  filter: none\\9;}.me-media-wrapper.is-active iframe {  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);  border: 1px solid orange;}.w-e-toolbar {  display: -ms-flexbox;  display: flex;  padding: 0 5px;  /* flex-wrap: wrap; */  /* 单个菜单 */}.w-e-toolbar .w-e-menu {  position: relative;  text-align: center;  padding: 5px 10px;  cursor: pointer;}.w-e-toolbar .w-e-menu i {  color: #999;}.w-e-toolbar .w-e-menu:hover i {  color: #333;}.w-e-toolbar .w-e-active i {  color: #1e88e5;}.w-e-toolbar .w-e-active:hover i {  color: #1e88e5;}.w-e-text-container .w-e-panel-container {  position: absolute;  top: 0;  left: 50%;  border: 1px solid #ccc;  border-top: 0;  box-shadow: 1px 1px 2px #ccc;  color: #333;  background-color: #fff;  /* 为 emotion panel 定制的样式 */  /* 上传图片的 panel 定制样式 */}.w-e-text-container .w-e-panel-container .w-e-panel-close {  position: absolute;  right: 0;  top: 0;  padding: 5px;  margin: 2px 5px 0 0;  cursor: pointer;  color: #999;}.w-e-text-container .w-e-panel-container .w-e-panel-close:hover {  color: #333;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-title {  list-style: none;  display: -ms-flexbox;  display: flex;  font-size: 14px;  margin: 2px 10px 0 10px;  border-bottom: 1px solid #f1f1f1;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-title .w-e-item {  padding: 3px 5px;  color: #999;  cursor: pointer;  margin: 0 3px;  position: relative;  top: 1px;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-title .w-e-active {  color: #333;  border-bottom: 1px solid #333;  cursor: default;  font-weight: 700;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content {  padding: 10px 15px 10px 15px;  font-size: 16px;  /* 输入框的样式 */  /* 按钮的样式 */}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content input:focus,.w-e-text-container .w-e-panel-container .w-e-panel-tab-content textarea:focus,.w-e-text-container .w-e-panel-container .w-e-panel-tab-content button:focus {  outline: none;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content textarea {  width: 100%;  border: 1px solid #ccc;  padding: 5px;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content textarea:focus {  border-color: #1e88e5;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content input[type=text] {  border: none;  border-bottom: 1px solid #ccc;  font-size: 14px;  height: 20px;  color: #333;  text-align: left;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content input[type=text].small {  width: 30px;  text-align: center;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content input[type=text].block {  display: block;  width: 100%;  margin: 10px 0;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content input[type=text]:focus {  border-bottom: 2px solid #1e88e5;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button {  font-size: 14px;  color: #1e88e5;  border: none;  padding: 5px 10px;  background-color: #fff;  cursor: pointer;  border-radius: 3px;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.left {  float: left;  margin-right: 10px;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.right {  float: right;  margin-left: 10px;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.gray {  color: #999;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.red {  color: #c24f4a;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button:hover {  background-color: #f1f1f1;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content .w-e-button-container:after {  content: "";  display: table;  clear: both;}.w-e-text-container .w-e-panel-container .w-e-emoticon-container .w-e-item {  cursor: pointer;  font-size: 18px;  padding: 0 3px;  display: inline-block;  *display: inline;  *zoom: 1;}.w-e-text-container .w-e-panel-container .w-e-up-img-container {  text-align: center;}.w-e-text-container .w-e-panel-container .w-e-up-img-container .w-e-up-btn {  display: inline-block;  *display: inline;  *zoom: 1;  color: #999;  cursor: pointer;  font-size: 60px;  line-height: 1;}.w-e-text-container .w-e-panel-container .w-e-up-img-container .w-e-up-btn:hover {  color: #333;}.w-e-text-container {  position: relative;}.w-e-text-container .w-e-progress {  position: absolute;  background-color: #1e88e5;  bottom: 0;  left: 0;  height: 1px;}.w-e-text {  padding: 0 10px;  overflow-y: scroll;}.w-e-text p,.w-e-text h1,.w-e-text h2,.w-e-text h3,.w-e-text h4,.w-e-text h5,.w-e-text table,.w-e-text pre {  margin: 10px 0;  line-height: 1.5;}.w-e-text ul,.w-e-text ol {  margin: 10px 0 10px 20px;}.w-e-text blockquote {  display: block;  border-left: 8px solid #d0e5f2;  padding: 5px 10px;  margin: 10px 0;  line-height: 1.4;  font-size: 100%;  background-color: #f1f1f1;}.w-e-text code {  display: inline-block;  *display: inline;  *zoom: 1;  background-color: #f1f1f1;  border-radius: 3px;  padding: 3px 5px;  margin: 0 3px;}.w-e-text pre code {  display: block;}.w-e-text table {  border-top: 1px solid #ccc;  border-left: 1px solid #ccc;}.w-e-text table td,.w-e-text table th {  border-bottom: 1px solid #ccc;  border-right: 1px solid #ccc;  padding: 3px 5px;}.w-e-text table th {  border-bottom: 2px solid #ccc;  text-align: center;}.w-e-text:focus {  outline: none;}.w-e-text img {  cursor: pointer;}.w-e-text img:hover {  box-shadow: 0 0 5px #333;}';
+var inlinecss = '.w-e-toolbar,.w-e-text-container,.w-e-menu-panel {  padding: 0;  margin: 0;  box-sizing: border-box;}.w-e-toolbar *,.w-e-text-container *,.w-e-menu-panel * {  padding: 0;  margin: 0;  box-sizing: border-box;}.w-e-clear-fix:after {  content: "";  display: table;  clear: both;}.w-e-toolbar .w-e-droplist {  position: absolute;  left: 0;  top: 0;  background-color: #fff;  border: 1px solid #f1f1f1;  border-right-color: #ccc;  border-bottom-color: #ccc;}.w-e-toolbar .w-e-droplist .w-e-dp-title {  text-align: center;  color: #999;  line-height: 2;  border-bottom: 1px solid #f1f1f1;  font-size: 13px;}.w-e-toolbar .w-e-droplist ul.w-e-list {  list-style: none;  line-height: 1;}.w-e-toolbar .w-e-droplist ul.w-e-list li.w-e-item {  color: #333;  padding: 5px 0;}.w-e-toolbar .w-e-droplist ul.w-e-list li.w-e-item:hover {  background-color: #f1f1f1;}.w-e-toolbar .w-e-droplist ul.w-e-block {  list-style: none;  text-align: left;  padding: 5px;}.w-e-toolbar .w-e-droplist ul.w-e-block li.w-e-item {  display: inline-block;  *display: inline;  *zoom: 1;  padding: 3px 5px;}.w-e-toolbar .w-e-droplist ul.w-e-block li.w-e-item:hover {  background-color: #f1f1f1;}.me-floating-toolbar {  position: absolute;  z-index: 1;  top: 100%;  left: 50%;  transform: translateX(-50%);  padding: 10px;  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.2);  background: #fff;}.me-floating-toolbar .clickable {  cursor: pointer;}.me-floating-toolbar .me-floating-toolbar--inner > span {  margin-right: 6px;  white-space: nowrap;}.me-floating-toolbar .me-floating-toolbar--inner .tool--rotate i {  margin-right: 6px;}.me-floating-toolbar .tool--justify i {  margin-right: 6px;}.me-floating-toolbar .tool--justify i:last-of-type {  margin-right: 0;}.me-floating-toolbar .tool--autoplay.active {  color: #08D7B8;}@font-face {  font-family: \'w-e-icon\';  src: url(data:application/x-font-woff;charset=utf-8;base64,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) format(\'truetype\');  font-weight: normal;  font-style: normal;}[class^="w-e-icon-"],[class*=" w-e-icon-"] {  /* use !important to prevent issues with browser extensions that change fonts */  font-family: \'w-e-icon\' !important;  speak: none;  font-style: normal;  font-weight: normal;  font-variant: normal;  text-transform: none;  line-height: 1;  /* Better Font Rendering =========== */  -webkit-font-smoothing: antialiased;  -moz-osx-font-smoothing: grayscale;}.w-e-icon-close:before {  content: "\\f00d";}.w-e-icon-upload2:before {  content: "\\e9c6";}.w-e-icon-trash-o:before {  content: "\\f014";}.w-e-icon-header:before {  content: "\\f1dc";}.w-e-icon-pencil2:before {  content: "\\e906";}.w-e-icon-paint-brush:before {  content: "\\f1fc";}.w-e-icon-image:before {  content: "\\e90d";}.w-e-icon-play:before {  content: "\\e912";}.w-e-icon-location:before {  content: "\\e947";}.w-e-icon-undo:before {  content: "\\e965";}.w-e-icon-redo:before {  content: "\\e966";}.w-e-icon-quotes-left:before {  content: "\\e977";}.w-e-icon-list-numbered:before {  content: "\\e9b9";}.w-e-icon-list2:before {  content: "\\e9bb";}.w-e-icon-link:before {  content: "\\e9cb";}.w-e-icon-happy:before {  content: "\\e9df";}.w-e-icon-bold:before {  content: "\\ea62";}.w-e-icon-underline:before {  content: "\\ea63";}.w-e-icon-italic:before {  content: "\\ea64";}.w-e-icon-strikethrough:before {  content: "\\ea65";}.w-e-icon-table2:before {  content: "\\ea71";}.w-e-icon-paragraph-left:before {  content: "\\ea77";}.w-e-icon-paragraph-center:before {  content: "\\ea78";}.w-e-icon-paragraph-right:before {  content: "\\ea79";}.w-e-icon-terminal:before {  content: "\\f120";}.w-e-icon-page-break:before {  content: "\\ea68";}.w-e-icon-cancel-circle:before {  content: "\\ea0d";}.w-e-icon-font:before {  content: "\\ea5c";}.w-e-icon-text-heigh:before {  content: "\\ea5f";}.w-custom-icon-upload2 {  display: inline-block;  *display: inline;  *zoom: 1;  width: 68px;  height: 68px;  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAABECAYAAAA4E5OyAAAAAXNSR0IArs4c6QAABBtJREFUeAHtnM9PU0EQx3mvhRT+ATV60H9CjB69myCCJDStLaVcxIt6wRseNB5FD9B6syZGRW9482IEjCEx8eSFRiUIBxJNSNRC63dKH5Shr7uvb0lp37yk2Z3Zedudz87Obn9aHezKZDKXi8XiMNS9eBzDI8xMWlq0LGu7VCr9RPkRjuRGR0dnUS85TllOBSBOwfA5HucdXRBKwFgIh8ODyWTyO/lbBkIwEBULkE8GAUINH1c7Ozt7CYpNjRQZKIIKgxCcKBQKL8DBsio54xVpg35h+VyxKwk06Cwc/4dpydBuIhcIYMmctREmx4XGDgFiYYNKSIDsECAW5V1GgOwRECB7LMo1ASJAGAEmSoQIEEaAiRIhAoQRYKJEiABhBJgoESJAGAEmSoQIEEaAiRIhAoQRYKJEiABhBJgoESJAGAEmSoQIEEaAiRIhAoQRYKJESKsCwceMG7ZtD6D8x3wwKrZKhBQBYxhff3qJjxtvGiXAOmsJIIAxmUql3tLYx8bGHqGYZX4YE488ECyROcCYZB4noV9mOiPiUQeSR3RE4fzutwTJa0TJr1AoNHgY+eQwgKybmCo4+wf99CM6Nmr1NzIy8gn6W7Xa/OiMAoETm5i5iyjv+RkU3Ys+riMSlur1k06np9BuNJ8YBYIdII0Z/YLd4A4G+qaeM4q2LPp4orBxmo3mE2NAMKNTmNFnNErUS93d3VFUPzuj9lAudXV1jevam84npoDM8/NBLBbbhFOXAGdN1znYbgBGfyKRoPyhfZnMJyaArEcikQHMVIF7AN035JQ+6P/ythpyEbooYORrtClVpvKJLyCY0W2MdCgej6+4jRizN4+tM+XW7ujp8AWn5hy5wdJ3PvEFBMtkAlHwTjV4JMinsLnvZgewdPi669auqzeRTxoGAideYwAPdAeL2Z+Aba2dxzl80ZLxffnNJw0BAYyvPT0917yMHvcc2Hmgq3v48tJ/ta2ffOIZCJzYxHrvj0ajv6sHoVPnOw/6Uh6+dPp1sWkon3gG4hy+XAahVFftPI89HL6U/XKDRvOJNT09ve+FE++4WsaMTiEcb1Trjnp9ZmZmHJP4UHecXiLkwOFL90maaec1n+gCcT18NdNZD8+tnU+UQLBMlIcvDwNriqmXfKIEonv4aoqnHp6Uzifw5bbqFtVvcvOIkDwS74CqoxZpX4U/ywBzxm28KiCncTP9YrNtLvhT1xflkql7dxs2ChA2qQRki+mCLG4REO13tAJAao2ALAbAUV0XF/HC1c7pWre7HbGwsA3R7//fowzU32TwycX55ANe91ywUcFfIlhXYeD6vii/uQ3llQqDjvK2i/clfiBczhGlNnS2rkvkM/lODMhw9x9mSKDlk81m+9r5L3fgJh0zaGelBJoDiH0fhf4HBzM5Pr2eG/sAAAAASUVORK5CYII=\') center no-repeat;  background-size: 68px;}.w-custom-up-img-container-inner {  padding: 30px;  border: 3px dashed #999;  text-align: center;}.w-custom-up-img-container-inner.active {  border: 3px dashed #08D7B8;}.w-custom-up-img-tip,.w-custom-up-img-tip-focus {  margin-top: 20px;  height: 44px;}.w-custom-up-img-container-inner .w-custom-up-img-tip-focus {  display: none;}.w-custom-up-img-container-inner.active .w-custom-up-img-tip {  display: none;}.w-custom-up-img-container-inner.active .w-custom-up-img-tip-focus {  display: block;}.w-custom-up-img-container-inner * {  pointer-events: none;}.w-custom-up-wrapper {  position: relative;  display: inline-block;  *display: inline;  *zoom: 1;}.w-custom-up-layer {  position: absolute;  top: 0;  left: 0;  width: 100%;  bottom: 0;  z-index: 1;}.me-media-wrapper {  position: relative;  outline: none;}.me-media-wrapper > figure {  position: relative;  display: inline-block;  *display: inline;  *zoom: 1;}.me-media-wrapper .me-media-wrapper--content {  position: relative;}.me-media-wrapper .me-media-wrapper--content img {  display: block;}.me-media-wrapper figcaption {  margin-top: 3px;  text-align: center;  color: #777;}.me-media-wrapper .me-media-wrapper--placeholder {  position: absolute;  top: 0;  bottom: 0;  left: 0;  width: 100%;  transition: background 1s linear;}.me-media-wrapper .progress-bar {  position: absolute;  left: 10%;  top: 50%;  margin-top: -10px;  width: 80%;  height: 10px;  background: #fff;  z-index: 2;  border-radius: 3px;  transition: opacity 1s;}.me-media-wrapper .progress-bar > i {  position: absolute;  top: 0;  left: 0;  height: 10px;  background: #08D7B8;  border-radius: 3px;  transition: width 1s ease-in-out;}.me-media-wrapper .progress-bar-text {  position: absolute;  z-index: 2;  top: 50%;  left: 50%;  margin-top: 5px;  color: #000;  width: 42px;  text-align: center;  margin-left: -21px;  transition: opacity 1s;}.me-media-wrapper.is-active iframe {  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);  border: 1px solid orange;}.me-media-wrapper.is-active .me-media-wrapper--type-image .me-media-wrapper--placeholder {  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);  border: 1px solid orange;  background: rgba(181, 181, 181, 0.8) !important;  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=\'#ccb5b5b5\', endColorstr=\'#ccb5b5b5\');  transition: none;}:root .me-media-wrapper.is-active .me-media-wrapper--type-image .me-media-wrapper--placeholder {  filter: none\\9;}.w-e-toolbar {  display: -ms-flexbox;  display: flex;  padding: 0 5px;  /* flex-wrap: wrap; */  /* 单个菜单 */}.w-e-toolbar .w-e-menu {  position: relative;  text-align: center;  padding: 5px 10px;  cursor: pointer;}.w-e-toolbar .w-e-menu i {  color: #999;}.w-e-toolbar .w-e-menu:hover i {  color: #333;}.w-e-toolbar .w-e-active i {  color: #1e88e5;}.w-e-toolbar .w-e-active:hover i {  color: #1e88e5;}.w-e-text-container .w-e-panel-container {  position: absolute;  top: 0;  left: 50%;  border: 1px solid #ccc;  border-top: 0;  box-shadow: 1px 1px 2px #ccc;  color: #333;  background-color: #fff;  /* 为 emotion panel 定制的样式 */  /* 上传图片的 panel 定制样式 */}.w-e-text-container .w-e-panel-container .w-e-panel-close {  position: absolute;  right: 0;  top: 0;  padding: 5px;  margin: 2px 5px 0 0;  cursor: pointer;  color: #999;}.w-e-text-container .w-e-panel-container .w-e-panel-close:hover {  color: #333;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-title {  list-style: none;  display: -ms-flexbox;  display: flex;  font-size: 14px;  margin: 2px 10px 0 10px;  border-bottom: 1px solid #f1f1f1;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-title .w-e-item {  padding: 3px 5px;  color: #999;  cursor: pointer;  margin: 0 3px;  position: relative;  top: 1px;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-title .w-e-active {  color: #333;  border-bottom: 1px solid #333;  cursor: default;  font-weight: 700;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content {  padding: 10px 15px 10px 15px;  font-size: 16px;  /* 输入框的样式 */  /* 按钮的样式 */}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content input:focus,.w-e-text-container .w-e-panel-container .w-e-panel-tab-content textarea:focus,.w-e-text-container .w-e-panel-container .w-e-panel-tab-content button:focus {  outline: none;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content textarea {  width: 100%;  border: 1px solid #ccc;  padding: 5px;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content textarea:focus {  border-color: #1e88e5;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content input[type=text] {  border: none;  border-bottom: 1px solid #ccc;  font-size: 14px;  height: 20px;  color: #333;  text-align: left;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content input[type=text].small {  width: 30px;  text-align: center;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content input[type=text].block {  display: block;  width: 100%;  margin: 10px 0;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content input[type=text]:focus {  border-bottom: 2px solid #1e88e5;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button {  font-size: 14px;  color: #1e88e5;  border: none;  padding: 5px 10px;  background-color: #fff;  cursor: pointer;  border-radius: 3px;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.left {  float: left;  margin-right: 10px;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.right {  float: right;  margin-left: 10px;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.gray {  color: #999;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button.red {  color: #c24f4a;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content .w-e-button-container button:hover {  background-color: #f1f1f1;}.w-e-text-container .w-e-panel-container .w-e-panel-tab-content .w-e-button-container:after {  content: "";  display: table;  clear: both;}.w-e-text-container .w-e-panel-container .w-e-emoticon-container .w-e-item {  cursor: pointer;  font-size: 18px;  padding: 0 3px;  display: inline-block;  *display: inline;  *zoom: 1;}.w-e-text-container .w-e-panel-container .w-e-up-img-container {  text-align: center;}.w-e-text-container .w-e-panel-container .w-e-up-img-container .w-e-up-btn {  display: inline-block;  *display: inline;  *zoom: 1;  color: #999;  cursor: pointer;  font-size: 60px;  line-height: 1;}.w-e-text-container .w-e-panel-container .w-e-up-img-container .w-e-up-btn:hover {  color: #333;}.w-e-text-container {  position: relative;}.w-e-text-container .w-e-progress {  position: absolute;  background-color: #1e88e5;  bottom: 0;  left: 0;  height: 1px;}.w-e-text {  padding: 0 10px;  overflow-y: scroll;}.w-e-text p,.w-e-text h1,.w-e-text h2,.w-e-text h3,.w-e-text h4,.w-e-text h5,.w-e-text table,.w-e-text pre {  margin: 10px 0;  line-height: 1.5;}.w-e-text ul,.w-e-text ol {  margin: 10px 0 10px 20px;}.w-e-text blockquote {  display: block;  border-left: 8px solid #d0e5f2;  padding: 5px 10px;  margin: 10px 0;  line-height: 1.4;  font-size: 100%;  background-color: #f1f1f1;}.w-e-text code {  display: inline-block;  *display: inline;  *zoom: 1;  background-color: #f1f1f1;  border-radius: 3px;  padding: 3px 5px;  margin: 0 3px;}.w-e-text pre code {  display: block;}.w-e-text table {  border-top: 1px solid #ccc;  border-left: 1px solid #ccc;}.w-e-text table td,.w-e-text table th {  border-bottom: 1px solid #ccc;  border-right: 1px solid #ccc;  padding: 3px 5px;}.w-e-text table th {  border-bottom: 2px solid #ccc;  text-align: center;}.w-e-text:focus {  outline: none;}.w-e-text img {  cursor: pointer;}.w-e-text img:hover {  box-shadow: 0 0 5px #333;}';
 
 // 将 css 代码添加到 <style> 中
 var style = document.createElement('style');
