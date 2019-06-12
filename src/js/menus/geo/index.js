@@ -47,6 +47,7 @@ Geo.prototype = {
         const type = e.target.dataset.type
 
         this.insertLoadingText()
+        editor.$geo.css('display', 'block')
 
         if (type == 'baidu') {
             editor.address = {}
@@ -182,11 +183,11 @@ Geo.prototype = {
             'class',
             'iconfont icon-location1'
         )
-        let tpl = `<p><i class='editor-icon-location'></i><span id='address'>${
+        let tpl = `<p><i class='iconfont icon-area_icon'></i><span id='address'>${
       editor.address.address
     }</span></p>`
         if (editor.address.weather) {
-            tpl += `<p id='weather'><i class='editor-icon-${
+            tpl += `<p id='weather'><i class='weather-icon editor-icon-${
         editor.address.weather.weatherCode
       }'></i><span>${editor.address.weather.temp} ℃</span></p>`
         }
@@ -194,7 +195,7 @@ Geo.prototype = {
     },
 
     insertLoadingText: function () {
-        const tpl = `<p>正在获取地理位置</p>`
+        const tpl = `<p class="geo-loading"><i class="iconfont icon-target"></i> 正在获取位置信息</p>`
         this.editor.$geo.html(tpl)
     },
 
@@ -237,21 +238,27 @@ Geo.prototype = {
         const editor = this.editor
         const $geo = editor.$geo
         const $toolbar = $(editor.$toolbarElem)
-        $geo.on('click', e => {
+
+        const onClickGeo = () => {
             $toolbar.addClass('w-e-toolbar-active')
             $geo.addClass('w-e-active')
             this._createEditToolbar()
-        })
+        }
+        $geo.off('click', onClickGeo)
+        $geo.on('click', onClickGeo)
+
         const $textElem = editor.$textElem
         $textElem.on('click keyup', () => {
             $toolbar.removeClass('w-e-toolbar-active')
             $geo.removeClass('w-e-active')
+            $('#removeAddress').remove()
         })
         $('#removeAddress').on('click', () => {
             editor.address = {}
-            $geo.html('')
+            $geo.html('').css('display', 'none')
             $toolbar.removeClass('w-e-toolbar-active')
             $geo.removeClass('w-e-active')
+            $('#removeAddress').remove()
         })
     },
     _createEditToolbar: function () {
@@ -261,7 +268,9 @@ Geo.prototype = {
         const tpl = `
         <span class='title w-e-menu' id='removeAddress'>${lang.removeAddress ||
           '删除位置'}</span>`
-        editor.$toolbar2.html(tpl)
+
+        if (editor.$toolbarElem.find('#removeAddress').length) return
+        editor.$toolbarElem.append($(tpl))
         this._bindEvent()
     }
 }
