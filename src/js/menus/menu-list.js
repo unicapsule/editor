@@ -78,5 +78,8 @@ MenuConstructors.geo = Geo
 import RemoveFormat from './removeFormat/index.js'
 MenuConstructors.removeformat = RemoveFormat
 
+import Indent from './indent/index.js'
+MenuConstructors.indent = Indent
+
 // 吐出所有菜单集合
 export default MenuConstructors
