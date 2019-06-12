@@ -3678,12 +3678,7 @@ function RemoveFormat(editor) {
 RemoveFormat.prototype = {
     onClick: function onClick(e) {
         var editor = this.editor;
-        console.log(e);
-        // document.execCommand('formatBlock', false, 'p')
-        // editor.cmd.do('formatBlock')
-        var range = editor.selection.getRange();
-        var el = editor.selection.getSelectionContainerElem(range);
-        console.log(el);
+        editor.cmd.do('removeformat', false, '');
     }
 };
 
