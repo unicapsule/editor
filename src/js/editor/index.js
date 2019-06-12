@@ -66,7 +66,7 @@ Editor.prototype = {
         const zIndex = config.zIndex
 
         // 定义变量
-        let $toolbarElem, $textContainerElem, $textElem, $children
+        let $toolbarElem, $textContainerElem, $textElem, $children, $geo
 
         if (textSelector == null) {
             // 只传入一个参数，即是容器的选择器或元素，toolbar 和 text 的元素自行创建
@@ -98,6 +98,7 @@ Editor.prototype = {
         $textElem.attr('contenteditable', 'true')
                 .css('width', '100%')
                 .css('height', '100%')
+                .css('position', 'relative')
 
         // 初始化编辑区域内容
         if ($children && $children.length) {
@@ -108,6 +109,13 @@ Editor.prototype = {
 
         // 编辑区域加入DOM
         $textContainerElem.append($textElem)
+
+        // 增加地理位置显示区域
+        if (config.geoService) {
+            $geo = $(`<div id='editor-geo'></div>`)
+            $textContainerElem.append($geo)
+            $textElem.css('padding-bottom', '60px')
+        }
 
         // 设置通用的 class
         $toolbarElem.addClass('w-e-toolbar')
@@ -127,6 +135,7 @@ Editor.prototype = {
         this.$textElem = $textElem
         this.toolbarElemId = toolbarElemId
         this.textElemId = textElemId
+        this.$geo = $geo // 增加地理位置区域到editor属性
 
         // 记录输入法的开始和结束
         let compositionEnd = true
@@ -152,11 +161,11 @@ Editor.prototype = {
         if(config.onfocus || config.onblur){
             // 当前编辑器是否是焦点状态
             this.isFocus = false
-            
+
             $(document).on('click', (e) => {
                 //判断当前点击元素是否在编辑器内
                 const isChild = $textElem.isContain($(e.target))
-                
+
                 //判断当前点击元素是否为工具栏
                 const isToolbar = $toolbarElem.isContain($(e.target))
                 const isMenu = $toolbarElem[0] == e.target ? true : false
@@ -278,7 +287,7 @@ Editor.prototype = {
                     onchange(currentHtml)
                     beforeChangeHtml = currentHtml
                 }, onchangeTimeout)
-            }   
+            }
         }
 
         // -------- 绑定 onblur 事件 --------
@@ -297,7 +306,7 @@ Editor.prototype = {
                 onfocus()
             }
         }
-        
+
     },
 
     // 创建编辑器
@@ -333,6 +342,22 @@ Editor.prototype = {
     // 解绑所有事件（暂时不对外开放）
     _offAllEvent: function () {
         $.offAll()
+    },
+
+    _alert: function(alertInfo, debugInfo) {
+        const editor = this.editor
+        const debug = editor.config.debug
+        const customAlert = editor.config.customAlert
+
+        if (debug) {
+            throw new Error('wangEditor: ' + JSON.stringify(debugInfo || alertInfo))
+        } else {
+            if (customAlert && typeof customAlert === 'function') {
+                customAlert(alertInfo, debugInfo)
+            } else {
+                alert(alertInfo)
+            }
+        }
     }
 }
 

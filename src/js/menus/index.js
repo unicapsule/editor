@@ -3,6 +3,7 @@
 */
 import { objForEach } from '../util/util.js'
 import MenuConstructors from './menu-list.js'
+import $ from '../util/dom-core.js'
 
 // 构造函数
 function Menus(editor) {
@@ -44,6 +45,15 @@ Menus.prototype = {
         const config = editor.config
         // config.zIndex 是配置的编辑区域的 z-index，菜单的 z-index 得在其基础上 +1
         const zIndex = config.zIndex + 1
+
+        // 往$toolbarElem加入两个子层级
+        const $toolbar1 = $('<div class="toolbar-level-1"></div>')
+        const $toolbar2 = $('<div class="toolbar-level-2"></div>')
+        $toolbarElem.append($toolbar1)
+        $toolbarElem.append($toolbar2)
+        editor.$toolba1 = $toolbar1
+        editor.$toolbar2 = $toolbar2
+
         objForEach(menus, (key, menu) => {
             const $elem = menu.$elem
             if ($elem) {
