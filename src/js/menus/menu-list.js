@@ -84,5 +84,8 @@ MenuConstructors.indent = Indent
 import LineHeight from './lineHeight/index.js'
 MenuConstructors.lineHeight = LineHeight
 
+import Audio from './audio/index.js'
+MenuConstructors.audio = Audio
+
 // 吐出所有菜单集合
 export default MenuConstructors

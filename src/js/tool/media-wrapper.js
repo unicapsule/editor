@@ -91,7 +91,7 @@ MediaWrapper.prototype = {
 
     // 设置进度条，传入参数 0.1, 0.2, 0,3 ... 1
     setProgress: function (num) {
-        const percentText = (num * 100) + '%'
+        const percentText = parseFloat(num * 100).toFixed(2) + '%'
         $('#' + this.id).find('.progress-bar i')[0].style.width = percentText
         $('#' + this.id).find('.progress-bar-text')[0].innerHTML = percentText
 

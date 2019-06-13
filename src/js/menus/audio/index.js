@@ -1,0 +1,225 @@
+/*
+    menu - img
+*/
+import $ from '../../util/dom-core.js'
+import { getRandom, arrForEach } from '../../util/util.js'
+import Panel from '../panel.js'
+import ContentWrapper from '../../tool/media-wrapper.js'
+import FloatingToolbar from '../../tool/floating-toolbar.js'
+import upload from '../image/upload.js'
+
+// 构造函数
+function Audio(editor) {
+    this.editor = editor
+    const audioMenuId = getRandom('w-e-audio')
+    this.$elem = $('<div class="w-e-menu" id="' + audioMenuId + '"><i class="iconfont icon-yinlewenjian"></i></div>')
+    editor.audioMenuId = audioMenuId
+    this.type = 'panel'
+
+    // 当前是否 active 状态
+    this._active = false
+}
+
+// 原型
+Audio.prototype = {
+    constructor: Audio,
+
+    onClick: function () {
+        const editor = this.editor
+
+        this._createInsertPanel()
+    },
+
+    _createInsertPanel: function () {
+        const editor = this.editor
+        const config = editor.config
+
+        // id
+        const upTriggerId = getRandom('up-trigger')
+        const upFileId = getRandom('up-file')
+
+        // tabs 的配置
+        const tabsConfig = [
+            {
+                title: '上传mp3',
+                tpl: `<div class="w-custom-up-img-container">
+                    <div id="${upTriggerId}" class="w-custom-up-img-container-inner">
+                    <div class="w-custom-up-btn">
+                        <i class="w-custom-icon-upload2"></i>
+                        <p class="w-custom-up-img-tip">拖动mp3到此或点击此处上传</p>
+                        <p class="w-custom-up-img-tip-focus">松下鼠标开始上传</p>
+                    </div>
+                    <div style="display:none;">
+                        <input id="${upFileId}" type="file" multiple="multiple" accept="audio/mp3"/>
+                    </div>
+                    </div>
+                </div>`,
+                events: [
+                    {
+                        // 触发选择图片
+                        selector: '#' + upTriggerId,
+                        type: 'click',
+                        fn: () => {
+                            const $file = $('#' + upFileId)
+                            const fileElem = $file[0]
+                            if (fileElem) {
+                                fileElem.click()
+                            } else {
+                                // 返回 true 可关闭 panel
+                                return true
+                            }
+                        }
+                    },
+                    {
+                        selector: '#' + upTriggerId,
+                        type: 'dragenter',
+                        fn: (e) => {
+                            // Makes it possible to drag files from chrome's download bar
+                            // http://stackoverflow.com/questions/19526430/drag-and-drop-file-uploads-from-chrome-downloads-bar
+                            // Try is required to prevent bug in Internet Explorer 11 (SCRIPT65535 exception)
+                            var efct = void 0
+                            try {
+                                efct = e.dataTransfer.effectAllowed
+                            } catch (error) {
+                                //
+                            }
+                            e.dataTransfer.dropEffect = 'move' === efct || 'linkMove' === efct ? 'move' : 'copy'
+
+                            $('#' + upTriggerId).addClass('active')
+
+                        }
+                    },
+                    {
+                        selector: '#' + upTriggerId,
+                        type: 'dragleave',
+                        fn: (e) => {
+                            $('#' + upTriggerId).removeClass('active')
+                        }
+                    },
+                    {
+                        selector: '#' + upTriggerId,
+                        type: 'drop',
+                        fn: (e) => {
+                            e.preventDefault() //取消默认浏览器拖拽效果
+
+                            var fileList = e.dataTransfer.files //获取文件对象
+                            this._generateHTML(fileList)
+                            // 返回 true 可关闭 panel
+                            return true
+                        }
+                    },
+                    {
+                        // 选择完毕
+                        selector: '#' + upFileId,
+                        type: 'change',
+                        fn: () => {
+                            const $file = $('#' + upFileId)
+                            const fileElem = $file[0]
+                            if (!fileElem) {
+                                // 返回 true 可关闭 panel
+                                return true
+                            }
+
+                            // 获取选中的 file 对象列表
+                            const fileList = fileElem.files
+                            if (fileList.length) {
+                                this._generateHTML(fileList)
+                            }
+
+                            // 返回 true 可关闭 panel
+                            return true
+                        }
+                    }
+                ]
+            } // first tab end
+        ] // tabs end
+
+        // 创建 panel 并显示
+        const panel = new Panel(this, {
+            width: 400,
+            tabs: tabsConfig
+        })
+        panel.show()
+
+        // 记录属性
+        this.panel = panel
+    },
+
+    _generateHTML: function (fileList) {
+        console.log(fileList)
+
+        let mediaWrapperEl
+        const mediaWp = new ContentWrapper({
+            contentHtml: `<div class="audio-wrapper"></div>`,
+            contentType: 'audio',
+            width: 550,
+            progress: true,
+            onFocus: ($wrapper) => {
+                const fToolbar = new FloatingToolbar({
+                    tools: ['justify', 'fullsize', 'rotate', 'del', 'caption'],
+                    editor: self.editor,
+                    justifyContainer: mediaWrapperEl,
+                })
+                fToolbar.appendTo($wrapper.find('figure')[0])
+                $wrapper.find('.me-media-wrapper--placeholder')[0].style.display = 'block'
+            },
+            onBlur: ($wrapper) => {
+                $wrapper.find('.me-floating-toolbar').remove()
+            }
+        })
+
+        mediaWrapperEl = mediaWp.generateDom()
+
+        this._insert(mediaWrapperEl)
+        this._upload(fileList, mediaWp)
+    },
+
+    _insert: function (el) {
+        this.editor.cmd.do('insertHTML', '<p><br></p>')
+        this.editor.cmd.do('insertElem', [el])
+        this.editor.selection.createRangeByElem([el.parentNode], false) // 设置选取到结束位置
+        // this.editor.selection.restoreSelection()
+        // this.editor.cmd.do('insertElem', [document.createElement('p')])
+        this.editor.cmd.do('insertHTML', '<p><br></p>')
+    },
+
+    _upload: function (fileList, mediaWp) {
+        const self = this
+        upload(fileList, {
+            ext: /\.(mp3|wav)$/i,
+            onProcess: function (per) {
+                mediaWp.setProgress(per)
+            },
+            success: function (fileInfo) {
+                console.log(fileInfo)
+                mediaWp.setProgress(1)
+                mediaWp.el.querySelector('.audio-wrapper').setAttribute('data-url', fileInfo.url)
+                self._fadeInAudioCover(fileInfo, mediaWp)
+            }
+        })
+    },
+
+    _fadeInAudioCover: function (fileInfo, mediaWp) {
+        const htmlStr = `
+        <div class="audio-card">
+            <div class="audio-card--info">
+                <div class="audio-card--info--img">
+                    <img src="${fileInfo.id3.cover}" />
+                </div>
+                <div>
+                    <span>mp3 ${fileInfo.id3.title || 'untitled'} - ${fileInfo.id3.artist || 'unknown'} || ${fileInfo.originalName}</span>
+                    <br><span>00:00</span>
+                </div>
+                <div>
+                    <span class="audio-card--btn-play">play</span>
+                </div>
+            </div>
+            <div class="audio-card--bar"></div>
+        </div>
+        `
+
+        mediaWp.el.querySelector('.audio-wrapper').innerHTML = htmlStr
+    }
+}
+
+export default Audio

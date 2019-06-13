@@ -9,6 +9,8 @@ export default (files, globalOptions) => {
         return
     }
 
+    const allowExt = globalOptions.ext || /\.(jpg|jpeg|png|bmp|gif|webp)$/i // 后缀名的正则表达式
+    const fileType = globalOptions.type
     const maxSizeM = 5
     const maxSize = maxSizeM * 1024 * 1024
     const maxLength = 5
@@ -25,7 +27,7 @@ export default (files, globalOptions) => {
             return
         }
 
-        if (/\.(jpg|jpeg|png|bmp|gif|webp)$/i.test(name) === false) {
+        if (allowExt.test(name) === false) {
             // 后缀名不合法，不是图片
             errInfo.push(`【${name}】不是图片`)
             return
@@ -43,14 +45,13 @@ export default (files, globalOptions) => {
     // 抛出验证信息
     if (errInfo.length) {
         // TODO
-        alert('图片验证未通过: \n' + errInfo.join('\n'))
+        alert('文件验证未通过: \n' + errInfo.join('\n'))
         return
     }
     if (resultFiles.length > maxLength) {
-        alert('一次最多上传' + maxLength + '张图片')
+        alert('一次最多上传' + maxLength + '个文件')
         return
     }
-
 
     const uploadImgServer = 'https://uploader2.49miles.cn'      // 开发环境 http://unicapsule.local http://jodi.local http://jodi-admin.local
     // const uploadImgServer = 'https://uploadr.49miles.cn'     // 生产环境 https://unicapsule.com https://jodi.mobi
@@ -95,6 +96,7 @@ export default (files, globalOptions) => {
         }).then(res => {
             console.log(res.status)
             if (res.status === 200) {
+                console.log('文件上传至oss成功~')
                 markSuccess2Server(options.id)
             }
         })
@@ -102,21 +104,28 @@ export default (files, globalOptions) => {
     }
 
     // ------------------------------ 获取上传host ------------------------------
-    window.axios.post(uploadImgServer + '/getPolicy', {
-        fileName: 'a.png',
-        maxSize: 1024 * 1024 * 15,
-        fileType: 'avator',
-        filePath: 'unicapsule'
-    }).then(res => {
-        console.log(res)
-        const jsonData = res.data
-        ajaxUpload(resultFiles, {
-            host: jsonData.ossHost,
-            ossAccessKeyId: jsonData.ossAccessKeyId,
-            policy: jsonData.policy,
-            signature: jsonData.signature,
-            key: jsonData.key,
-            id: jsonData.id
+    function getPolicy(file) {
+        let fileExt = file.name.split('.')
+        fileExt = fileExt[fileExt.length - 1]
+        window.axios.post(uploadImgServer + '/getPolicy', {
+            fileName: file.name,
+            maxSize: 1024 * 1024 * 15,
+            fileType: fileType || fileExt,
+            filePath: 'unicapsule'
+        }).then(res => {
+            // console.log(res)
+            const jsonData = res.data
+            ajaxUpload(resultFiles, {
+                host: jsonData.ossHost,
+                ossAccessKeyId: jsonData.ossAccessKeyId,
+                policy: jsonData.policy,
+                signature: jsonData.signature,
+                key: jsonData.key,
+                id: jsonData.id
+            })
         })
-    })
+    }
+
+    // 每个文件分别上传
+    arrForEach(files, file => getPolicy(file))
 }
