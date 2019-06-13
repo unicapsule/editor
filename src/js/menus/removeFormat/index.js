@@ -18,7 +18,9 @@ function RemoveFormat(editor) {
 RemoveFormat.prototype = {
     onClick: function (e) {
         const editor = this.editor
+        const el = editor.selection.getSelectionContainerElem()
         editor.cmd.do('removeformat', false, '')
+        el[0].removeAttribute('style')
     }
 }
 

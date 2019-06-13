@@ -81,5 +81,8 @@ MenuConstructors.removeformat = RemoveFormat
 import Indent from './indent/index.js'
 MenuConstructors.indent = Indent
 
+import LineHeight from './lineHeight/index.js'
+MenuConstructors.lineHeight = LineHeight
+
 // 吐出所有菜单集合
 export default MenuConstructors
