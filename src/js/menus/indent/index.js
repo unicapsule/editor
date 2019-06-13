@@ -27,12 +27,23 @@ Indent.prototype = {
     onClick: function (e) {
         const type = e.target.dataset.type
         const editor = this.editor
-
-        editor.cmd.do(type, false, '20px')
         const el = editor.selection.getSelectionContainerElem()
-        // TODO
-        console.log(el)
-        el.addClass('text-indent')
+        const m = this._getMarginLeftValue(el)
+        const addValue = type === 'outdent' ? -20 : 20
+
+        if (parseInt(m) <= 0 && type === 'outdent') return // 最左边
+        const newValue = parseInt(m) + addValue
+        if (newValue === 0) {
+            el[0].removeAttribute('style')
+        } else {
+            el.css('margin-left', parseInt(m) + addValue + 'px')
+        }
+    },
+
+    _getMarginLeftValue: function (el) {
+        if (!el) return
+        const ml = $(el)[0].style.marginLeft
+        return ml ? +ml.replace('px', '') : 0
     },
 
     // 试图改变 active 状态
