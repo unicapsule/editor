@@ -12,7 +12,8 @@ function MediaWrapper(options) {
     this.contentType = options.contentType || 'video'
     this.height = options.height
     this.width = options.width || ''
-    this.progress = options.progress || false // 显示进度条
+    this.progress = options.progress || false // 显示进度条，传入number类型（如: 1,2...）以选择进度条样式
+    this.progressText = options.progressText || ''
     this.background = options.background || 'rgba(0,0,0,.1)' // 蒙层背景色
     this.className = options.className
     this.onFocus = options.onFocus
@@ -20,7 +21,13 @@ function MediaWrapper(options) {
     this.id = getRandom(WRAPPER_NAME)
     this.el = null
 
-    if (this.progress) this.background = 'rgba(181,181,181,1)' // 有进度条时自定义background无效
+    if (this.progress) { // 有进度条时 使用预设的background
+        if (Number(this.progress) === 2) {
+            this.background = '#fff'
+        } else {
+            this.background = 'rgba(181,181,181,1)'
+        }
+    }
 }
 
 MediaWrapper.prototype = {
@@ -73,7 +80,7 @@ MediaWrapper.prototype = {
     },
 
     checkFigureType: function () {
-        return ['image'].includes(this.contentType)
+        return ['image', 'audio'].includes(this.contentType)
     },
 
     eventsBind: function (el) {
@@ -93,11 +100,19 @@ MediaWrapper.prototype = {
     setProgress: function (num) {
         const percentText = parseFloat(num * 100).toFixed(2) + '%'
         $('#' + this.id).find('.progress-bar i')[0].style.width = percentText
-        $('#' + this.id).find('.progress-bar-text')[0].innerHTML = percentText
+        $('#' + this.id).find('.progress-bar-text')[0].innerHTML = this.progressText + percentText
 
-        $('#' + this.id).find('.progress-bar')[0].style.opacity = 1 - num
-        $('#' + this.id).find('.progress-bar-text')[0].style.opacity = 1 - num
-        $('#' + this.id).find(`.${WRAPPER_NAME}--placeholder`)[0].style.background = `rgba(181,181,181,${1 - num})`
+        if (Number(this.progress) === 1) { // style 1 逐渐隐藏
+            $('#' + this.id).find('.progress-bar')[0].style.opacity = 1 - num
+            $('#' + this.id).find('.progress-bar-text')[0].style.opacity = 1 - num
+            $('#' + this.id).find(`.${WRAPPER_NAME}--placeholder`)[0].style.background = `rgba(181,181,181,${1 - num})`
+        } else {
+            if (num >= 1) { // other style 最后才隐藏
+                $('#' + this.id).find('.progress-bar')[0].style.opacity = 1 - num
+                $('#' + this.id).find('.progress-bar-text')[0].style.opacity = 1 - num
+                $('#' + this.id).find(`.${WRAPPER_NAME}--placeholder`)[0].style.background = `rgba(181,181,181,${1 - num})`
+            }
+        }
     }
 }
 

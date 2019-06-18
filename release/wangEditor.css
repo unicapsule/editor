@@ -1,8 +1,45 @@
 .audio-wrapper {
+  position: relative;
   width: 550px;
   height: 77px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   border-radius: 6px;
+  z-index: 1;
+}
+.audio-wrapper .text-gray {
+  color: #999;
+}
+.audio-wrapper .audio-card--info {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  height: 70px;
+  box-sizing: border-box;
+  padding: 10px 20px;
+}
+.audio-wrapper .audio-card--info--left {
+  display: -ms-flexbox;
+  display: flex;
+}
+.audio-wrapper .audio-card--info--img {
+  margin-right: 10px;
+}
+.audio-wrapper .audio-card--info--detail {
+  text-align: left;
+}
+.audio-wrapper .audio-card--btn-play {
+  display: block;
+  padding: 4px 10px;
+}
+.audio-wrapper .audio-card--btn-play .iconfont {
+  font-size: 24px;
+}
+.audio-wrapper .audio-card--bar {
+  background: #E5E5E5;
+  height: 7px;
 }
 
 .w-e-toolbar,
@@ -403,6 +440,7 @@
   display: block;
 }
 .me-media-wrapper figcaption {
+  display: none;
   margin-top: 3px;
   text-align: center;
   color: #777;
@@ -426,6 +464,7 @@
   z-index: 2;
   border-radius: 3px;
   transition: opacity 1s;
+  box-shadow: 0 3px 18px rgba(0, 0, 0, 0.3);
 }
 .me-media-wrapper .progress-bar > i {
   position: absolute;
@@ -443,10 +482,9 @@
   left: 50%;
   margin-top: 5px;
   color: #000;
-  width: 70px;
   text-align: center;
-  margin-left: -21px;
   transition: opacity 1s;
+  transform: translateX(-50%);
 }
 .me-media-wrapper.is-active iframe {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
@@ -498,6 +536,7 @@
   box-shadow: 1px 1px 2px #ccc;
   color: #333;
   background-color: #fff;
+  z-index: 2;
   /* 为 emotion panel 定制的样式 */
   /* 上传图片的 panel 定制样式 */
 }

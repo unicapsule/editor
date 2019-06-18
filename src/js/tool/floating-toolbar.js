@@ -86,13 +86,28 @@ function Toolbar(options) {
         caption: {
             html: '<span class="tool--caption"><i class="iconfont icon-text1 clickable"></i></span>',
             events: () => {
-                // TODO
-                console.log('icon-text1')
                 $('.tool--caption').on('click', (e) => {
                     const p = e.target.parentElement.parentElement.parentElement.parentElement
                     p.querySelector('.me-media-wrapper--placeholder').style.display = 'none'
-                    p.querySelector('figcaption span').innerHTML = ''
-                    p.querySelector('figcaption').focus()
+                    function initFig() {
+                        p.querySelector('figcaption span').innerHTML = ''
+                        p.querySelector('figcaption').style.display = 'block'
+                        p.querySelector('figcaption').focus()
+                        p.querySelector('figcaption').addEventListener('blur', (e) => {
+                            if (!e.target.innerText.trim()) {
+                                p.querySelector('figcaption').style.display = 'none'
+                            }
+                        })
+                    }
+
+                    if (p.querySelector('figcaption span')) {
+                        initFig()
+                    } else {
+                        console.log('[editor] "figcaption span" not found!')
+                        p.querySelector('figcaption').appendChild(document.createElement('span'))
+                        initFig()
+                    }
+
                     this.destroy()
                 })
             }

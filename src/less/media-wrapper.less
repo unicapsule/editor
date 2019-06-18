@@ -16,6 +16,7 @@
         display: block;
     }
     figcaption {
+        display: none;
         margin-top: 3px;
         text-align: center;
         color: #777;
@@ -41,6 +42,7 @@
         z-index: 2;
         border-radius: 3px;
         transition: opacity 1s;
+        box-shadow: 0 3px 18px rgba(0,0,0,.3);
     }
     .progress-bar > i {
         display: block;
@@ -60,10 +62,9 @@
         margin-top: 5px;
         color: #000;
         display: inline-block;
-        width: 70px;
         text-align: center;
-        margin-left: -21px;
         transition: opacity 1s;
+        transform: translateX(-50%);
     }
 }
 

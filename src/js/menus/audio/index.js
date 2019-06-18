@@ -11,6 +11,7 @@ import upload from '../image/upload.js'
 // 构造函数
 function Audio(editor) {
     this.editor = editor
+    this.audioCardName = getRandom('audio-card-')
     const audioMenuId = getRandom('w-e-audio')
     this.$elem = $('<div class="w-e-menu" id="' + audioMenuId + '"><i class="iconfont icon-yinlewenjian"></i></div>')
     editor.audioMenuId = audioMenuId
@@ -149,14 +150,17 @@ Audio.prototype = {
         console.log(fileList)
 
         let mediaWrapperEl
+
         const mediaWp = new ContentWrapper({
             contentHtml: `<div class="audio-wrapper"></div>`,
             contentType: 'audio',
+            className: this.audioCardName,
             width: 550,
-            progress: true,
+            progress: 2,
+            progressText: '文件正在上传 ',
             onFocus: ($wrapper) => {
                 const fToolbar = new FloatingToolbar({
-                    tools: ['justify', 'fullsize', 'rotate', 'del', 'caption'],
+                    tools: ['del', 'caption'],
                     editor: self.editor,
                     justifyContainer: mediaWrapperEl,
                 })
@@ -164,7 +168,7 @@ Audio.prototype = {
                 $wrapper.find('.me-media-wrapper--placeholder')[0].style.display = 'block'
             },
             onBlur: ($wrapper) => {
-                $wrapper.find('.me-floating-toolbar').remove()
+                // $wrapper.find('.me-floating-toolbar').remove()
             }
         })
 
@@ -200,18 +204,28 @@ Audio.prototype = {
     },
 
     _fadeInAudioCover: function (fileInfo, mediaWp) {
+        window.weAudioImgError = function (audioCardName) {
+            $(`.${audioCardName}`).find('img')[0].setAttribute('src', 'https://kaaxaa-upload-temp.oss-cn-beijing.aliyuncs.com/unicapsule/jpg/248f5ee32b694f3fb43eba685bd1dcaf/1b5ec7ddca7b681b5a407ccfdb2bc778.jpg')
+        }
+
         const htmlStr = `
         <div class="audio-card">
             <div class="audio-card--info">
-                <div class="audio-card--info--img">
-                    <img src="${fileInfo.id3.cover}" />
+                <div class="audio-card--info--left">
+                    <div class="audio-card--info--img">
+                        <img src="${fileInfo.id3.cover}" onerror="weAudioImgError('${this.audioCardName}')" />
+                    </div>
+                    <div class="audio-card--info--detail">
+                        <span>mp3 ${fileInfo.id3.title || 'untitled'} - ${fileInfo.id3.artist || 'unknown'} || ${fileInfo.originalName}</span>
+                        <br><span class="text-gray">00:00</span>
+                    </div>
                 </div>
-                <div>
-                    <span>mp3 ${fileInfo.id3.title || 'untitled'} - ${fileInfo.id3.artist || 'unknown'} || ${fileInfo.originalName}</span>
-                    <br><span>00:00</span>
-                </div>
-                <div>
-                    <span class="audio-card--btn-play">play</span>
+                <div class="audio-card--info--right">
+                    <div>
+                        <span class="audio-card--btn-play">
+                            <i class="iconfont icon-play"></i>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="audio-card--bar"></div>

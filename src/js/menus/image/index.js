@@ -172,7 +172,7 @@ Image.prototype = {
                     contentHtml: `<img src="${reader.result}" style="max-width:500px">`,
                     contentType: 'image',
                     width: self.editor.config.customUploadImgWidth,
-                    progress: true,
+                    progress: 1,
                     onFocus: ($wrapper) => {
                         const fToolbar = new FloatingToolbar({
                             tools: ['justify', 'fullsize', 'rotate', 'del', 'caption'],

@@ -1,6 +1,44 @@
 .audio-wrapper {
+    position: relative;
     width: 550px;
     height: 77px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .5);
     border-radius: 6px;
+    z-index: 1;
+
+    .text-gray { color: #999; }
+
+    .audio-card--info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 70px;
+        box-sizing: border-box;
+        padding: 10px 20px;
+    }
+
+    .audio-card--info--left {
+        display: flex;
+    }
+
+    .audio-card--info--img {
+        margin-right: 10px;
+    }
+
+    .audio-card--info--detail {
+        text-align: left;
+    }
+
+    .audio-card--btn-play {
+        display: block;
+        padding: 4px 10px;
+    }
+    .audio-card--btn-play .iconfont {
+        font-size: 24px;
+    }
+
+    .audio-card--bar {
+        background: #E5E5E5;
+        height: 7px;
+    }
 }
