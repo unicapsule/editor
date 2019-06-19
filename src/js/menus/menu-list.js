@@ -87,5 +87,8 @@ MenuConstructors.lineHeight = LineHeight
 import Audio from './audio/index.js'
 MenuConstructors.audio = Audio
 
+import Fullsize from './fullsize/index.js'
+MenuConstructors.fullsize = Fullsize
+
 // 吐出所有菜单集合
 export default MenuConstructors

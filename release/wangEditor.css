@@ -506,6 +506,7 @@
   display: flex;
   padding: 0 5px;
   /* flex-wrap: wrap; */
+  background: #fff;
   /* 单个菜单 */
 }
 .w-e-toolbar .w-e-menu {
@@ -670,6 +671,7 @@
 
 .w-e-text-container {
   position: relative;
+  background: #fff;
 }
 .w-e-text-container .w-e-progress {
   position: absolute;
