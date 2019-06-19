@@ -7,7 +7,7 @@ import $ from '../../util/dom-core.js'
 function Bold(editor) {
     this.editor = editor
     this.$elem = $(
-        `<div class="w-e-menu">
+        `<div class="w-e-menu hint--top" aria-label="粗体">
             <i class="w-e-icon-bold"></i>
         </div>`
     )
@@ -24,7 +24,7 @@ Bold.prototype = {
     // 点击事件
     onClick: function (e) {
         // 点击菜单将触发这里
-        
+
         const editor = this.editor
         const isSeleEmpty = editor.selection.isSelectionEmpty()
 

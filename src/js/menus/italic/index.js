@@ -7,7 +7,7 @@ import $ from '../../util/dom-core.js'
 function Italic(editor) {
     this.editor = editor
     this.$elem = $(
-        `<div class="w-e-menu">
+        `<div class="w-e-menu hint--top" aria-label="斜体">
             <i class="w-e-icon-italic"></i>
         </div>`
     )

@@ -7,7 +7,7 @@ import $ from '../../util/dom-core.js'
 function Undo(editor) {
     this.editor = editor
     this.$elem = $(
-        `<div class="w-e-menu">
+        `<div class="w-e-menu hint--top" aria-label="撤销">
             <i class="w-e-icon-undo"></i>
         </div>`
     )

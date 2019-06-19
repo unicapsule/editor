@@ -7,7 +7,7 @@ import $ from '../../util/dom-core.js'
 function Redo(editor) {
     this.editor = editor
     this.$elem = $(
-        `<div class="w-e-menu">
+        `<div class="w-e-menu hint--top" aria-label="重做">
             <i class="w-e-icon-redo"></i>
         </div>`
     )

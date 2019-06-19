@@ -836,7 +836,7 @@ function isFunction(fn) {
 // 构造函数
 function Bold(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            <i class="w-e-icon-bold"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u7C97\u4F53">\n            <i class="w-e-icon-bold"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -1102,7 +1102,7 @@ function FontSize(editor) {
     var _this = this;
 
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-text-heigh"></i></div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="字号"><i class="w-e-icon-text-heigh"></i></div>');
     this.type = 'droplist';
 
     // 当前是否 active 状态
@@ -1375,7 +1375,7 @@ Panel.prototype = {
 // 构造函数
 function Link(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-link"></i></div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="超链接"><i class="w-e-icon-link"></i></div>');
     this.type = 'panel';
 
     // 当前是否 active 状态
@@ -1530,7 +1530,7 @@ Link.prototype = {
 // 构造函数
 function Italic(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            <i class="w-e-icon-italic"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u659C\u4F53">\n            <i class="w-e-icon-italic"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -1583,7 +1583,7 @@ Italic.prototype = {
 // 构造函数
 function Redo(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            <i class="w-e-icon-redo"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u91CD\u505A">\n            <i class="w-e-icon-redo"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -1611,7 +1611,7 @@ Redo.prototype = {
 // 构造函数
 function StrikeThrough(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            <i class="w-e-icon-strikethrough"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u5220\u9664\u7EBF">\n            <i class="w-e-icon-strikethrough"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -1664,7 +1664,7 @@ StrikeThrough.prototype = {
 // 构造函数
 function Underline(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            <i class="w-e-icon-underline"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u4E0B\u5212\u7EBF">\n            <i class="w-e-icon-underline"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -1717,7 +1717,7 @@ Underline.prototype = {
 // 构造函数
 function Undo(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            <i class="w-e-icon-undo"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u64A4\u9500">\n            <i class="w-e-icon-undo"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -1948,7 +1948,7 @@ BackColor.prototype = {
 // 构造函数
 function Quote(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            <i class="w-e-icon-quotes-left"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u5F15\u7528">\n            <i class="w-e-icon-quotes-left"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -2161,7 +2161,7 @@ Code.prototype = {
 // 构造函数
 function Emoticon(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu">\n            <i class="w-e-icon-happy"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u63D2\u5165\u8868\u60C5">\n            <i class="w-e-icon-happy"></i>\n        </div>');
     this.type = 'panel';
 
     // 当前是否 active 状态
@@ -3101,7 +3101,7 @@ var upload = (function (files, globalOptions) {
 function Image(editor) {
     this.editor = editor;
     var imgMenuId = getRandom('w-e-img');
-    this.$elem = $('<div class="w-e-menu" id="' + imgMenuId + '"><i class="w-e-icon-image"></i></div>');
+    this.$elem = $('<div class="w-e-menu hint--top" id="' + imgMenuId + '" aria-label="上传图片"><i class="w-e-icon-image"></i></div>');
     editor.imgMenuId = imgMenuId;
     this.type = 'panel';
 
@@ -3311,7 +3311,7 @@ function getEmbedLink(videoLink) {
 
 function Youtube(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-play"></i></div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="Youtube"><i class="w-e-icon-play"></i></div>');
     this.type = 'panel';
 
     // 当前是否 active 状态
@@ -3395,7 +3395,7 @@ Youtube.prototype = {
 
 function Inst(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu"><i class="iconfont icon-inst"></i></div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="Instagram"><i class="iconfont icon-inst"></i></div>');
     this.type = 'panel';
 
     // 当前是否 active 状态
@@ -3491,12 +3491,12 @@ function Geo(editor) {
     }
     if (config.geoService.baidu) {
         geoMenuIdBaidu = getRandom('w-e-geo-baidu');
-        tpl += '<div class=\'w-e-menu\' id=\'' + geoMenuIdBaidu + '\' title=\'\u63D2\u5165\u4F4D\u7F6E\' data-type=\'baidu\'><i class=\'iconfont icon-location1\' data-type=\'baidu\'></i></div>';
+        tpl += '<div class=\'w-e-menu hint--top\' id=\'' + geoMenuIdBaidu + '\' title=\'\u63D2\u5165\u4F4D\u7F6E\' data-type=\'baidu\' aria-label="\u63D2\u5165\u4F4D\u7F6E"><i class=\'iconfont icon-location1\' data-type=\'baidu\'></i></div>';
         editor.geoMenuIdBaidu = geoMenuIdBaidu;
     }
     if (config.geoService.google) {
         geoMenuIdGoogle = getRandom('w-e-geo-google');
-        tpl += '<div class=\'w-e-menu\' id=\'' + geoMenuIdGoogle + '\' title=\'\u63D2\u5165\u4F4D\u7F6E\' data-type=\'google\'><i class=\'iconfont icon-location1\' data-type=\'google\'></i></div>';
+        tpl += '<div class=\'w-e-menu hint--top\' id=\'' + geoMenuIdGoogle + '\' title=\'\u63D2\u5165\u4F4D\u7F6E\' data-type=\'google\' aria-label="\u63D2\u5165\u4F4D\u7F6E"><i class=\'iconfont icon-location1\' data-type=\'google\'></i></div>';
         editor.geoMenuIdGoogle = geoMenuIdGoogle;
     }
     this.$elem = $(tpl);
@@ -3715,7 +3715,7 @@ Geo.prototype = {
 function RemoveFormat(editor) {
     this.editor = editor;
     this.type = 'click';
-    this.$elem = $('<div class="w-e-menu">\n            <i class="iconfont icon-710bianjiqi_qingchugeshi" style="font-size:18px"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u6E05\u9664\u683C\u5F0F">\n            <i class="iconfont icon-710bianjiqi_qingchugeshi" style="font-size:18px"></i>\n        </div>');
     // 当前是否 active 状态
     this._active = false;
 }
@@ -3735,7 +3735,7 @@ RemoveFormat.prototype = {
 // 构造函数
 function Indent(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu" data-type="indent">\n            <i class="iconfont icon-suojin" data-type="indent"></i>\n        </div><div class="w-e-menu" data-type="outdent">\n            <i class="iconfont icon-suojin1" data-type="outdent"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" data-type="indent" aria-label="\u5411\u540E\u7F29\u8FDB">\n            <i class="iconfont icon-suojin" data-type="indent"></i>\n        </div><div class="w-e-menu hint--top" data-type="outdent" aria-label="\u5411\u524D\u7F29\u8FDB">\n            <i class="iconfont icon-suojin1" data-type="outdent"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -3832,7 +3832,7 @@ function Audio(editor) {
     this.editor = editor;
     this.audioCardName = getRandom('audio-card-');
     var audioMenuId = getRandom('w-e-audio');
-    this.$elem = $('<div class="w-e-menu" id="' + audioMenuId + '"><i class="iconfont icon-yinlewenjian"></i></div>');
+    this.$elem = $('<div class="w-e-menu hint--top" id="' + audioMenuId + '" aria-label="插入音频"><i class="iconfont icon-yinlewenjian"></i></div>');
     editor.audioMenuId = audioMenuId;
     this.type = 'panel';
 
