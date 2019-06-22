@@ -358,7 +358,11 @@ Editor.prototype = {
             if (customAlert && typeof customAlert === 'function') {
                 customAlert(alertInfo, debugInfo)
             } else {
-                alert(alertInfo)
+                if (window.toast) {
+                    window.toast(alertInfo, 2000)
+                } else {
+                    alert(alertInfo)
+                }
             }
         }
     },

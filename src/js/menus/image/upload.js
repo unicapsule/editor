@@ -17,9 +17,9 @@ export default (files, globalOptions) => {
 
     const allowExt = globalOptions.ext || /\.(jpg|jpeg|png|bmp|gif|webp)$/i // 后缀名的正则表达式
     const fileType = globalOptions.type
-    const maxSizeM = 5
+    const maxSizeM = _config.uploadImgMaxSize
     const maxSize = maxSizeM * 1024 * 1024
-    const maxLength = 5
+    const maxLength = _config.uploadImgMaxLength
     let resultFiles = []
     let errInfo = []
 
@@ -114,7 +114,7 @@ export default (files, globalOptions) => {
         let fileExt = file.name.split('.')
         fileExt = fileExt[fileExt.length - 1]
         window.axios.post(uploadImgServer + '/getPolicy', {
-            fileName: file.name,
+            fileName: _config.uploadFileName || file.name,
             maxSize: 1024 * 1024 * 15,
             fileType: fileType || fileExt,
             filePath: 'unicapsule'

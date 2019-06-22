@@ -34,45 +34,13 @@
     <script type="text/javascript" src="../../release/lib/fetch-jsonp.min.js"></script>
     <script type="text/javascript" src="../../release/wangEditor.js"></script>
     <script type="text/javascript" src="../../release/lib/di18n.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lite-toast@1.0.2/dist/toast.min.js"></script>
     <!-- <script type="text/javascript" src="/wangEditor.min.js"></script> -->
     <script type="text/javascript">
         var E = window.wangEditor
         var editor2 = new E('#div1', '#div2')
 
         editor2.customConfig.debug = true;
-        editor2.customConfig.menus = [
-            'head',
-            'bold',
-            'italic',
-            'strikeThrough',
-            'underline',
-            'fontSize',
-            'foreColor',
-            'backColor',
-            'removeformat',
-            'spliter',
-
-            'justify',
-            'indent',
-            'lineHeight',
-            'orderedList',
-            'list',
-            'quote',
-            'spliter',
-
-            'youbute',
-            'instagram',
-            'link',
-            'audio',
-            'image',
-            'geo',
-            'emoticon',
-            'spliter',
-
-            'undo',
-            'redo',
-            'fullsize'
-        ]
         editor2.create()
 
         document.getElementById('btn').addEventListener('click', function () {

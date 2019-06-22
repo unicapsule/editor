@@ -2,7 +2,7 @@
   position: relative;
   width: 550px;
   height: 77px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  border: 1px solid #E5E5E5;
   border-radius: 6px;
   z-index: 1;
 }
@@ -433,6 +433,9 @@
   display: inline-block;
   *display: inline;
   *zoom: 1;
+}
+.me-media-wrapper > figure:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 .me-media-wrapper .me-media-wrapper--content {
   position: relative;

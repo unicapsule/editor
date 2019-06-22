@@ -121,6 +121,7 @@ Geo.prototype = {
                     })
             }
             const getPositionFailed = err => {
+                console.log(err)
                 this._alert('获取地理位置失败', {
                     errorType: 'getPostionFailed',
                     service: 'google',
