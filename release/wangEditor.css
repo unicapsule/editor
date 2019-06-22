@@ -98,7 +98,7 @@
   background: inherit;
   height: 38px;
   cursor: pointer;
-  width: calc(75%);
+  width: 98%;
 }
 #editor-geo:before {
   content: " ";
@@ -167,8 +167,8 @@
   background-position: center -124px;
   /* 风 */
 }
-#editor-geo.w-e-active {
-  box-shadow: 0 0px 24px rgba(0, 0, 0, 0.08);
+#editor-geo.w-e-active > p {
+  color: #000;
 }
 .geo-loading {
   color: #999;
