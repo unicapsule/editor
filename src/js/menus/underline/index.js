@@ -7,7 +7,7 @@ import $ from '../../util/dom-core.js'
 function Underline(editor) {
     this.editor = editor
     this.$elem = $(
-        `<div class="w-e-menu hint--top" aria-label="下划线">
+        `<div class="w-e-menu hint--top" aria-label="$t('下划线')">
             <i class="w-e-icon-underline"></i>
         </div>`
     )

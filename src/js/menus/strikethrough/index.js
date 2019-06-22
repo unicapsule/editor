@@ -7,7 +7,7 @@ import $ from '../../util/dom-core.js'
 function StrikeThrough(editor) {
     this.editor = editor
     this.$elem = $(
-        `<div class="w-e-menu hint--top" aria-label="删除线">
+        `<div class="w-e-menu hint--top" aria-label="$t('删除线')">
             <i class="w-e-icon-strikethrough"></i>
         </div>`
     )

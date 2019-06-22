@@ -115,7 +115,14 @@ function DomElement(selector) {
         selector = selector.replace('/\n/mg', '').trim();
         if (selector.indexOf('<') === 0) {
             // 如 <div>
-            selectorResult = createElemByHTML(selector);
+            var _selector = selector;
+            if (window.$di18n) {
+                // 存在i18n 则转换一次
+                _selector = window.$di18n.$html(selector);
+            } else {
+                console.warn('[editor] 请引入依赖文件 di18n.js，详见 https://github.com/CommanderXL/di18n-translate');
+            }
+            selectorResult = createElemByHTML(_selector);
         } else {
             // 如 #id .class
             selectorResult = querySelectorAll(selector);
@@ -552,14 +559,85 @@ var config = {
     colors: ['#000000', '#eeece0', '#1c487f', '#4d80bf', '#c24f4a', '#8baa4a', '#7b5ba1', '#46acc8', '#f9963b', '#ffffff'],
 
     // // 语言配置
+    // lang: {
+    //     '设置标题': 'title',
+    //     '正文': 'p',
+    //     '链接文字': 'link text',
+    //     '链接': 'link',
+    //     '插入': 'insert',
+    //     '创建': 'init'
+    // },
     lang: {
-        '设置标题': 'title',
-        '正文': 'p',
-        '链接文字': 'link text',
-        '链接': 'link',
-        '插入': 'insert',
-        '创建': 'init'
+        en: {
+            '粗体': 'Bold',
+            '上传图片': 'Upload Images',
+            '插入音频': 'Upload Audio',
+            '插入表情': 'Insert Emoji',
+            '字号': 'FontSize',
+            '全屏': 'FullScreen',
+            '插入位置': 'Insert Location',
+            '向后缩进': 'Indent',
+            '向前缩进': 'Outdent',
+            '插入Instagram': 'Insert Instagram',
+            '斜体': 'Italic',
+            '超链接': 'Link',
+            '引用': 'Quote',
+            '重做': 'Redo',
+            '清除格式': 'Remove Format',
+            '删除线': 'StrikeThrough',
+            '下划线': 'Underline',
+            '撤销': 'Undo',
+            '插入Youtube': 'Insert Youtube',
+            '文字颜色': 'FontColor',
+            '背景色': 'BackgroundColor',
+            '对齐方式': 'Justify',
+            '靠左': 'Left',
+            '居中': 'Center',
+            '靠右': 'Right',
+
+            '设置标题': 'Set Title',
+            '正文': 'Text',
+            '设置列表': 'Set List',
+            '有序列表': 'Order List',
+            '无序列表': 'Unorder List',
+            '行高': 'LineHeight'
+        },
+        zh: {
+            '粗体': '粗体',
+            '上传图片': '上传图片',
+            '插入音频': '插入音频',
+            '插入表情': '插入表情',
+            '字号': '字号',
+            '全屏': '全屏',
+            '插入位置': '插入位置',
+            '向后缩进': '向后缩进',
+            '向前缩进': '向前缩进',
+            '插入Instagram': '插入 Instagram',
+            '斜体': '斜体',
+            '超链接': '超链接',
+            '引用': '引用',
+            '重做': '重做',
+            '清除格式': '清除格式',
+            '删除线': '删除线',
+            '下划线': '下划线',
+            '撤销': '撤销',
+            '插入Youtube': '插入 Youtube',
+            '文字颜色': '文字颜色',
+            '背景色': '背景色',
+            '对齐方式': '对齐方式',
+            '靠左': '靠左',
+            '居中': '居中',
+            '靠右': '靠右',
+
+            '设置标题': '设置标题',
+            '正文': '正文',
+            '设置列表': '设置列表',
+            '有序列表': '有序列表',
+            '无序列表': '无序列表',
+            '行高': '行高'
+        }
     },
+    locale: 'en',
 
     // 表情
     emotions: [
@@ -836,7 +914,7 @@ function isFunction(fn) {
 // 构造函数
 function Bold(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u7C97\u4F53">\n            <i class="w-e-icon-bold"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="$t(\'\u7C97\u4F53\')">\n            <i class="w-e-icon-bold"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -1049,9 +1127,9 @@ function Head(editor) {
     // 初始化 droplist
     this.droplist = new DropList(this, {
         width: 100,
-        $title: $('<p>设置标题</p>'),
+        $title: $('<p>$t(\'\u8BBE\u7F6E\u6807\u9898\')</p>'),
         type: 'list', // droplist 以列表形式展示
-        list: [{ $elem: $('<h1>H1</h1>'), value: '<h1>' }, { $elem: $('<h2>H2</h2>'), value: '<h2>' }, { $elem: $('<h3>H3</h3>'), value: '<h3>' }, { $elem: $('<h4>H4</h4>'), value: '<h4>' }, { $elem: $('<h5>H5</h5>'), value: '<h5>' }, { $elem: $('<p>正文</p>'), value: '<p>' }],
+        list: [{ $elem: $('<h1>H1</h1>'), value: '<h1>' }, { $elem: $('<h2>H2</h2>'), value: '<h2>' }, { $elem: $('<h3>H3</h3>'), value: '<h3>' }, { $elem: $('<h4>H4</h4>'), value: '<h4>' }, { $elem: $('<h5>H5</h5>'), value: '<h5>' }, { $elem: $('<p>$t(\'\u6B63\u6587\')</p>'), value: '<p>' }],
         onClick: function onClick(value) {
             // 注意 this 是指向当前的 Head 对象
             _this._command(value);
@@ -1102,7 +1180,7 @@ function FontSize(editor) {
     var _this = this;
 
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="字号"><i class="w-e-icon-text-heigh"></i></div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="$t(\'\u5B57\u53F7\')"><i class="w-e-icon-text-heigh"></i></div>');
     this.type = 'droplist';
 
     // 当前是否 active 状态
@@ -1111,7 +1189,7 @@ function FontSize(editor) {
     // 初始化 droplist
     this.droplist = new DropList(this, {
         width: 160,
-        $title: $('<p>字号</p>'),
+        $title: $('<p>$t(\'\u5B57\u53F7\')</p>'),
         type: 'list', // droplist 以列表形式展示
         list: [{ $elem: $('<span style="font-size: x-small;">x-small</span>'), value: '1' }, { $elem: $('<span style="font-size: small;">small</span>'), value: '2' }, { $elem: $('<span>normal</span>'), value: '3' }, { $elem: $('<span style="font-size: large;">large</span>'), value: '4' }, { $elem: $('<span style="font-size: x-large;">x-large</span>'), value: '5' }, { $elem: $('<span style="font-size: xx-large;">xx-large</span>'), value: '6' }],
         onClick: function onClick(value) {
@@ -1375,7 +1453,7 @@ Panel.prototype = {
 // 构造函数
 function Link(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="超链接"><i class="w-e-icon-link"></i></div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="$t(\'\u8D85\u94FE\u63A5\')"><i class="w-e-icon-link"></i></div>');
     this.type = 'panel';
 
     // 当前是否 active 状态
@@ -1530,7 +1608,7 @@ Link.prototype = {
 // 构造函数
 function Italic(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u659C\u4F53">\n            <i class="w-e-icon-italic"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="$t(\'\u659C\u4F53\')">\n            <i class="w-e-icon-italic"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -1583,7 +1661,7 @@ Italic.prototype = {
 // 构造函数
 function Redo(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u91CD\u505A">\n            <i class="w-e-icon-redo"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="$t(\'\u91CD\u505A\')">\n            <i class="w-e-icon-redo"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -1611,7 +1689,7 @@ Redo.prototype = {
 // 构造函数
 function StrikeThrough(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u5220\u9664\u7EBF">\n            <i class="w-e-icon-strikethrough"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="$t(\'\u5220\u9664\u7EBF\')">\n            <i class="w-e-icon-strikethrough"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -1664,7 +1742,7 @@ StrikeThrough.prototype = {
 // 构造函数
 function Underline(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u4E0B\u5212\u7EBF">\n            <i class="w-e-icon-underline"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="$t(\'\u4E0B\u5212\u7EBF\')">\n            <i class="w-e-icon-underline"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -1717,7 +1795,7 @@ Underline.prototype = {
 // 构造函数
 function Undo(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u64A4\u9500">\n            <i class="w-e-icon-undo"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="$t(\'\u64A4\u9500\')">\n            <i class="w-e-icon-undo"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -1756,9 +1834,9 @@ function List(editor) {
     // 初始化 droplist
     this.droplist = new DropList(this, {
         width: 120,
-        $title: $('<p>设置列表</p>'),
+        $title: $('<p>$t(\'\u8BBE\u7F6E\u5217\u8868\')</p>'),
         type: 'list', // droplist 以列表形式展示
-        list: [{ $elem: $('<span><i class="w-e-icon-list-numbered"></i> 有序列表</span>'), value: 'insertOrderedList' }, { $elem: $('<span><i class="w-e-icon-list2"></i> 无序列表</span>'), value: 'insertUnorderedList' }],
+        list: [{ $elem: $('<span><i class="w-e-icon-list-numbered"></i> $t(\'\u6709\u5E8F\u5217\u8868\')</span>'), value: 'insertOrderedList' }, { $elem: $('<span><i class="w-e-icon-list2"></i> $t(\'\u65E0\u5E8F\u5217\u8868\')</span>'), value: 'insertUnorderedList' }],
         onClick: function onClick(value) {
             // 注意 this 是指向当前的 List 对象
             _this._command(value);
@@ -1833,9 +1911,9 @@ function Justify(editor) {
     // 初始化 droplist
     this.droplist = new DropList(this, {
         width: 100,
-        $title: $('<p>对齐方式</p>'),
+        $title: $('<p>$t(\'\u5BF9\u9F50\u65B9\u5F0F\')</p>'),
         type: 'list', // droplist 以列表形式展示
-        list: [{ $elem: $('<span><i class="w-e-icon-paragraph-left"></i> 靠左</span>'), value: 'justifyLeft' }, { $elem: $('<span><i class="w-e-icon-paragraph-center"></i> 居中</span>'), value: 'justifyCenter' }, { $elem: $('<span><i class="w-e-icon-paragraph-right"></i> 靠右</span>'), value: 'justifyRight' }],
+        list: [{ $elem: $('<span><i class="w-e-icon-paragraph-left"></i> $t(\'\u9760\u5DE6\')</span>'), value: 'justifyLeft' }, { $elem: $('<span><i class="w-e-icon-paragraph-center"></i> $t(\'\u5C45\u4E2D\')</span>'), value: 'justifyCenter' }, { $elem: $('<span><i class="w-e-icon-paragraph-right"></i> $t(\'\u9760\u53F3\')</span>'), value: 'justifyRight' }],
         onClick: function onClick(value) {
             // 注意 this 是指向当前的 List 对象
             _this._command(value);
@@ -1875,7 +1953,7 @@ function ForeColor(editor) {
     // 初始化 droplist
     this.droplist = new DropList(this, {
         width: 120,
-        $title: $('<p>文字颜色</p>'),
+        $title: $('<p>$t(\'\u6587\u5B57\u989C\u8272\')</p>'),
         type: 'inline-block', // droplist 内容以 block 形式展示
         list: colors.map(function (color) {
             return { $elem: $('<i style="color:' + color + ';" class="w-e-icon-pencil2"></i>'), value: color };
@@ -1919,7 +1997,7 @@ function BackColor(editor) {
     // 初始化 droplist
     this.droplist = new DropList(this, {
         width: 120,
-        $title: $('<p>背景色</p>'),
+        $title: $('<p>$t(\'\u80CC\u666F\u8272\')</p>'),
         type: 'inline-block', // droplist 内容以 block 形式展示
         list: colors.map(function (color) {
             return { $elem: $('<i style="color:' + color + ';" class="w-e-icon-paint-brush"></i>'), value: color };
@@ -1948,7 +2026,7 @@ BackColor.prototype = {
 // 构造函数
 function Quote(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u5F15\u7528">\n            <i class="w-e-icon-quotes-left"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="$t(\'\u5F15\u7528\')">\n            <i class="w-e-icon-quotes-left"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -2161,7 +2239,7 @@ Code.prototype = {
 // 构造函数
 function Emoticon(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u63D2\u5165\u8868\u60C5">\n            <i class="w-e-icon-happy"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="$t(\'\u63D2\u5165\u8868\u60C5\')">\n            <i class="w-e-icon-happy"></i>\n        </div>');
     this.type = 'panel';
 
     // 当前是否 active 状态
@@ -3101,7 +3179,7 @@ var upload = (function (files, globalOptions) {
 function Image(editor) {
     this.editor = editor;
     var imgMenuId = getRandom('w-e-img');
-    this.$elem = $('<div class="w-e-menu hint--top" id="' + imgMenuId + '" aria-label="上传图片"><i class="w-e-icon-image"></i></div>');
+    this.$elem = $('<div class="w-e-menu hint--top" id="\' + imgMenuId + \'" aria-label="$t(\'\u4E0A\u4F20\u56FE\u7247\')"><i class="w-e-icon-image"></i></div>');
     editor.imgMenuId = imgMenuId;
     this.type = 'panel';
 
@@ -3311,7 +3389,7 @@ function getEmbedLink(videoLink) {
 
 function Youtube(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="Youtube"><i class="w-e-icon-play"></i></div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="$t(\'\u63D2\u5165Youtube\')"><i class="w-e-icon-play"></i></div>');
     this.type = 'panel';
 
     // 当前是否 active 状态
@@ -3395,7 +3473,7 @@ Youtube.prototype = {
 
 function Inst(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="Instagram"><i class="iconfont icon-inst"></i></div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="$t(\'\u63D2\u5165Instagram\')"><i class="iconfont icon-inst"></i></div>');
     this.type = 'panel';
 
     // 当前是否 active 状态
@@ -3491,12 +3569,12 @@ function Geo(editor) {
     }
     if (config.geoService.baidu) {
         geoMenuIdBaidu = getRandom('w-e-geo-baidu');
-        tpl += '<div class=\'w-e-menu hint--top\' id=\'' + geoMenuIdBaidu + '\' title=\'\u63D2\u5165\u4F4D\u7F6E\' data-type=\'baidu\' aria-label="\u63D2\u5165\u4F4D\u7F6E"><i class=\'iconfont icon-location1\' data-type=\'baidu\'></i></div>';
+        tpl += '<div class=\'w-e-menu hint--top\' id=\'' + geoMenuIdBaidu + '\' title=\'\u63D2\u5165\u4F4D\u7F6E\' data-type=\'baidu\' aria-label="$t(\'\u63D2\u5165\u4F4D\u7F6E\')"><i class=\'iconfont icon-location1\' data-type=\'baidu\'></i></div>';
         editor.geoMenuIdBaidu = geoMenuIdBaidu;
     }
     if (config.geoService.google) {
         geoMenuIdGoogle = getRandom('w-e-geo-google');
-        tpl += '<div class=\'w-e-menu hint--top\' id=\'' + geoMenuIdGoogle + '\' title=\'\u63D2\u5165\u4F4D\u7F6E\' data-type=\'google\' aria-label="\u63D2\u5165\u4F4D\u7F6E"><i class=\'iconfont icon-location1\' data-type=\'google\'></i></div>';
+        tpl += '<div class=\'w-e-menu hint--top\' id=\'' + geoMenuIdGoogle + '\' title=\'\u63D2\u5165\u4F4D\u7F6E\' data-type=\'google\' aria-label="$t(\'\u63D2\u5165\u4F4D\u7F6E\')"><i class=\'iconfont icon-location1\' data-type=\'google\'></i></div>';
         editor.geoMenuIdGoogle = geoMenuIdGoogle;
     }
     this.$elem = $(tpl);
@@ -3715,7 +3793,7 @@ Geo.prototype = {
 function RemoveFormat(editor) {
     this.editor = editor;
     this.type = 'click';
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u6E05\u9664\u683C\u5F0F">\n            <i class="iconfont icon-710bianjiqi_qingchugeshi" style="font-size:18px"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="$t(\'\u6E05\u9664\u683C\u5F0F\')">\n            <i class="iconfont icon-710bianjiqi_qingchugeshi" style="font-size:18px"></i>\n        </div>');
     // 当前是否 active 状态
     this._active = false;
 }
@@ -3735,7 +3813,7 @@ RemoveFormat.prototype = {
 // 构造函数
 function Indent(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu hint--top" data-type="indent" aria-label="\u5411\u540E\u7F29\u8FDB">\n            <i class="iconfont icon-suojin" data-type="indent"></i>\n        </div><div class="w-e-menu hint--top" data-type="outdent" aria-label="\u5411\u524D\u7F29\u8FDB">\n            <i class="iconfont icon-suojin1" data-type="outdent"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" data-type="indent" aria-label="$t(\'\u5411\u540E\u7F29\u8FDB\')">\n            <i class="iconfont icon-suojin" data-type="indent"></i>\n        </div><div class="w-e-menu hint--top" data-type="outdent" aria-label="$t(\'\u5411\u524D\u7F29\u8FDB\')">\n            <i class="iconfont icon-suojin1" data-type="outdent"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -3801,7 +3879,7 @@ function LineHeight(editor) {
     // 初始化 droplist
     this.droplist = new DropList(this, {
         width: 60,
-        $title: $('<p>行高</p>'),
+        $title: $('<p>$t(\'\u884C\u9AD8\')</p>'),
         type: 'list', // droplist 以列表形式展示
         list: [{ $elem: $('<span>1</span>'), value: '1' }, { $elem: $('<span>1.5</span>'), value: '1.5' }, { $elem: $('<span>1.75</span>'), value: '1.75' }, { $elem: $('<span>2</span>'), value: '2' }, { $elem: $('<span>3</span>'), value: '3' }, { $elem: $('<span>4</span>'), value: '4' }, { $elem: $('<span>5</span>'), value: '5' }],
         onClick: function onClick(value) {
@@ -3832,7 +3910,7 @@ function Audio(editor) {
     this.editor = editor;
     this.audioCardName = getRandom('audio-card-');
     var audioMenuId = getRandom('w-e-audio');
-    this.$elem = $('<div class="w-e-menu hint--top" id="' + audioMenuId + '" aria-label="插入音频"><i class="iconfont icon-yinlewenjian"></i></div>');
+    this.$elem = $('<div class="w-e-menu hint--top" id="' + audioMenuId + '" aria-label="$t(\'\u63D2\u5165\u97F3\u9891\')"><i class="iconfont icon-yinlewenjian"></i></div>');
     editor.audioMenuId = audioMenuId;
     this.type = 'panel';
 
@@ -4021,7 +4099,7 @@ Audio.prototype = {
 // 构造函数
 function Fullsize(editor) {
     this.editor = editor;
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="\u5168\u5C4F">\n            <i class="iconfont icon-quanping"></i>\n        </div>');
+    this.$elem = $('<div class="w-e-menu hint--top" aria-label="$t(\'\u5168\u5C4F\')">\n            <i class="iconfont icon-quanping"></i>\n        </div>');
     this.type = 'click';
 
     // 当前是否 active 状态
@@ -5865,6 +5943,9 @@ Editor.prototype = {
         // 初始化配置信息
         this._initConfig();
 
+        // i18n
+        this._initI18n();
+
         // 初始化 DOM
         this._initDom();
 
@@ -5908,6 +5989,24 @@ Editor.prototype = {
             } else {
                 alert(alertInfo);
             }
+        }
+    },
+
+    _initI18n: function _initI18n() {
+        if (window.DI18n) {
+            var LOCALE = this.config.locale || 'en';
+            window.$di18n = new window.DI18n({
+                locale: LOCALE,
+                isReplace: false,
+                messages: this.config.lang || {
+                    en: {
+                        '粗体': 'Bold'
+                    },
+                    zh: {
+                        '粗体': '粗体'
+                    }
+                }
+            });
         }
     }
 };

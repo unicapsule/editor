@@ -13,7 +13,7 @@ function Audio(editor) {
     this.editor = editor
     this.audioCardName = getRandom('audio-card-')
     const audioMenuId = getRandom('w-e-audio')
-    this.$elem = $('<div class="w-e-menu hint--top" id="' + audioMenuId + '" aria-label="插入音频"><i class="iconfont icon-yinlewenjian"></i></div>')
+    this.$elem = $(`<div class="w-e-menu hint--top" id="${audioMenuId}" aria-label="$t('插入音频')"><i class="iconfont icon-yinlewenjian"></i></div>`)
     editor.audioMenuId = audioMenuId
     this.type = 'panel'
 

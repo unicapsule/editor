@@ -8,7 +8,7 @@ import { UA } from '../../util/util.js'
 function Quote(editor) {
     this.editor = editor
     this.$elem = $(
-        `<div class="w-e-menu hint--top" aria-label="引用">
+        `<div class="w-e-menu hint--top" aria-label="$t('引用')">
             <i class="w-e-icon-quotes-left"></i>
         </div>`
     )

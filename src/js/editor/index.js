@@ -314,6 +314,9 @@ Editor.prototype = {
         // 初始化配置信息
         this._initConfig()
 
+        // i18n
+        this._initI18n()
+
         // 初始化 DOM
         this._initDom()
 
@@ -357,6 +360,24 @@ Editor.prototype = {
             } else {
                 alert(alertInfo)
             }
+        }
+    },
+
+    _initI18n: function () {
+        if (window.DI18n) {
+            var LOCALE = this.config.locale || 'en'
+            window.$di18n = new window.DI18n({
+                locale: LOCALE,
+                isReplace: false,
+                messages: this.config.lang || {
+                    en: {
+                        '粗体': 'Bold'
+                    },
+                    zh: {
+                        '粗体': '粗体'
+                    }
+                }
+            })
         }
     }
 }

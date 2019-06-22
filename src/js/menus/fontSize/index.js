@@ -8,7 +8,7 @@ import DropList from '../droplist.js'
 // 构造函数
 function FontSize(editor) {
     this.editor = editor
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="字号"><i class="w-e-icon-text-heigh"></i></div>')
+    this.$elem = $(`<div class="w-e-menu hint--top" aria-label="$t('字号')"><i class="w-e-icon-text-heigh"></i></div>`)
     this.type = 'droplist'
 
     // 当前是否 active 状态
@@ -17,7 +17,7 @@ function FontSize(editor) {
     // 初始化 droplist
     this.droplist = new DropList(this, {
         width: 160,
-        $title: $('<p>字号</p>'),
+        $title: $(`<p>$t('字号')</p>`),
         type: 'list', // droplist 以列表形式展示
         list: [
             { $elem: $('<span style="font-size: x-small;">x-small</span>'), value: '1' },

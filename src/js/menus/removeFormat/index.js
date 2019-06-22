@@ -7,7 +7,7 @@ function RemoveFormat(editor) {
     this.editor = editor
     this.type = 'click'
     this.$elem = $(
-        `<div class="w-e-menu hint--top" aria-label="清除格式">
+        `<div class="w-e-menu hint--top" aria-label="$t('清除格式')">
             <i class="iconfont icon-710bianjiqi_qingchugeshi" style="font-size:18px"></i>
         </div>`
     )

@@ -17,7 +17,7 @@ function LineHeight(editor) {
     // 初始化 droplist
     this.droplist = new DropList(this, {
         width: 60,
-        $title: $('<p>行高</p>'),
+        $title: $(`<p>$t('行高')</p>`),
         type: 'list', // droplist 以列表形式展示
         list: [
             { $elem: $('<span>1</span>'), value: '1' },

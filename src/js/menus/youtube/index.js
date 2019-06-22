@@ -23,7 +23,7 @@ function getEmbedLink(videoLink) {
 
 function Youtube(editor) {
     this.editor = editor
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="Youtube"><i class="w-e-icon-play"></i></div>')
+    this.$elem = $(`<div class="w-e-menu hint--top" aria-label="$t('插入Youtube')"><i class="w-e-icon-play"></i></div>`)
     this.type = 'panel'
 
     // 当前是否 active 状态

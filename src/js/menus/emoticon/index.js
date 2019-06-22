@@ -9,7 +9,7 @@ import emojiUnicode from '../../tool/emoji-unicode'
 function Emoticon(editor) {
     this.editor = editor
     this.$elem = $(
-        `<div class="w-e-menu hint--top" aria-label="插入表情">
+        `<div class="w-e-menu hint--top" aria-label="$t('插入表情')">
             <i class="w-e-icon-happy"></i>
         </div>`
     )

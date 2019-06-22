@@ -6,7 +6,7 @@ import FloatingToolbar from '../../tool/floating-toolbar.js'
 
 function Inst(editor) {
     this.editor = editor
-    this.$elem = $('<div class="w-e-menu hint--top" aria-label="Instagram"><i class="iconfont icon-inst"></i></div>')
+    this.$elem = $(`<div class="w-e-menu hint--top" aria-label="$t('插入Instagram')"><i class="iconfont icon-inst"></i></div>`)
     this.type = 'panel'
 
     // 当前是否 active 状态

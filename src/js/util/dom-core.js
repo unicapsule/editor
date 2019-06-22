@@ -64,7 +64,13 @@ function DomElement(selector) {
         selector = selector.replace('/\n/mg', '').trim()
         if (selector.indexOf('<') === 0) {
             // 如 <div>
-            selectorResult = createElemByHTML(selector)
+            var _selector = selector
+            if (window.$di18n) { // 存在i18n 则转换一次
+                _selector = window.$di18n.$html(selector)
+            } else {
+                console.warn('[editor] 请引入依赖文件 di18n.js，详见 https://github.com/CommanderXL/di18n-translate')
+            }
+            selectorResult = createElemByHTML(_selector)
         } else {
             // 如 #id .class
             selectorResult = querySelectorAll(selector)

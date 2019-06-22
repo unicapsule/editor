@@ -16,11 +16,11 @@ function List(editor) {
     // 初始化 droplist
     this.droplist = new DropList(this, {
         width: 120,
-        $title: $('<p>设置列表</p>'),
+        $title: $(`<p>$t('设置列表')</p>`),
         type: 'list', // droplist 以列表形式展示
         list: [
-            { $elem: $('<span><i class="w-e-icon-list-numbered"></i> 有序列表</span>'), value: 'insertOrderedList' },
-            { $elem: $('<span><i class="w-e-icon-list2"></i> 无序列表</span>'), value: 'insertUnorderedList' }
+            { $elem: $(`<span><i class="w-e-icon-list-numbered"></i> $t('有序列表')</span>`), value: 'insertOrderedList' },
+            { $elem: $(`<span><i class="w-e-icon-list2"></i> $t('无序列表')</span>`), value: 'insertUnorderedList' }
         ],
         onClick: (value) => {
             // 注意 this 是指向当前的 List 对象

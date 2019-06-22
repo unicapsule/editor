@@ -19,12 +19,12 @@ function Geo(editor) {
     }
     if (config.geoService.baidu) {
         geoMenuIdBaidu = getRandom('w-e-geo-baidu')
-        tpl += `<div class='w-e-menu hint--top' id='${geoMenuIdBaidu}' title='插入位置' data-type='baidu' aria-label="插入位置"><i class='iconfont icon-location1' data-type='baidu'></i></div>`
+        tpl += `<div class='w-e-menu hint--top' id='${geoMenuIdBaidu}' title='插入位置' data-type='baidu' aria-label="$t('插入位置')"><i class='iconfont icon-location1' data-type='baidu'></i></div>`
         editor.geoMenuIdBaidu = geoMenuIdBaidu
     }
     if (config.geoService.google) {
         geoMenuIdGoogle = getRandom('w-e-geo-google')
-        tpl += `<div class='w-e-menu hint--top' id='${geoMenuIdGoogle}' title='插入位置' data-type='google' aria-label="插入位置"><i class='iconfont icon-location1' data-type='google'></i></div>`
+        tpl += `<div class='w-e-menu hint--top' id='${geoMenuIdGoogle}' title='插入位置' data-type='google' aria-label="$t('插入位置')"><i class='iconfont icon-location1' data-type='google'></i></div>`
         editor.geoMenuIdGoogle = geoMenuIdGoogle
     }
     this.$elem = $(tpl)

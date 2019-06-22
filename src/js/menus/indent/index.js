@@ -7,9 +7,9 @@ import $ from '../../util/dom-core.js'
 function Indent(editor) {
     this.editor = editor
     this.$elem = $(
-        `<div class="w-e-menu hint--top" data-type="indent" aria-label="向后缩进">
+        `<div class="w-e-menu hint--top" data-type="indent" aria-label="$t('向后缩进')">
             <i class="iconfont icon-suojin" data-type="indent"></i>
-        </div><div class="w-e-menu hint--top" data-type="outdent" aria-label="向前缩进">
+        </div><div class="w-e-menu hint--top" data-type="outdent" aria-label="$t('向前缩进')">
             <i class="iconfont icon-suojin1" data-type="outdent"></i>
         </div>`
     )

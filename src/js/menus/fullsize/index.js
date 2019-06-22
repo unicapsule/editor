@@ -7,7 +7,7 @@ import $ from '../../util/dom-core.js'
 function Fullsize(editor) {
     this.editor = editor
     this.$elem = $(
-        `<div class="w-e-menu hint--top" aria-label="全屏">
+        `<div class="w-e-menu hint--top" aria-label="$t('全屏')">
             <i class="iconfont icon-quanping"></i>
         </div>`
     )

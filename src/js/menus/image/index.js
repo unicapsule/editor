@@ -12,7 +12,7 @@ import upload from './upload.js'
 function Image(editor) {
     this.editor = editor
     const imgMenuId = getRandom('w-e-img')
-    this.$elem = $('<div class="w-e-menu hint--top" id="' + imgMenuId + '" aria-label="上传图片"><i class="w-e-icon-image"></i></div>')
+    this.$elem = $(`<div class="w-e-menu hint--top" id="' + imgMenuId + '" aria-label="$t('上传图片')"><i class="w-e-icon-image"></i></div>`)
     editor.imgMenuId = imgMenuId
     this.type = 'panel'
 

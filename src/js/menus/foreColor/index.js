@@ -20,7 +20,7 @@ function ForeColor(editor) {
     // 初始化 droplist
     this.droplist = new DropList(this, {
         width: 120,
-        $title: $('<p>文字颜色</p>'),
+        $title: $(`<p>$t('文字颜色')</p>`),
         type: 'inline-block', // droplist 内容以 block 形式展示
         list: colors.map(color => {
             return { $elem: $(`<i style="color:${color};" class="w-e-icon-pencil2"></i>`), value: color }

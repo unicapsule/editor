@@ -20,7 +20,7 @@ function BackColor(editor) {
     // 初始化 droplist
     this.droplist = new DropList(this, {
         width: 120,
-        $title: $('<p>背景色</p>'),
+        $title: $(`<p>$t('背景色')</p>`),
         type: 'inline-block', // droplist 内容以 block 形式展示
         list: colors.map(color => {
             return { $elem: $(`<i style="color:${color};" class="w-e-icon-paint-brush"></i>`), value: color }

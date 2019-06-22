@@ -7,7 +7,7 @@ import $ from '../../util/dom-core.js'
 function Bold(editor) {
     this.editor = editor
     this.$elem = $(
-        `<div class="w-e-menu hint--top" aria-label="粗体">
+        `<div class="w-e-menu hint--top" aria-label="$t('粗体')">
             <i class="w-e-icon-bold"></i>
         </div>`
     )
