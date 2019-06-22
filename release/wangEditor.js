@@ -778,50 +778,6 @@ var config = {
         // token: 'abcdef12345'
     },
 
-    // 上传图片的自定义header
-    uploadImgHeaders: {
-        // 'Accept': 'text/x-json'
-    },
-
-    // 配置 XHR withCredentials
-    withCredentials: false,
-
-    // 自定义上传图片超时时间 ms
-    uploadImgTimeout: 10000,
-
-    // 上传图片 hook
-    uploadImgHooks: {
-        // customInsert: function (insertLinkImg, result, editor) {
-        //     console.log('customInsert')
-        //     // 图片上传并返回结果，自定义插入图片的事件，而不是编辑器自动插入图片
-        //     const data = result.data1 || []
-        //     data.forEach(link => {
-        //         insertLinkImg(link)
-        //     })
-        // },
-        before: function before(xhr, editor, files) {
-            // 图片上传之前触发
-
-            // 如果返回的结果是 {prevent: true, msg: 'xxxx'} 则表示用户放弃上传
-            // return {
-            //     prevent: true,
-            //     msg: '放弃上传'
-            // }
-        },
-        success: function success(xhr, editor, result) {
-            // 图片上传并返回结果，图片插入成功之后触发
-        },
-        fail: function fail(xhr, editor, result) {
-            // 图片上传并返回结果，但图片插入错误时触发
-        },
-        error: function error(xhr, editor) {
-            // 图片上传出错时触发
-        },
-        timeout: function timeout(xhr, editor) {
-            // 图片上传超时时触发
-        }
-    },
-
     // 是否上传七牛云，默认为 false
     qiniu: false,
 
@@ -830,14 +786,13 @@ var config = {
     //     // 自定义上传提示
     // },
 
-    // // 自定义上传图片
-    customUploadImg: function customUploadImg(files, insert) {
-        // files 是 input 中选中的文件列表
-        // insert 是获取图片 url 后，插入到编辑器的方法
-        console.log(files);
-        var imgUrl = 'https://www.baidu.com/img/xinshouye_1aa82cd448e4c0aee0961ed6e290baaf.gif';
-        insert(imgUrl);
-    },
+    // 自定义上传图片方法
+    // 参考 src/js/menus/image/upload.js 来写
+    // globalOptions对象须包含回调方法：onProcess 和 success
+    // customUploadImg: function (files, globalOptions) {
+    //     console.log('自定义上传')
+    //     console.log(files, globalOptions)
+    // },
 
     customUploadImgWidth: 500,
 
@@ -3122,6 +3077,11 @@ Toolbar.prototype = {
  * 上传
  */
 var upload = (function (files, globalOptions) {
+    if (config.customUploadImg) {
+        config.customUploadImg(files, globalOptions);
+        return;
+    }
+
     if (!files || !files.length) {
         console.error('no files');
         return;
@@ -3366,14 +3326,10 @@ Image.prototype = {
 
         // 判断 tabs 的显示
         var tabsConfigResult = [];
-        if ((config.uploadImgShowBase64 || config.uploadImgServer || config.customUploadImg) && window.FileReader) {
+        if (window.FileReader) {
             // 显示“上传图片”
             tabsConfigResult.push(tabsConfig[0]);
         }
-        // if (config.showLinkImg) {
-        //     // 显示“网络图片”
-        //     tabsConfigResult.push(tabsConfig[1])
-        // }
 
         // 创建 panel 并显示
         var panel = new Panel(this, {
@@ -4625,7 +4581,10 @@ Text.prototype = {
         var $textElem = editor.$textElem;
         var text = void 0;
         if (val == null) {
-            text = $textElem.text();
+            var $temp = $textElem.clone(1);
+            // 去除 me-media-wrapper 内容
+            $temp.find('.me-media-wrapper').remove();
+            text = $temp.text();
             // 未选中任何内容的时候点击“加粗”或者“斜体”等按钮，就得需要一个空的占位符 &#8203 ，这里替换掉
             text = text.replace(/\u200b/gm, '');
             return text;
@@ -4635,6 +4594,13 @@ Text.prototype = {
             // 初始化选取，将光标定位到内容尾部
             editor.initSelection();
         }
+    },
+
+    // 字数统计
+    wordsCount: function wordsCount() {
+        var t = this.text();
+        console.log(t);
+        console.log(t.length);
     },
 
     // 追加内容

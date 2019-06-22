@@ -1,9 +1,15 @@
 /**
  * 上传
  */
-import { objForEach, arrForEach, percentFormat } from '../../util/util.js'
+import { arrForEach } from '../../util/util.js'
+import _config from '../../config.js'
 
 export default (files, globalOptions) => {
+    if (_config.customUploadImg) {
+        _config.customUploadImg(files, globalOptions)
+        return
+    }
+
     if (!files || !files.length) {
         console.error('no files')
         return

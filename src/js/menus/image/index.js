@@ -141,14 +141,10 @@ Image.prototype = {
 
         // 判断 tabs 的显示
         const tabsConfigResult = []
-        if ((config.uploadImgShowBase64 || config.uploadImgServer || config.customUploadImg) && window.FileReader) {
+        if (window.FileReader) {
             // 显示“上传图片”
             tabsConfigResult.push(tabsConfig[0])
         }
-        // if (config.showLinkImg) {
-        //     // 显示“网络图片”
-        //     tabsConfigResult.push(tabsConfig[1])
-        // }
 
         // 创建 panel 并显示
         const panel = new Panel(this, {

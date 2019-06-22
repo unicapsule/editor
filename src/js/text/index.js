@@ -98,7 +98,10 @@ Text.prototype = {
         const $textElem = editor.$textElem
         let text
         if (val == null) {
-            text = $textElem.text()
+            const $temp = $textElem.clone(1)
+            // 去除 me-media-wrapper 内容
+            $temp.find('.me-media-wrapper').remove()
+            text = $temp.text()
             // 未选中任何内容的时候点击“加粗”或者“斜体”等按钮，就得需要一个空的占位符 &#8203 ，这里替换掉
             text = text.replace(/\u200b/gm, '')
             return text
@@ -108,6 +111,13 @@ Text.prototype = {
             // 初始化选取，将光标定位到内容尾部
             editor.initSelection()
         }
+    },
+
+    // 字数统计
+    wordsCount: function () {
+        const t = this.text()
+        console.log(t)
+        console.log(t.length)
     },
 
     // 追加内容

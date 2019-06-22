@@ -26,6 +26,7 @@
     </div>
     <div>
         <button id="btn">获取html内容</button>
+        <button id="count">字数统计</button>
     </div>
 
     <script type="text/javascript" src="../../release/lib/es6-promise.auto.min.js"></script>
@@ -76,6 +77,10 @@
 
         document.getElementById('btn').addEventListener('click', function () {
             console.log(editor2.txt.html())
+        }, false)
+
+        document.getElementById('count').addEventListener('click', function () {
+            console.log(editor2.txt.wordsCount())
         }, false)
     </script>
 </body>
