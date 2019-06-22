@@ -725,8 +725,8 @@ var config = {
     },
 
     geoService: {
-        // baidu: 'rQbEQBxGQw1xEU94D7qXA1TrX8nbdkT3',
-        google: 'AIzaSyAO_Ff-jJ8n6eujJkkdZ0gfgMugeZg2oRY',
+        baidu: 'rQbEQBxGQw1xEU94D7qXA1TrX8nbdkT3',
+        // google: 'AIzaSyAO_Ff-jJ8n6eujJkkdZ0gfgMugeZg2oRY',
         weather: '49ed074129991973727340d6e9d61ed8'
     }
 };
