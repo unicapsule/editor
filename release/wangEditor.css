@@ -508,6 +508,7 @@
   /* flex-wrap: wrap; */
   background: #fff;
   /* 单个菜单 */
+  /* 分割线 */
 }
 .w-e-toolbar .w-e-menu {
   position: relative;
@@ -516,10 +517,15 @@
   cursor: pointer;
 }
 .w-e-toolbar .w-e-menu i {
-  color: #999;
+  color: #333;
 }
 .w-e-toolbar .w-e-menu:hover i {
   color: #333;
+}
+.w-e-toolbar .w-e-menu--spliter {
+  width: 1px;
+  background: #D8D8D8;
+  margin: 0 10px;
 }
 .w-e-toolbar .w-e-active i {
   color: #1e88e5;

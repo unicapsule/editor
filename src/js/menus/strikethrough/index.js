@@ -8,7 +8,7 @@ function StrikeThrough(editor) {
     this.editor = editor
     this.$elem = $(
         `<div class="w-e-menu hint--top" aria-label="$t('删除线')">
-            <i class="w-e-icon-strikethrough"></i>
+            <i class="iconfont icon-shanchuxian2"></i>
         </div>`
     )
     this.type = 'click'

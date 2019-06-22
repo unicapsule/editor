@@ -22,11 +22,15 @@ Menus.prototype = {
         const configMenus = config.menus || []  // 获取配置中的菜单
 
         // 根据配置信息，创建菜单
-        configMenus.forEach(menuKey => {
+        configMenus.forEach((menuKey, i) => {
             const MenuConstructor = MenuConstructors[menuKey]
             if (MenuConstructor && typeof MenuConstructor === 'function') {
                 // 创建单个菜单
-                this.menus[menuKey] = new MenuConstructor(editor)
+                if (this.menus[menuKey]) { // 允许重复添加menu
+                    this.menus[menuKey + i.toString()] = new MenuConstructor(editor)
+                } else {
+                    this.menus[menuKey] = new MenuConstructor(editor)
+                }
             }
         })
 

@@ -39,7 +39,6 @@ Command.prototype = {
             this[_name](value)
         } else {
             // 默认 command
-            console.log('默认 command', name)
             this._execCommand(name, value)
         }
 

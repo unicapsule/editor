@@ -1,15 +1,11 @@
-/**
- * unordered list
- * 无序列表
- */
 import $ from '../../util/dom-core.js'
 
 // 构造函数
-function UnorderedList(editor) {
+function OrderedList(editor) {
     this.editor = editor
     this.$elem = $(
-        `<div class="w-e-menu hint--top" aria-label="$t('无序列表')">
-            <i class="iconfont icon-wuxupailie"></i>
+        `<div class="w-e-menu hint--top" aria-label="$t('有序列表')">
+            <i class="iconfont icon-youxuliebiao1"></i>
         </div>`
     )
     this.type = 'click'
@@ -19,13 +15,13 @@ function UnorderedList(editor) {
 }
 
 // 原型
-UnorderedList.prototype = {
-    constructor: UnorderedList,
+OrderedList.prototype = {
+    constructor: OrderedList,
 
     // 点击事件
     onClick: function (e) {
         // 点击菜单将触发这里
-        this._command('insertUnOrderedList')
+        this._command('insertOrderedList')
     },
 
     // 执行命令
@@ -64,7 +60,7 @@ UnorderedList.prototype = {
     tryChangeActive: function (e) {
         const editor = this.editor
         const $elem = this.$elem
-        if (editor.cmd.queryCommandState('insertUnOrderedList')) {
+        if (editor.cmd.queryCommandState('insertOrderedList')) {
             this._active = true
             $elem.addClass('w-e-active')
         } else {
@@ -74,4 +70,4 @@ UnorderedList.prototype = {
     }
 }
 
-export default UnorderedList
+export default OrderedList

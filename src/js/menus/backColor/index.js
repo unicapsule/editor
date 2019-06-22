@@ -7,7 +7,7 @@ import DropList from '../droplist.js'
 // 构造函数
 function BackColor(editor) {
     this.editor = editor
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-paint-brush"></i></div>')
+    this.$elem = $('<div class="w-e-menu"><i class="iconfont icon-beijingyanse"></i></div>')
     this.type = 'droplist'
 
     // 获取配置的颜色
@@ -23,7 +23,7 @@ function BackColor(editor) {
         $title: $(`<p>$t('背景色')</p>`),
         type: 'inline-block', // droplist 内容以 block 形式展示
         list: colors.map(color => {
-            return { $elem: $(`<i style="color:${color};" class="w-e-icon-paint-brush"></i>`), value: color }
+            return { $elem: $(`<i style="color:${color};" class="iconfont icon-beijingyanse"></i>`), value: color }
         }),
         onClick: (value) => {
             // 注意 this 是指向当前的 BackColor 对象

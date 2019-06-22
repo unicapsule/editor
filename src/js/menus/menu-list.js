@@ -38,6 +38,9 @@ MenuConstructors.undo = Undo
 import List from './list/index.js'
 MenuConstructors.list = List
 
+import OrderedList from './orderedList/index.js'
+MenuConstructors.orderedList = OrderedList
+
 import Justify from './justify/index.js'
 MenuConstructors.justify = Justify
 
@@ -89,6 +92,9 @@ MenuConstructors.audio = Audio
 
 import Fullsize from './fullsize/index.js'
 MenuConstructors.fullsize = Fullsize
+
+import Spliter from './spliter/index.js'
+MenuConstructors.spliter = Spliter
 
 // 吐出所有菜单集合
 export default MenuConstructors
