@@ -155,7 +155,6 @@ Toolbar.prototype = {
     },
 
     destroy: function() {
-        console.log(this.container)
         if (this.container) {
             $(this.container).find(`.${NAME}`).remove()
         }

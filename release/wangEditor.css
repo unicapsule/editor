@@ -91,13 +91,14 @@
 #editor-geo {
   display: none;
   position: absolute;
-  bottom: 2px;
+  bottom: 0;
   left: 10px;
   padding: 10px 0;
   font-size: 13px;
   background: inherit;
   height: 38px;
   cursor: pointer;
+  width: calc(75%);
 }
 #editor-geo:before {
   content: " ";

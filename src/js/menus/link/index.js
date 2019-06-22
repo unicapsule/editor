@@ -68,11 +68,11 @@ Link.prototype = {
                     title: '链接',
                     // 模板
                     tpl: `<div>
-                            <input id="${inputTextId}" type="text" class="block" value="${text}" placeholder="链接文字"/></td>
+                            <input id="${inputTextId}" type="text" class="block" value="${text}" placeholder="$t('链接文字')"/></td>
                             <input id="${inputLinkId}" type="text" class="block" value="${link}" placeholder="http://..."/></td>
                             <div class="w-e-button-container">
-                                <button id="${btnOkId}" class="right">插入</button>
-                                <button id="${btnDelId}" class="gray right" style="display:${delBtnDisplay}">删除链接</button>
+                                <button id="${btnOkId}" class="right">$t('插入')</button>
+                                <button id="${btnDelId}" class="gray right" style="display:${delBtnDisplay}">$t('删除链接')</button>
                             </div>
                         </div>`,
                     // 事件绑定

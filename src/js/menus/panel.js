@@ -68,8 +68,9 @@ Panel.prototype = {
             let tpl = tab.tpl || ''
 
             // 替换多语言
-            title = replaceLang(editor, title)
-            tpl = replaceLang(editor, tpl)
+            // title = replaceLang(editor, title)
+            title = window.$di18n ? window.$di18n.$t(title) : title
+            tpl = window.$di18n ? window.$di18n.$html(tpl) : replaceLang(editor, tpl)
 
             // 添加到 DOM
             const $title = $(`<li class="w-e-item">${title}</li>`)

@@ -50,8 +50,8 @@ Image.prototype = {
                     <div id="${upTriggerId}" class="w-custom-up-img-container-inner">
                     <div class="w-custom-up-btn">
                         <i class="w-custom-icon-upload2"></i>
-                        <p class="w-custom-up-img-tip">拖动图片到此或点击此处上传<br>
-                        （最多可同时上传10张图片）</p>
+                        <p class="w-custom-up-img-tip">$t('拖动图片到此或点击此处上传')<br>
+                        （$t('最多可同时上传10张图片')）</p>
                         <p class="w-custom-up-img-tip-focus">松下鼠标开始上传</p>
                     </div>
                     <div style="display:none;">
@@ -152,7 +152,7 @@ Image.prototype = {
 
         // 创建 panel 并显示
         const panel = new Panel(this, {
-            width: 400,
+            width: 442,
             tabs: tabsConfigResult
         })
         panel.show()

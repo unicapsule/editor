@@ -47,8 +47,8 @@ Audio.prototype = {
                     <div id="${upTriggerId}" class="w-custom-up-img-container-inner">
                     <div class="w-custom-up-btn">
                         <i class="w-custom-icon-upload2"></i>
-                        <p class="w-custom-up-img-tip">拖动mp3到此或点击此处上传</p>
-                        <p class="w-custom-up-img-tip-focus">松下鼠标开始上传</p>
+                        <p class="w-custom-up-img-tip">$t('拖动mp3到此或点击此处上传')</p>
+                        <p class="w-custom-up-img-tip-focus">$t('松下鼠标开始上传')</p>
                     </div>
                     <div style="display:none;">
                         <input id="${upFileId}" type="file" multiple="multiple" accept="audio/mp3"/>
@@ -168,7 +168,7 @@ Audio.prototype = {
                 $wrapper.find('.me-media-wrapper--placeholder')[0].style.display = 'block'
             },
             onBlur: ($wrapper) => {
-                // $wrapper.find('.me-floating-toolbar').remove()
+                $wrapper.find('.me-floating-toolbar').remove()
             }
         })
 
