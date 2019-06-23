@@ -50,8 +50,11 @@ export default (files, globalOptions) => {
 
     // 抛出验证信息
     if (errInfo.length) {
-        // TODO
-        alert('文件验证未通过: \n' + errInfo.join('\n'))
+        if (window.toast) {
+            window.toast('文件验证未通过: \n' + errInfo.join('\n'), 2000)
+        } else {
+            alert('文件验证未通过: \n' + errInfo.join('\n'))
+        }
         return
     }
     if (resultFiles.length > maxLength) {

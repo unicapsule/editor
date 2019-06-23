@@ -2853,15 +2853,18 @@ function Toolbar(options) {
         justify: {
             html: '<span class="tool--justify"><i class="w-e-icon-paragraph-left clickable"></i><i class="w-e-icon-paragraph-center clickable"></i><i class="w-e-icon-paragraph-right clickable"></i></span>',
             events: function events() {
-                var $tool = $('.' + NAME);
+                var $tool = $(_this.justifyContainer).find('.' + NAME);
                 $tool.on('click', '.w-e-icon-paragraph-left', function () {
                     _this.justifyContainer.style.textAlign = 'left';
+                    _this.positionFix($tool);
                 });
                 $tool.on('click', '.w-e-icon-paragraph-center', function () {
                     _this.justifyContainer.style.textAlign = 'center';
+                    _this.positionFix($tool);
                 });
                 $tool.on('click', '.w-e-icon-paragraph-right', function () {
                     _this.justifyContainer.style.textAlign = 'right';
+                    _this.positionFix($tool);
                 });
             }
         },
@@ -2869,19 +2872,21 @@ function Toolbar(options) {
             html: '<span class="tool--fullsize clickable"><i class="iconfont icon-Groupshi"></i></span>',
             events: function events() {
                 var $iframe = $(_this.justifyContainer).find('iframe');
+                var $img = $(_this.justifyContainer).find('img');
                 var $toolItem = $(_this.justifyContainer).find('.tool--fullsize');
+                var $el = $iframe.length ? $iframe : $img;
 
-                if ($iframe.attr('allowfullscreen') === '1') {
+                if ($el.length && $el.attr('allowfullscreen') === '1') {
                     $toolItem.addClass('active');
                 }
 
                 $toolItem.on('click', function (e) {
                     if (Array.from($toolItem[0].classList).includes('active')) {
                         $toolItem.removeClass('active');
-                        $iframe[0].removeAttribute('allowfullscreen');
+                        $el[0].removeAttribute('allowfullscreen');
                     } else {
                         $toolItem.addClass('active');
-                        $iframe.attr('allowfullscreen', '1');
+                        $el.attr('allowfullscreen', '1');
                     }
                 });
             }
@@ -2910,31 +2915,34 @@ function Toolbar(options) {
         rotate: {
             html: '<span class="tool--rotate"><i class="J-r-1 iconfont icon-xuanzhuan2 clickable"></i><i class="J-r-2 iconfont icon-Rotationangle clickable"></i></span>',
             events: function events() {
-                // TODO
+
                 $('.J-r-1').on('click', function (e) {
-                    var p = e.target.parentElement.parentElement.parentElement.parentElement.parentElement;
-                    var $img = p.querySelector('img');
-                    var r = $img.getAttribute('data-rotate');
+                    var $img = $(_this.justifyContainer).find('img');
+                    console.log($img);
+                    // const p = e.target.parentElement.parentElement.parentElement.parentElement.parentElement
+                    // const $img = p.querySelector('img')
+                    var r = $img.attr('data-rotate');
                     if (!r) {
-                        $img.setAttribute('data-rotate', '90');
-                        $img.style.transform = 'rotate(90deg)';
+                        $img.attr('data-rotate', '90');
+                        $img[0].style.transform = 'rotate(90deg)';
                     } else {
                         var r2 = parseInt(r) + 90;
-                        $img.setAttribute('data-rotate', r2);
-                        $img.style.transform = 'rotate(' + r2 + 'deg)';
+                        $img.attr('data-rotate', r2);
+                        $img[0].style.transform = 'rotate(' + r2 + 'deg)';
                     }
                 });
                 $('.J-r-2').on('click', function (e) {
-                    var p = e.target.parentElement.parentElement.parentElement.parentElement.parentElement;
-                    var $img = p.querySelector('img');
-                    var r = $img.getAttribute('data-rotate');
+                    var $img = $(_this.justifyContainer).find('img');
+                    // const p = e.target.parentElement.parentElement.parentElement.parentElement.parentElement
+                    // const $img = p.querySelector('img')
+                    var r = $img.attr('data-rotate');
                     if (!r) {
-                        $img.setAttribute('data-rotate', '-90');
-                        $img.style.transform = 'rotate(-90deg)';
+                        $img.attr('data-rotate', '-90');
+                        $img[0].style.transform = 'rotate(-90deg)';
                     } else {
                         var r2 = parseInt(r) - 90;
-                        $img.setAttribute('data-rotate', r2);
-                        $img.style.transform = 'rotate(' + r2 + 'deg)';
+                        $img.attr('data-rotate', r2);
+                        $img[0].style.transform = 'rotate(' + r2 + 'deg)';
                     }
                 });
             }
@@ -2987,6 +2995,7 @@ Toolbar.prototype = {
         $dom.appendChild(this.build());
         this.container = $dom; // 保存父容器
         this.eventsBind();
+        this.positionFix($(this.justifyContainer).find('.me-floating-toolbar'));
     },
 
     build: function build() {
@@ -3010,6 +3019,23 @@ Toolbar.prototype = {
         this.tools.forEach(function (toolName) {
             _this3.allTools[toolName].events();
         });
+    },
+    positionFix: function positionFix($toolbarEl) {
+        // $toolbarEl 工具条
+        var $outerEl = $(this.justifyContainer).find('figure'); // $outerEl figure元素，包裹着$toolbarEl，offset距离实际是由figure元素决定的
+        var $outerParent = $outerEl.parent(); // 用于计算宽度够不够大，使得$outerEl可以左右对齐且不超出
+        var outerParentWidth = $outerParent[0].offsetWidth;
+        var outerLeft = $outerEl[0].offsetLeft;
+        var width = $toolbarEl[0].offsetWidth;
+
+        if (outerLeft - width / 2 < 0) {
+            $toolbarEl.css('left', '0').css('right', 'auto').css('transform', 'none');
+        } else if (outerLeft + width / 2 > outerParentWidth) {
+            $toolbarEl.css('left', 'auto').css('right', '0').css('transform', 'none');
+        } else {
+            // 默认样式
+            $toolbarEl.css('left', '50%').css('right', 'auto').css('transform', 'translateX(-50%)');
+        }
     },
 
 
@@ -3069,8 +3095,11 @@ var upload = (function (files, globalOptions) {
 
     // 抛出验证信息
     if (errInfo.length) {
-        // TODO
-        alert('文件验证未通过: \n' + errInfo.join('\n'));
+        if (window.toast) {
+            window.toast('文件验证未通过: \n' + errInfo.join('\n'), 2000);
+        } else {
+            alert('文件验证未通过: \n' + errInfo.join('\n'));
+        }
         return;
     }
     if (resultFiles.length > maxLength) {
@@ -3330,8 +3359,6 @@ Image.prototype = {
         this.editor.cmd.do('insertHTML', '<p><br></p>');
         this.editor.cmd.do('insertElem', [el]);
         this.editor.selection.createRangeByElem([el.parentNode], false); // 设置选取到结束位置
-        // this.editor.selection.restoreSelection()
-        // this.editor.cmd.do('insertElem', [document.createElement('p')])
         this.editor.cmd.do('insertHTML', '<p><br></p>');
     },
 
@@ -3343,7 +3370,7 @@ Image.prototype = {
             success: function success(fileInfo) {
                 // console.log(fileInfo)
                 videoWithWrapper.setProgress(1);
-                console.log(videoWithWrapper.el.querySelector('img'));
+                // console.log(videoWithWrapper.el.querySelector('img'))
                 videoWithWrapper.el.querySelector('img').setAttribute('src', fileInfo.url);
             }
         });

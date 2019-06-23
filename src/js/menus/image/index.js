@@ -199,8 +199,6 @@ Image.prototype = {
         this.editor.cmd.do('insertHTML', '<p><br></p>')
         this.editor.cmd.do('insertElem', [el])
         this.editor.selection.createRangeByElem([el.parentNode], false) // 设置选取到结束位置
-        // this.editor.selection.restoreSelection()
-        // this.editor.cmd.do('insertElem', [document.createElement('p')])
         this.editor.cmd.do('insertHTML', '<p><br></p>')
     },
 
@@ -212,7 +210,7 @@ Image.prototype = {
             success: function (fileInfo) {
                 // console.log(fileInfo)
                 videoWithWrapper.setProgress(1)
-                console.log(videoWithWrapper.el.querySelector('img'))
+                // console.log(videoWithWrapper.el.querySelector('img'))
                 videoWithWrapper.el.querySelector('img').setAttribute('src', fileInfo.url)
             }
         })

@@ -17,15 +17,18 @@ function Toolbar(options) {
         justify: {
             html: '<span class="tool--justify"><i class="w-e-icon-paragraph-left clickable"></i><i class="w-e-icon-paragraph-center clickable"></i><i class="w-e-icon-paragraph-right clickable"></i></span>',
             events: () => {
-                const $tool = $(`.${NAME}`)
+                const $tool = $(this.justifyContainer).find(`.${NAME}`)
                 $tool.on('click', '.w-e-icon-paragraph-left', () => {
                     this.justifyContainer.style.textAlign = 'left'
+                    this.positionFix($tool)
                 })
                 $tool.on('click', '.w-e-icon-paragraph-center', () => {
                     this.justifyContainer.style.textAlign = 'center'
+                    this.positionFix($tool)
                 })
                 $tool.on('click', '.w-e-icon-paragraph-right', () => {
                     this.justifyContainer.style.textAlign = 'right'
+                    this.positionFix($tool)
                 })
             },
         },
@@ -33,19 +36,21 @@ function Toolbar(options) {
             html: '<span class="tool--fullsize clickable"><i class="iconfont icon-Groupshi"></i></span>',
             events: () => {
                 var $iframe = $(this.justifyContainer).find('iframe')
+                var $img = $(this.justifyContainer).find('img')
                 var $toolItem = $(this.justifyContainer).find('.tool--fullsize')
+                var $el = $iframe.length ? $iframe : $img
 
-                if ($iframe.attr('allowfullscreen') === '1') {
+                if ($el.length && $el.attr('allowfullscreen') === '1') {
                     $toolItem.addClass('active')
                 }
 
                 $toolItem.on('click', (e) => {
                     if (Array.from($toolItem[0].classList).includes('active')) {
                         $toolItem.removeClass('active')
-                        $iframe[0].removeAttribute('allowfullscreen')
+                        $el[0].removeAttribute('allowfullscreen')
                     } else {
                         $toolItem.addClass('active')
-                        $iframe.attr('allowfullscreen', '1')
+                        $el.attr('allowfullscreen', '1')
                     }
                 })
             }
@@ -74,31 +79,34 @@ function Toolbar(options) {
         rotate: {
             html: '<span class="tool--rotate"><i class="J-r-1 iconfont icon-xuanzhuan2 clickable"></i><i class="J-r-2 iconfont icon-Rotationangle clickable"></i></span>',
             events: () => {
-                // TODO
+
                 $('.J-r-1').on('click', (e) => {
-                    const p = e.target.parentElement.parentElement.parentElement.parentElement.parentElement
-                    const $img = p.querySelector('img')
-                    const r = $img.getAttribute('data-rotate')
+                    const $img = $(this.justifyContainer).find('img')
+                    console.log($img)
+                    // const p = e.target.parentElement.parentElement.parentElement.parentElement.parentElement
+                    // const $img = p.querySelector('img')
+                    const r = $img.attr('data-rotate')
                     if (!r) {
-                        $img.setAttribute('data-rotate', '90')
-                        $img.style.transform = 'rotate(90deg)'
+                        $img.attr('data-rotate', '90')
+                        $img[0].style.transform = 'rotate(90deg)'
                     } else {
                         const r2 = parseInt(r) + 90
-                        $img.setAttribute('data-rotate', r2)
-                        $img.style.transform = `rotate(${r2}deg)`
+                        $img.attr('data-rotate', r2)
+                        $img[0].style.transform = `rotate(${r2}deg)`
                     }
                 })
                 $('.J-r-2').on('click', (e) => {
-                    const p = e.target.parentElement.parentElement.parentElement.parentElement.parentElement
-                    const $img = p.querySelector('img')
-                    const r = $img.getAttribute('data-rotate')
+                    const $img = $(this.justifyContainer).find('img')
+                    // const p = e.target.parentElement.parentElement.parentElement.parentElement.parentElement
+                    // const $img = p.querySelector('img')
+                    const r = $img.attr('data-rotate')
                     if (!r) {
-                        $img.setAttribute('data-rotate', '-90')
-                        $img.style.transform = 'rotate(-90deg)'
+                        $img.attr('data-rotate', '-90')
+                        $img[0].style.transform = 'rotate(-90deg)'
                     } else {
                         const r2 = parseInt(r) - 90
-                        $img.setAttribute('data-rotate', r2)
-                        $img.style.transform = `rotate(${r2}deg)`
+                        $img.attr('data-rotate', r2)
+                        $img[0].style.transform = `rotate(${r2}deg)`
                     }
                 })
             }
@@ -151,6 +159,7 @@ Toolbar.prototype = {
         $dom.appendChild(this.build())
         this.container = $dom // 保存父容器
         this.eventsBind()
+        this.positionFix($(this.justifyContainer).find('.me-floating-toolbar'))
     },
 
     build: function () {
@@ -172,6 +181,22 @@ Toolbar.prototype = {
         this.tools.forEach((toolName) => {
             this.allTools[toolName].events()
         })
+    },
+
+    positionFix($toolbarEl) { // $toolbarEl 工具条
+        const $outerEl = $(this.justifyContainer).find('figure') // $outerEl figure元素，包裹着$toolbarEl，offset距离实际是由figure元素决定的
+        const $outerParent = $outerEl.parent()  // 用于计算宽度够不够大，使得$outerEl可以左右对齐且不超出
+        const outerParentWidth = $outerParent[0].offsetWidth
+        const outerLeft = $outerEl[0].offsetLeft
+        const width = $toolbarEl[0].offsetWidth
+
+        if (outerLeft - width/2 < 0) {
+            $toolbarEl.css('left', '0').css('right', 'auto').css('transform', 'none')
+        } else if (outerLeft + width/2 > outerParentWidth) {
+            $toolbarEl.css('left', 'auto').css('right', '0').css('transform', 'none')
+        } else { // 默认样式
+            $toolbarEl.css('left', '50%').css('right', 'auto').css('transform', 'translateX(-50%)')
+        }
     },
 
     destroy: function() {
