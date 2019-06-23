@@ -5066,8 +5066,15 @@ Text.prototype = {
             }
         });
 
-        // 移除'>' '<' 之间的空白内容
         var _html = $temp.html();
+        var $geo = $('#editor-geo');
+
+        // 加入地理位置内容
+        if ($geo.html().trim()) {
+            _html += $geo[0].outerHTML;
+        }
+
+        // 移除'>' '<' 之间的空白内容
         _html = _html.replace(/>\s+(\n?)</g, '><');
         $temp.html(_html);
         // console.log(_html)
