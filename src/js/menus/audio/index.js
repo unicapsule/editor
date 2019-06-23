@@ -194,7 +194,7 @@ Audio.prototype = {
                 mediaWp.setProgress(per)
             },
             success: function (fileInfo) {
-                // console.log(fileInfo)
+                console.log(fileInfo)
                 mediaWp.setProgress(1)
                 mediaWp.el.querySelector('.audio-wrapper').setAttribute('data-url', fileInfo.url)
                 self._fadeInAudioCover(fileInfo, mediaWp)
@@ -207,15 +207,20 @@ Audio.prototype = {
             $(`.${audioCardName}`).find('img')[0].setAttribute('src', 'https://kaaxaa-upload-temp.oss-cn-beijing.aliyuncs.com/unicapsule/jpg/248f5ee32b694f3fb43eba685bd1dcaf/1b5ec7ddca7b681b5a407ccfdb2bc778.jpg')
         }
 
+        const fileTitle = fileInfo.id3.title || 'untitled'
+        const fileCover = fileInfo.id3.cover || ''
+        const fileArtist = fileInfo.id3.artist || 'unknown'
+        const fileOriginalName = fileInfo.originalName
+
         const htmlStr = `
         <div class="audio-card">
             <div class="audio-card--info">
                 <div class="audio-card--info--left">
                     <div class="audio-card--info--img">
-                        <img src="${fileInfo.id3.cover}" onerror="weAudioImgError('${this.audioCardName}')" />
+                        <img src="${fileCover}" onerror="weAudioImgError('${this.audioCardName}')" />
                     </div>
                     <div class="audio-card--info--detail">
-                        <span>mp3 ${fileInfo.id3.title || 'untitled'} - ${fileInfo.id3.artist || 'unknown'} || ${fileInfo.originalName}</span>
+                        <span>mp3 ${fileTitle} - ${fileArtist} || ${fileOriginalName}</span>
                         <br><span class="text-gray">00:00</span>
                     </div>
                 </div>
@@ -231,6 +236,9 @@ Audio.prototype = {
         </div>
         `
 
+        mediaWp.el.querySelector('.audio-wrapper').setAttribute('data-title', fileTitle)
+        mediaWp.el.querySelector('.audio-wrapper').setAttribute('data-artist', fileArtist)
+        mediaWp.el.querySelector('.audio-wrapper').setAttribute('data-cover', fileCover)
         mediaWp.el.querySelector('.audio-wrapper').innerHTML = htmlStr
     }
 }

@@ -73,7 +73,8 @@ Text.prototype = {
         const $textElem = editor.$textElem
         let html
         if (val == null) {
-            html = $textElem.html()
+            const $temp = this._dealMediaContentOnGet($textElem)
+            html = $temp.html()
             // 未选中任何内容的时候点击“加粗”或者“斜体”等按钮，就得需要一个空的占位符 &#8203 ，这里替换掉
             html = html.replace(/\u200b/gm, '')
             return html
@@ -89,7 +90,8 @@ Text.prototype = {
     getJSON: function () {
         const editor = this.editor
         const $textElem = editor.$textElem
-        return getChildrenJSON($textElem)
+        const $temp = this._dealMediaContentOnGet($textElem)
+        return getChildrenJSON($temp)
     },
 
     // 获取 设置 text
@@ -98,9 +100,10 @@ Text.prototype = {
         const $textElem = editor.$textElem
         let text
         if (val == null) {
-            const $temp = $textElem.clone(1)
-            // 去除 me-media-wrapper 内容
-            $temp.find('.me-media-wrapper').remove()
+            // const $temp = $textElem.clone(1)
+            // // 去除 me-media-wrapper 内容
+            // $temp.find('.me-media-wrapper').remove()
+            const $temp = this._dealMediaContentOnGet($textElem)
             text = $temp.text()
             // 未选中任何内容的时候点击“加粗”或者“斜体”等按钮，就得需要一个空的占位符 &#8203 ，这里替换掉
             text = text.replace(/\u200b/gm, '')
@@ -557,6 +560,47 @@ Text.prototype = {
             const uploadImg = editor.uploadImg
             uploadImg.uploadImg(files)
         })
+    },
+
+    // 获取内容时，处理多媒体内容(youtube, ins ...)
+    _dealMediaContentOnGet: function ($textElem) {
+        const $temp = $textElem.clone(1)
+        const $mediaWrapper = $temp.find('.me-media-wrapper')
+
+        $mediaWrapper.forEach((mw, index) => {
+            const $mw = $(mw)
+            const type = $mw.attr('data-type')
+            const $figcaption = $mw.find('figcaption')
+            const DefaultFigcaptionText = 'Caption'
+            $mw.find('.me-media-wrapper--placeholder').remove()
+            $mw.find('.progress-bar').remove()
+            $mw.find('.progress-bar-text').remove()
+
+            if ($figcaption.length) {
+                const fiContent = $figcaption.text().trim()
+                if (!fiContent || fiContent === DefaultFigcaptionText) $figcaption.remove()
+            }
+
+            if (type === 'youtube') {
+                const $iframe = $mw.find('iframe')
+                const src = $iframe.attr('src')
+                if ($iframe.attr('autoplay') === '1') {
+                    $iframe.attr('src', src.indexOf('?') > -1 ? src + '&autoplay=1' : src + '?autoplay=1')
+                }
+            }
+
+            if (type === 'audio') {
+                $mw.find('.audio-card').remove() // 只保留到audio-wrapper一层，其data属性包含了上传的音频信息
+            }
+        })
+
+        // 移除'>' '<' 之间的空白内容
+        let _html = $temp.html()
+        _html = _html.replace(/>\s+(\n?)</g, '><')
+        $temp.html(_html)
+        // console.log(_html)
+
+        return $temp
     }
 }
 

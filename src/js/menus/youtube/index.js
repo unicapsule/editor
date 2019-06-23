@@ -78,7 +78,7 @@ Youtube.prototype = {
                                     let videoWrapperEl
                                     const videoWithWrapper = new ContentWrapper({
                                         contentHtml: htmlStr,
-                                        contentType: 'video',
+                                        contentType: 'youtube',
                                         // height: this.editor.config.youbute.height,
                                         width: this.editor.config.youbute.width,
                                         onFocus: ($wrapper) => {

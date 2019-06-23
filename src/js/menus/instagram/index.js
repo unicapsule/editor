@@ -50,10 +50,9 @@ Inst.prototype = {
                                     const htmlStr = `<iframe src="${val}/embed/" width="${this.editor.config.instagram.width}" height="${this.editor.config.instagram.height}" frameborder="0" scrolling="no"></iframe>`
 
                                     let insWrapperEl
-                                    // FIXME: 没有蒙层
                                     const insWithWrapper = new ContentWrapper({
                                         contentHtml: htmlStr,
-                                        contentType: 'video',
+                                        contentType: 'instagram',
                                         // height: this.editor.config.youbute.height,
                                         width: this.editor.config.instagram.width,
                                         onFocus: ($wrapper) => {
@@ -65,7 +64,7 @@ Inst.prototype = {
                                             fToolbar.appendTo($wrapper.find('figure')[0])
                                         },
                                         onBlur: ($wrapper) => {
-                                            // $wrapper.find('.me-floating-toolbar').remove()
+                                            $wrapper.find('.me-floating-toolbar').remove()
                                         }
                                     })
                                     insWrapperEl = insWithWrapper.generateDom()

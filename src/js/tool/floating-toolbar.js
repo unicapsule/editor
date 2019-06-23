@@ -83,8 +83,6 @@ function Toolbar(options) {
                 $('.J-r-1').on('click', (e) => {
                     const $img = $(this.justifyContainer).find('img')
                     console.log($img)
-                    // const p = e.target.parentElement.parentElement.parentElement.parentElement.parentElement
-                    // const $img = p.querySelector('img')
                     const r = $img.attr('data-rotate')
                     if (!r) {
                         $img.attr('data-rotate', '90')
@@ -97,8 +95,6 @@ function Toolbar(options) {
                 })
                 $('.J-r-2').on('click', (e) => {
                     const $img = $(this.justifyContainer).find('img')
-                    // const p = e.target.parentElement.parentElement.parentElement.parentElement.parentElement
-                    // const $img = p.querySelector('img')
                     const r = $img.attr('data-rotate')
                     if (!r) {
                         $img.attr('data-rotate', '-90')
@@ -115,7 +111,7 @@ function Toolbar(options) {
             html: '<span class="tool--caption"><i class="iconfont icon-text1 clickable"></i></span>',
             events: () => {
                 $('.tool--caption').on('click', (e) => {
-                    const p = e.target.parentElement.parentElement.parentElement.parentElement
+                    const p = $(e.target).parentUntil('p')[0]
                     p.querySelector('.me-media-wrapper--placeholder').style.display = 'none'
                     function initFig() {
                         p.querySelector('figcaption span').innerHTML = ''
@@ -131,7 +127,8 @@ function Toolbar(options) {
                     if (p.querySelector('figcaption span')) {
                         initFig()
                     } else {
-                        console.log('[editor] "figcaption span" not found!')
+                        if (this.editor.config.debug) console.log('[editor] "figcaption span" not found!')
+
                         p.querySelector('figcaption').appendChild(document.createElement('span'))
                         initFig()
                     }
@@ -188,14 +185,18 @@ Toolbar.prototype = {
         const $outerParent = $outerEl.parent()  // 用于计算宽度够不够大，使得$outerEl可以左右对齐且不超出
         const outerParentWidth = $outerParent[0].offsetWidth
         const outerLeft = $outerEl[0].offsetLeft
+        const outerWidth = $outerEl[0].offsetWidth
         const width = $toolbarEl[0].offsetWidth
 
-        if (outerLeft - width/2 < 0) {
-            $toolbarEl.css('left', '0').css('right', 'auto').css('transform', 'none')
-        } else if (outerLeft + width/2 > outerParentWidth) {
-            $toolbarEl.css('left', 'auto').css('right', '0').css('transform', 'none')
-        } else { // 默认样式
-            $toolbarEl.css('left', '50%').css('right', 'auto').css('transform', 'translateX(-50%)')
+        // 工具栏比内容宽度还大些
+        if (width >= outerWidth) {
+            if (outerLeft - width/2 < 0) {
+                $toolbarEl.css('left', '0').css('right', 'auto').css('transform', 'none')
+            } else if (outerLeft + width/2 > outerParentWidth) {
+                $toolbarEl.css('left', 'auto').css('right', '0').css('transform', 'none')
+            } else { // 默认样式
+                $toolbarEl.css('left', '50%').css('right', 'auto').css('transform', 'translateX(-50%)')
+            }
         }
     },
 

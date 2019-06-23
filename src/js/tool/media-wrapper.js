@@ -9,7 +9,7 @@ const WRAPPER_NAME = 'me-media-wrapper'
 
 function MediaWrapper(options) {
     this.contentHtml = options.contentHtml
-    this.contentType = options.contentType || 'video'
+    this.contentType = options.contentType || 'instagram' // 类型：youtube, instagram, image, audio
     this.height = options.height
     this.width = options.width || ''
     this.progress = options.progress || false // 显示进度条，传入number类型（如: 1,2...）以选择进度条样式
@@ -80,6 +80,7 @@ MediaWrapper.prototype = {
         divDom.id = this.id
         divDom.setAttribute('contenteditable', 'false')
         divDom.setAttribute('tabindex', '0')
+        divDom.setAttribute('data-type', this.contentType)
         divDom.innerHTML = htmlStrArr.join('')
 
         this.eventsBind(divDom)
@@ -87,6 +88,7 @@ MediaWrapper.prototype = {
         return divDom
     },
 
+    // 展示Figure的类型
     checkFigureType: function () {
         return ['image', 'audio'].includes(this.contentType)
     },

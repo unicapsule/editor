@@ -434,6 +434,7 @@
   display: inline-block;
   *display: inline;
   *zoom: 1;
+  box-sizing: content-box;
 }
 .me-media-wrapper > figure:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -443,7 +444,9 @@
   line-height: 1;
 }
 .me-media-wrapper .me-media-wrapper--content img {
-  display: block;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
 }
 .me-media-wrapper figcaption {
   display: none;
@@ -493,6 +496,10 @@
   transform: translateX(-50%);
 }
 .me-media-wrapper.is-active iframe {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  border: 1px solid orange;
+}
+.me-media-wrapper.is-active .me-media-wrapper--type-audio {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
   border: 1px solid orange;
 }

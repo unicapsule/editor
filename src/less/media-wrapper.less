@@ -6,6 +6,7 @@
     &>figure {
         position: relative;
         display: inline-block;
+        box-sizing: content-box;
 
         &:hover {
             box-shadow: 0 2px 4px rgba(0, 0, 0, .5);
@@ -18,7 +19,7 @@
     }
 
     .me-media-wrapper--content img {
-        display: block;
+        display: inline-block;
     }
     figcaption {
         display: none;
@@ -75,6 +76,11 @@
 
 .me-media-wrapper.is-active {
     iframe {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .7);
+        border: 1px solid orange;
+    }
+
+    .me-media-wrapper--type-audio {
         box-shadow: 0 1px 3px rgba(0, 0, 0, .7);
         border: 1px solid orange;
     }
