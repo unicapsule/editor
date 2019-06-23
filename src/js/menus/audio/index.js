@@ -151,6 +151,7 @@ Audio.prototype = {
         let mediaWrapperEl
 
         const mediaWp = new ContentWrapper({
+            editor: this.editor,
             contentHtml: `<div class="audio-wrapper"></div>`,
             contentType: 'audio',
             className: this.audioCardName,

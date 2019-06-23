@@ -572,6 +572,9 @@ Text.prototype = {
             const type = $mw.attr('data-type')
             const $figcaption = $mw.find('figcaption')
             const DefaultFigcaptionText = 'Caption'
+
+            $mw[0].removeAttribute('tabindex')
+            $mw[0].removeAttribute('contenteditable')
             $mw.find('.me-media-wrapper--placeholder').remove()
             $mw.find('.progress-bar').remove()
             $mw.find('.progress-bar-text').remove()

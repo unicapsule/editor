@@ -51,6 +51,7 @@ Inst.prototype = {
 
                                     let insWrapperEl
                                     const insWithWrapper = new ContentWrapper({
+                                        editor: this.editor,
                                         contentHtml: htmlStr,
                                         contentType: 'instagram',
                                         // height: this.editor.config.youbute.height,

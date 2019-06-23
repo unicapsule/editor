@@ -8,6 +8,7 @@ import { getRandom } from '../util/util.js'
 const WRAPPER_NAME = 'me-media-wrapper'
 
 function MediaWrapper(options) {
+    this.editor = options.editor
     this.contentHtml = options.contentHtml
     this.contentType = options.contentType || 'instagram' // 类型：youtube, instagram, image, audio
     this.height = options.height
@@ -17,7 +18,6 @@ function MediaWrapper(options) {
     this.background = options.background || 'rgba(0,0,0,.05)' // 蒙层背景色
     this.className = options.className
     this.onFocus = options.onFocus
-    this.onBlur = options.onBlur
     this.id = getRandom(WRAPPER_NAME)
     this.el = null
 
@@ -49,7 +49,7 @@ MediaWrapper.prototype = {
         const htmlStrArr = [
             // `<div class="${WRAPPER_NAME}" id="${this.id}" contenteditable="false">`,
             `<figure contenteditable="false" class="${WRAPPER_NAME}--type-${this.contentType}" style="${style}">`,
-            `<div class="${WRAPPER_NAME}--content" style="text-align:center">${this.contentHtml}`,
+            `<div class="${WRAPPER_NAME}--content">${this.contentHtml}`,
         ]
 
         if (this.progress) {
@@ -57,7 +57,7 @@ MediaWrapper.prototype = {
         }
 
         htmlStrArr.push('</div>')
-        htmlStrArr.push(`<div class="${WRAPPER_NAME}--placeholder" style="text-align:center;background:${this.background}"></div>`)
+        htmlStrArr.push(`<div class="${WRAPPER_NAME}--placeholder" style="background:${this.background}"></div>`)
 
         if (isFigureType) htmlStrArr.push(`
         <figcaption contenteditable="true" data-default-value="Type caption for embed (optional)">
@@ -67,7 +67,7 @@ MediaWrapper.prototype = {
 
         htmlStrArr.push('</figure>')
         // <figure>
-        //     <div class="${WRAPPER_NAME}--content" style="text-align:center">
+        //     <div class="${WRAPPER_NAME}--content">
         //           ${this.contentHtml}
         //         <span class="progress-bar"></span>
         //     </div>
@@ -95,6 +95,7 @@ MediaWrapper.prototype = {
 
     eventsBind: function (el) {
         const $el = $(el)
+        const $textElem = this.editor.$textElem
 
         $el.on('focus', (e) => {
             $(`.${WRAPPER_NAME}`).removeClass('is-active')
@@ -103,6 +104,15 @@ MediaWrapper.prototype = {
         }).on('blur', (e) => {
             $el.removeClass('is-active')
             this.onBlur && this.onBlur($el)
+        }).on('keyup', (e) => {
+            if (e.keyCode === 8) {
+                $el.parent().remove()
+                $textElem.focus()
+            } else if (e.keyCode === 13) {
+                $el.parent().remove()
+                this.editor.selection.createRangeByElem($('<p></p>'))
+                $textElem.focus()
+            }
         })
     },
 

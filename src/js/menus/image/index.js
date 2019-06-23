@@ -165,6 +165,7 @@ Image.prototype = {
             reader.onload = function () {
                 let imgWrapperEl
                 const videoWithWrapper = new ContentWrapper({
+                    editor: this.editor,
                     contentHtml: `<img src="${reader.result}" style="max-width:500px">`,
                     contentType: 'image',
                     width: self.editor.config.customUploadImgWidth,

@@ -74,9 +74,10 @@ Youtube.prototype = {
                                 // result: <iframe width="560" height="315" src="https://www.youtube.com/embed/-2r83aFgdBg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 if (val) {
                                     const embedLink = getEmbedLink(val)
-                                    const htmlStr = `<iframe width="100%" height="${this.editor.config.youbute.height}" src="${embedLink}" frameborder="0"></iframe>`
+                                    const htmlStr = `<iframe width="100%" height="${this.editor.config.youbute.height}" src="${embedLink}" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"></iframe>`
                                     let videoWrapperEl
                                     const videoWithWrapper = new ContentWrapper({
+                                        editor: this.editor,
                                         contentHtml: htmlStr,
                                         contentType: 'youtube',
                                         // height: this.editor.config.youbute.height,
