@@ -19,15 +19,12 @@ function Toolbar(options) {
             events: () => {
                 const $tool = $(`.${NAME}`)
                 $tool.on('click', '.w-e-icon-paragraph-left', () => {
-                    console.log('居左')
                     this.justifyContainer.style.textAlign = 'left'
                 })
                 $tool.on('click', '.w-e-icon-paragraph-center', () => {
-                    console.log('居中')
                     this.justifyContainer.style.textAlign = 'center'
                 })
                 $tool.on('click', '.w-e-icon-paragraph-right', () => {
-                    console.log('居右')
                     this.justifyContainer.style.textAlign = 'right'
                 })
             },
@@ -35,18 +32,41 @@ function Toolbar(options) {
         fullsize: {
             html: '<span class="tool--fullsize clickable"><i class="iconfont icon-Groupshi"></i></span>',
             events: () => {
-                console.log('全屏')
+                var $iframe = $(this.justifyContainer).find('iframe')
+                var $toolItem = $(this.justifyContainer).find('.tool--fullsize')
+
+                if ($iframe.attr('allowfullscreen') === '1') {
+                    $toolItem.addClass('active')
+                }
+
+                $toolItem.on('click', (e) => {
+                    if (Array.from($toolItem[0].classList).includes('active')) {
+                        $toolItem.removeClass('active')
+                        $iframe[0].removeAttribute('allowfullscreen')
+                    } else {
+                        $toolItem.addClass('active')
+                        $iframe.attr('allowfullscreen', '1')
+                    }
+                })
             }
         },
         autoplay: {
             html: '<span class="tool--autoplay clickable"><i class="iconfont icon-checkmarktickse"></i>自动播放</span>',
             events: () => {
-                // TODO
-                $('.tool--autoplay').on('click', (e) => {
-                    if (Array.from(e.target.classList).includes('active')) {
-                        $(e.target).removeClass('active')
+                var $iframe = $(this.justifyContainer).find('iframe')
+                var $toolItem = $(this.justifyContainer).find('.tool--autoplay')
+
+                if ($iframe.attr('autoplay') === '1') {
+                    $toolItem.addClass('active')
+                }
+
+                $toolItem.on('click', (e) => {
+                    if (Array.from($toolItem[0].classList).includes('active')) {
+                        $toolItem.removeClass('active')
+                        $iframe[0].removeAttribute('autoplay')
                     } else {
-                        $(e.target).addClass('active')
+                        $toolItem.addClass('active')
+                        $iframe.attr('autoplay', '1')
                     }
                 })
             }

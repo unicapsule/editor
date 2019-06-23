@@ -210,7 +210,7 @@ Image.prototype = {
                 videoWithWrapper.setProgress(per)
             },
             success: function (fileInfo) {
-                console.log(fileInfo)
+                // console.log(fileInfo)
                 videoWithWrapper.setProgress(1)
                 console.log(videoWithWrapper.el.querySelector('img'))
                 videoWithWrapper.el.querySelector('img').setAttribute('src', fileInfo.url)

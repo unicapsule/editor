@@ -263,6 +263,7 @@
 .me-floating-toolbar .tool--justify i:last-of-type {
   margin-right: 0;
 }
+.me-floating-toolbar .tool--fullsize.active,
 .me-floating-toolbar .tool--autoplay.active {
   color: #08D7B8;
 }
@@ -439,6 +440,7 @@
 }
 .me-media-wrapper .me-media-wrapper--content {
   position: relative;
+  line-height: 1;
 }
 .me-media-wrapper .me-media-wrapper--content img {
   display: block;
@@ -509,7 +511,8 @@
   display: -ms-flexbox;
   display: flex;
   padding: 0 5px;
-  /* flex-wrap: wrap; */
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   background: #fff;
   /* 单个菜单 */
   /* 分割线 */

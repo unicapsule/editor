@@ -147,8 +147,7 @@ Audio.prototype = {
     },
 
     _generateHTML: function (fileList) {
-        console.log(fileList)
-
+        // console.log(fileList)
         let mediaWrapperEl
 
         const mediaWp = new ContentWrapper({
@@ -195,7 +194,7 @@ Audio.prototype = {
                 mediaWp.setProgress(per)
             },
             success: function (fileInfo) {
-                console.log(fileInfo)
+                // console.log(fileInfo)
                 mediaWp.setProgress(1)
                 mediaWp.el.querySelector('.audio-wrapper').setAttribute('data-url', fileInfo.url)
                 self._fadeInAudioCover(fileInfo, mediaWp)

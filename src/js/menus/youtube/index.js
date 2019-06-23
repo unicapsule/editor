@@ -10,8 +10,14 @@ import FloatingToolbar from '../../tool/floating-toolbar.js'
 // 获取视频id
 // videoLink示例： https://www.youtube.com/watch?v=-2r83aFgdBg&a=b
 //                https://www.youtube.com/embed/-2r83aFgdBg?start=60
+//                https://youtu.be/hS7oFgOw1Ic
 function getEmbedLink(videoLink) {
     if (videoLink.indexOf('youtube.com/embed/') > -1) return videoLink
+
+    if (videoLink.indexOf('.be/') > -1) {
+        const vid = videoLink.split('.be/')[1]
+        return `https://www.youtube.com/embed/${vid}`
+    }
 
     let vid = videoLink.split('v=')[1]
     const ampersandPosition = vid.indexOf('&')
@@ -46,12 +52,12 @@ Youtube.prototype = {
             width: 350,
             tabs: [
                 {
-                    title: '插入Youtube链接',
+                    title: '插入Youtube',
                     tpl: `<div>
                         <input id="${textValId}" type="text" class="block" placeholder="https://www.youtube.com/watch?v=-2r83aFgdBg"
                         value="https://www.youtube.com/watch?v=IKAk3nV7hY4&t=15s"/>
                         <div class="w-e-button-container">
-                            <button id="${btnId}" class="right">插入</button>
+                            <button id="${btnId}" class="right">$t('插入')</button>
                         </div>
                     </div>
                     `,
@@ -64,10 +70,11 @@ Youtube.prototype = {
                                 const val = $text.val().trim()
 
                                 // val: https://www.youtube.com/watch?v=-2r83aFgdBg
+                                // val: https://youtu.be/hS7oFgOw1Ic
                                 // result: <iframe width="560" height="315" src="https://www.youtube.com/embed/-2r83aFgdBg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 if (val) {
                                     const embedLink = getEmbedLink(val)
-                                    const htmlStr = `<iframe width="100%" height="${this.editor.config.youbute.height}" src="${embedLink}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                                    const htmlStr = `<iframe width="100%" height="${this.editor.config.youbute.height}" src="${embedLink}" frameborder="0"></iframe>`
                                     let videoWrapperEl
                                     const videoWithWrapper = new ContentWrapper({
                                         contentHtml: htmlStr,

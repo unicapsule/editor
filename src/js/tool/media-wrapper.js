@@ -14,7 +14,7 @@ function MediaWrapper(options) {
     this.width = options.width || ''
     this.progress = options.progress || false // 显示进度条，传入number类型（如: 1,2...）以选择进度条样式
     this.progressText = options.progressText || ''
-    this.background = options.background || 'rgba(0,0,0,.1)' // 蒙层背景色
+    this.background = options.background || 'rgba(0,0,0,.05)' // 蒙层背景色
     this.className = options.className
     this.onFocus = options.onFocus
     this.onBlur = options.onBlur
@@ -66,6 +66,14 @@ MediaWrapper.prototype = {
         `)
 
         htmlStrArr.push('</figure>')
+        // <figure>
+        //     <div class="${WRAPPER_NAME}--content" style="text-align:center">
+        //           ${this.contentHtml}
+        //         <span class="progress-bar"></span>
+        //     </div>
+
+        //     <div class="${WRAPPER_NAME}--placeholder"></div>
+        // </figure>
 
         const divDom = document.createElement('div')
         divDom.className = this.className ? `${WRAPPER_NAME} ${this.className}` : WRAPPER_NAME

@@ -47,7 +47,7 @@ Inst.prototype = {
                                 const val = $text.val().trim()
 
                                 if (val) {
-                                    const htmlStr = `<iframe src="${val}/embed/" width="${this.editor.config.instagram.width}" height="${this.editor.config.instagram.height}" frameborder="0" scrolling="no" allowtransparency="true">`
+                                    const htmlStr = `<iframe src="${val}/embed/" width="${this.editor.config.instagram.width}" height="${this.editor.config.instagram.height}" frameborder="0" scrolling="no"></iframe>`
 
                                     let insWrapperEl
                                     // FIXME: 没有蒙层
@@ -65,7 +65,7 @@ Inst.prototype = {
                                             fToolbar.appendTo($wrapper.find('figure')[0])
                                         },
                                         onBlur: ($wrapper) => {
-                                            $wrapper.find('.me-floating-toolbar').remove()
+                                            // $wrapper.find('.me-floating-toolbar').remove()
                                         }
                                     })
                                     insWrapperEl = insWithWrapper.generateDom()
