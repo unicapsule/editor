@@ -23,7 +23,7 @@ gulp.task('copy-fonts', () => {
 })
 
 gulp.task('copy-lib', () => {
-    gulp.src('./src/lib/*')
+    gulp.src('./src/lib/**')
         .pipe(gulp.dest('./release/lib'))
 })
 

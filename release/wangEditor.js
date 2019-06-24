@@ -552,104 +552,67 @@ $.offAll = function () {
 var config = {
 
     // 默认菜单配置
-    menus: ['head', 'bold', 'italic', 'strikeThrough', 'underline', 'fontSize', 'foreColor', 'backColor', 'removeformat', 'spliter', 'justify', 'indent', 'lineHeight', 'orderedList', 'list', 'quote', 'spliter', 'youbute', 'instagram', 'link', 'audio', 'image', 'geo', 'emoticon', 'spliter', 'undo', 'redo', 'fullsize'],
+    menus: ['head', 'bold', 'fontSize', 'fontName', 'italic', 'underline', 'strikeThrough', 'foreColor', 'backColor', 'link', 'list', 'justify', 'quote', 'emoticon', 'image', 'table', 'video', 'code', 'undo', 'redo'],
 
     fontNames: ['宋体', '微软雅黑', 'Arial', 'Tahoma', 'Verdana'],
 
     colors: ['#000000', '#eeece0', '#1c487f', '#4d80bf', '#c24f4a', '#8baa4a', '#7b5ba1', '#46acc8', '#f9963b', '#ffffff'],
 
+    // // 语言配置
     lang: {
-        'lang-en': {
-            '粗体': 'Bold',
-            '上传图片': 'Upload Images',
-            '插入音频': 'Upload Audio',
-            '插入表情': 'Insert Emoji',
-            '字号': 'FontSize',
-            '全屏': 'FullScreen',
-            '插入位置': 'Insert Location',
-            '向后缩进': 'Indent',
-            '向前缩进': 'Outdent',
-            '插入Instagram': 'Insert Instagram',
-            '斜体': 'Italic',
-            '超链接': 'Link',
-            '链接': 'Link',
-            '链接文字': 'Link Text',
-            '引用': 'Quote',
-            '重做': 'Redo',
-            '清除格式': 'Remove Format',
-            '删除线': 'StrikeThrough',
-            '下划线': 'Underline',
-            '撤销': 'Undo',
-            '插入Youtube': 'Insert Youtube',
-            '文字颜色': 'FontColor',
-            '背景色': 'BackgroundColor',
-            '对齐方式': 'Justify',
-            '靠左': 'Left',
-            '居中': 'Center',
-            '靠右': 'Right',
-
-            '设置标题': 'Set Title',
-            '正文': 'Text',
-            '设置列表': 'Set List',
-            '有序列表': 'Ordered List',
-            '无序列表': 'Unordered List',
-            '行高': 'LineHeight',
-            '插入': 'Insert',
-            '删除链接': 'Delete Link',
-            '上传mp3': 'Upload MP3',
-            '拖动mp3到此或点击此处上传': 'Drag mp3 files here or click here to upload',
-            '松下鼠标开始上传': 'Panasonic mouse starts uploading',
-            '拖动图片到此或点击此处上传': 'Drag the image here or click here to upload',
-            '最多可同时上传10张图片': 'Upload up to 10 images at the same time'
-        },
-        'lang-zh': {
-            '粗体': '粗体',
-            '上传图片': '上传图片',
-            '插入音频': '插入音频',
-            '插入表情': '插入表情',
-            '字号': '字号',
-            '全屏': '全屏',
-            '插入位置': '插入位置',
-            '向后缩进': '向后缩进',
-            '向前缩进': '向前缩进',
-            '插入Instagram': '插入 Instagram',
-            '斜体': '斜体',
-            '超链接': '超链接',
-            '链接': '链接',
-            '链接文字': '链接文字',
-            '引用': '引用',
-            '重做': '重做',
-            '清除格式': '清除格式',
-            '删除线': '删除线',
-            '下划线': '下划线',
-            '撤销': '撤销',
-            '插入Youtube': '插入 Youtube',
-            '文字颜色': '文字颜色',
-            '背景色': '背景色',
-            '对齐方式': '对齐方式',
-            '靠左': '靠左',
-            '居中': '居中',
-            '靠右': '靠右',
-
-            '设置标题': '设置标题',
-            '正文': '正文',
-            '设置列表': '设置列表',
-            '有序列表': '有序列表',
-            '无序列表': '无序列表',
-            '行高': '行高',
-            '插入': '插入',
-            '删除链接': '删除链接',
-            '上传mp3': '上传mp3',
-            '拖动mp3到此或点击此处上传': '拖动mp3到此或点击此处上传',
-            '松下鼠标开始上传': '松下鼠标开始上传',
-            '拖动图片到此或点击此处上传': '拖动图片到此或点击此处上传',
-            '最多可同时上传10张图片': '最多可同时上传10张图片'
-        }
+        '设置标题': 'title',
+        '正文': 'p',
+        '链接文字': 'link text',
+        '链接': 'link',
+        '插入': 'insert',
+        '创建': 'init'
     },
-    locale: 'lang-en',
 
     // 表情
-    emotions: [{
+    emotions: [
+    // {
+    //     // tab 的标题
+    //     title: '默认',
+    //     // type -> 'emoji' / 'image'
+    //     type: 'image',
+    //     // content -> 数组
+    //     content: [
+    //         {
+    //             alt: '[坏笑]',
+    //             src: 'http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/50/pcmoren_huaixiao_org.png'
+    //         },
+    //         {
+    //             alt: '[舔屏]',
+    //             src: 'http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/40/pcmoren_tian_org.png'
+    //         },
+    //         {
+    //             alt: '[污]',
+    //             src: 'http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/3c/pcmoren_wu_org.png'
+    //         }
+    //     ]
+    // },
+    // {
+    //     // tab 的标题
+    //     title: '新浪',
+    //     // type -> 'emoji' / 'image'
+    //     type: 'image',
+    //     // content -> 数组
+    //     content: [
+    //         {
+    //             src: 'http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/7a/shenshou_thumb.gif',
+    //             alt: '[草泥马]'
+    //         },
+    //         {
+    //             src: 'http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/60/horse2_thumb.gif',
+    //             alt: '[神马]'
+    //         },
+    //         {
+    //             src: 'http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/bc/fuyun_thumb.gif',
+    //             alt: '[浮云]'
+    //         }
+    //     ]
+    // },
+    {
         // tab 的标题
         title: '插入表情',
         // type -> 'emoji' / 'image'
@@ -670,6 +633,13 @@ var config = {
         // link 是插入的链接
         return true; // 返回 true 即表示成功
         // return '校验失败' // 返回字符串即表示失败的提示信息
+    },
+
+    // 插入网络图片的校验
+    linkImgCheck: function linkImgCheck(src) {
+        // src 即图片的地址
+        return true; // 返回 true 即表示成功
+        // return '校验失败'  // 返回字符串即表示失败的提示信息
     },
 
     // 粘贴过滤样式，默认开启
@@ -703,7 +673,7 @@ var config = {
     uploadImgMaxSize: 5 * 1024 * 1024,
 
     // 配置一次最多上传几个图片
-    uploadImgMaxLength: 5,
+    // uploadImgMaxLength: 5,
 
     // 上传图片，是否显示 base64 格式
     uploadImgShowBase64: false,
@@ -713,6 +683,74 @@ var config = {
 
     // 自定义配置 filename
     uploadFileName: '',
+
+    // 上传图片的自定义参数
+    uploadImgParams: {
+        // token: 'abcdef12345'
+    },
+
+    // 上传图片的自定义header
+    uploadImgHeaders: {
+        // 'Accept': 'text/x-json'
+    },
+
+    // 配置 XHR withCredentials
+    withCredentials: false,
+
+    // 自定义上传图片超时时间 ms
+    uploadImgTimeout: 10000,
+
+    // 上传图片 hook
+    uploadImgHooks: {
+        // customInsert: function (insertLinkImg, result, editor) {
+        //     console.log('customInsert')
+        //     // 图片上传并返回结果，自定义插入图片的事件，而不是编辑器自动插入图片
+        //     const data = result.data1 || []
+        //     data.forEach(link => {
+        //         insertLinkImg(link)
+        //     })
+        // },
+        before: function before(xhr, editor, files) {
+            // 图片上传之前触发
+
+            // 如果返回的结果是 {prevent: true, msg: 'xxxx'} 则表示用户放弃上传
+            // return {
+            //     prevent: true,
+            //     msg: '放弃上传'
+            // }
+        },
+        success: function success(xhr, editor, result) {
+            // 图片上传并返回结果，图片插入成功之后触发
+        },
+        fail: function fail(xhr, editor, result) {
+            // 图片上传并返回结果，但图片插入错误时触发
+        },
+        error: function error(xhr, editor) {
+            // 图片上传出错时触发
+        },
+        timeout: function timeout(xhr, editor) {
+            // 图片上传超时时触发
+        }
+    },
+
+    // 是否上传七牛云，默认为 false
+    qiniu: false,
+
+    // 上传图片自定义提示方法
+    // customAlert: function (info) {
+    //     // 自定义上传提示
+    // },
+
+    // // 自定义上传图片
+    customUploadImg: function customUploadImg(files, insert) {
+        // files 是 input 中选中的文件列表
+        // insert 是获取图片 url 后，插入到编辑器的方法
+        console.log(files);
+        var imgUrl = 'https://www.baidu.com/img/xinshouye_1aa82cd448e4c0aee0961ed6e290baaf.gif';
+        insert(imgUrl);
+    },
+
+    customUploadImgWidth: 500,
 
     youbute: {
         width: 332,
@@ -726,7 +764,6 @@ var config = {
 
     geoService: {
         baidu: 'rQbEQBxGQw1xEU94D7qXA1TrX8nbdkT3',
-        // google: 'AIzaSyAO_Ff-jJ8n6eujJkkdZ0gfgMugeZg2oRY',
         weather: '49ed074129991973727340d6e9d61ed8'
     }
 };
