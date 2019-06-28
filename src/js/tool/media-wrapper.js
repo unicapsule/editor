@@ -18,6 +18,7 @@ function MediaWrapper(options) {
     this.background = options.background || 'rgba(0,0,0,.05)' // 蒙层背景色
     this.className = options.className
     this.onFocus = options.onFocus
+    this.onBlur = options.onBlur
     this.id = getRandom(WRAPPER_NAME)
     this.el = null
 

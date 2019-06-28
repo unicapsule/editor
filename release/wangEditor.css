@@ -30,6 +30,10 @@
 .audio-wrapper .audio-card--info--detail {
   text-align: left;
 }
+.audio-wrapper .text-audio-duration {
+  display: block;
+  margin-top: 10px;
+}
 .audio-wrapper .audio-card--btn-play {
   display: block;
   padding: 4px 10px;

@@ -70,3 +70,13 @@ export function percentFormat(number) {
 export function isFunction(fn) {
     return typeof fn === 'function'
 }
+
+// 毫秒转换为 mm:ss
+export function durationFormat(ms) {
+    if (!ms) return '00:00'
+    const m = Math.floor(ms / 1000 / 60)
+    const s = Math.floor(ms / 1000) % 60
+    const mm = ('0' + m).slice(-2)
+    const ss = ('0' + s).slice(-2)
+    return mm + ':' + ss
+}

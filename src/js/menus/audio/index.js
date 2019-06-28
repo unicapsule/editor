@@ -2,7 +2,7 @@
     menu - img
 */
 import $ from '../../util/dom-core.js'
-import { getRandom, arrForEach } from '../../util/util.js'
+import { getRandom, durationFormat } from '../../util/util.js'
 import Panel from '../panel.js'
 import ContentWrapper from '../../tool/media-wrapper.js'
 import FloatingToolbar from '../../tool/floating-toolbar.js'
@@ -208,10 +208,11 @@ Audio.prototype = {
             $(`.${audioCardName}`).find('img')[0].setAttribute('src', 'https://kaaxaa-upload-temp.oss-cn-beijing.aliyuncs.com/unicapsule/jpg/248f5ee32b694f3fb43eba685bd1dcaf/1b5ec7ddca7b681b5a407ccfdb2bc778.jpg')
         }
 
-        const fileTitle = fileInfo.id3.title || 'untitled'
+        // const fileOriginalName = fileInfo.originalName
+        const fileTitle = fileInfo.id3.title || fileInfo.originalName
         const fileCover = fileInfo.id3.cover || ''
         const fileArtist = fileInfo.id3.artist || 'unknown'
-        const fileOriginalName = fileInfo.originalName
+        const audioDuration = durationFormat(fileInfo.id3.duration)
 
         const htmlStr = `
         <div class="audio-card">
@@ -221,8 +222,8 @@ Audio.prototype = {
                         <img src="${fileCover}" onerror="weAudioImgError('${this.audioCardName}')" />
                     </div>
                     <div class="audio-card--info--detail">
-                        <span>mp3 ${fileTitle} - ${fileArtist} || ${fileOriginalName}</span>
-                        <br><span class="text-gray">00:00</span>
+                        <span>${fileTitle} - ${fileArtist}</span>
+                        <span class="text-gray text-audio-duration">${audioDuration}</span>
                     </div>
                 </div>
                 <div class="audio-card--info--right">
