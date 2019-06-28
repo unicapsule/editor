@@ -600,7 +600,8 @@ var config = {
             '拖动mp3到此或点击此处上传': 'Drag mp3 files here or click here to upload',
             '松下鼠标开始上传': 'Panasonic mouse starts uploading',
             '拖动图片到此或点击此处上传': 'Drag the image here or click here to upload',
-            '最多可同时上传10张图片': 'Upload up to 10 images at the same time'
+            '最多可同时上传10张图片': 'Upload up to 10 images at the same time',
+            '获取地址失败': 'Failed to get address'
         },
         'lang-zh': {
             '粗体': '粗体',
@@ -643,7 +644,8 @@ var config = {
             '拖动mp3到此或点击此处上传': '拖动mp3到此或点击此处上传',
             '松下鼠标开始上传': '松下鼠标开始上传',
             '拖动图片到此或点击此处上传': '拖动图片到此或点击此处上传',
-            '最多可同时上传10张图片': '最多可同时上传10张图片'
+            '最多可同时上传10张图片': '最多可同时上传10张图片',
+            '获取地址失败': '获取地址失败'
         }
     },
     locale: 'lang-en',
@@ -725,9 +727,11 @@ var config = {
     },
 
     geoService: {
-        baidu: 'rQbEQBxGQw1xEU94D7qXA1TrX8nbdkT3',
-        // google: '123',
-        weather: '49ed074129991973727340d6e9d61ed8'
+        // baidu: 'rQbEQBxGQw1xEU94D7qXA1TrX8nbdkT3',
+        google: '123',
+        weather: '49ed074129991973727340d6e9d61ed8',
+        defaultLat: 37,
+        defaultLng: -112
     }
 };
 
@@ -3665,8 +3669,23 @@ Geo.prototype = {
                 var lng = position.coords.longitude;
                 editor.address.lat = lat;
                 editor.address.lng = lng;
-                window.axios({ url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lng + '&key=' + config.geoService.google }).then(function (res) {
-                    editor.address.address = res.data.results[0] && res.data.results[0].formatted_address;
+                window.axios({
+                    url: 'https://map.49miles.cn/geocode/',
+                    method: 'post',
+                    data: {
+                        latlng: lat + ',' + lng
+                        // language: 'zh-CN'
+                    }
+                }).then(function (res) {
+                    console.log(res);
+                    var parsed_address = res.data && res.data.data && res.data.data.parsed_address;
+                    if (!parsed_address) {
+                        editor.address.address = window.DI18n ? window.DI18n.$t('获取地址失败') : '获取地址失败';
+                        _this.insertAddress();
+                        return;
+                    }
+
+                    editor.address.address = [parsed_address.administrative_area_level_2, parsed_address.administrative_area_level_1, parsed_address.country].join(', ');
                     if (config.geoService.weather) {
                         _this.getWeather().then(function (_) {
                             _this.insertAddress();
@@ -3685,12 +3704,28 @@ Geo.prototype = {
             };
             var getPositionFailed = function getPositionFailed(err) {
                 console.log(err);
-                _this._alert('获取地理位置失败', {
-                    errorType: 'getPostionFailed',
-                    service: 'google',
-                    err: err
+                // this._alert('获取地理位置失败', {
+                //     errorType: 'getPostionFailed',
+                //     service: 'google',
+                //     err: err
+                // })
+                // $('#' + editor.geoMenuIdGoogle + ' i').attr(
+                //     'class',
+                //     'iconfont icon-location1'
+                // )
+
+                console.error('获取地理位置失败');
+                console.log('使用默认坐标位置');
+                if (!config.geoService.defaultLat) {
+                    console.error('请配置config.js中的默认坐标');
+                    return;
+                }
+                getPositionSuccess({
+                    coords: {
+                        latitude: config.geoService.defaultLat,
+                        longitude: config.geoService.defaultLng
+                    }
                 });
-                $('#' + editor.geoMenuIdGoogle + ' i').attr('class', 'iconfont icon-location1');
             };
             navigator.geolocation.getCurrentPosition(getPositionSuccess, getPositionFailed, {
                 enableHighAccuracy: true,

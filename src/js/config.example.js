@@ -104,6 +104,7 @@ const config = {
             '松下鼠标开始上传': 'Panasonic mouse starts uploading',
             '拖动图片到此或点击此处上传': 'Drag the image here or click here to upload',
             '最多可同时上传10张图片': 'Upload up to 10 images at the same time',
+            '获取地址失败': 'Failed to get address',
         },
         'lang-zh': {
             '粗体': '粗体',
@@ -148,6 +149,7 @@ const config = {
             '松下鼠标开始上传': '松下鼠标开始上传',
             '拖动图片到此或点击此处上传': '拖动图片到此或点击此处上传',
             '最多可同时上传10张图片': '最多可同时上传10张图片',
+            '获取地址失败': '获取地址失败',
         }
     },
     locale: 'lang-en',
@@ -239,9 +241,11 @@ const config = {
     },
 
     geoService: {
-        baidu: '123',
-        // google: '123',
-        weather: '123'
+        // baidu: '123',
+        google: '1',
+        weather: '123',
+        defaultLat: 37,
+        defaultLng: -112,
     }
 }
 

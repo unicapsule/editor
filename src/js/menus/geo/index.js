@@ -96,10 +96,28 @@ Geo.prototype = {
                 var lng = position.coords.longitude
                 editor.address.lat = lat
                 editor.address.lng = lng
-                window.axios({ url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${ config.geoService.google }` })
+                window.axios({
+                    url: `https://map.49miles.cn/geocode/`,
+                    method: 'post',
+                    data: {
+                        latlng: `${lat},${lng}`,
+                        // language: 'zh-CN'
+                    }
+                })
                     .then(res => {
-                        editor.address.address =
-                            res.data.results[0] && res.data.results[0].formatted_address
+                        console.log(res)
+                        const parsed_address = res.data && res.data.data && res.data.data.parsed_address
+                        if (!parsed_address) {
+                            editor.address.address = window.DI18n ? window.DI18n.$t('获取地址失败') : '获取地址失败'
+                            this.insertAddress()
+                            return
+                        }
+
+                        editor.address.address = [
+                            parsed_address.administrative_area_level_2,
+                            parsed_address.administrative_area_level_1,
+                            parsed_address.country
+                        ].join(', ')
                         if (config.geoService.weather) {
                             this.getWeather().then(_ => {
                                 this.insertAddress()
@@ -122,15 +140,28 @@ Geo.prototype = {
             }
             const getPositionFailed = err => {
                 console.log(err)
-                this._alert('获取地理位置失败', {
-                    errorType: 'getPostionFailed',
-                    service: 'google',
-                    err: err
+                // this._alert('获取地理位置失败', {
+                //     errorType: 'getPostionFailed',
+                //     service: 'google',
+                //     err: err
+                // })
+                // $('#' + editor.geoMenuIdGoogle + ' i').attr(
+                //     'class',
+                //     'iconfont icon-location1'
+                // )
+
+                console.error('获取地理位置失败')
+                console.log('使用默认坐标位置')
+                if (!config.geoService.defaultLat) {
+                    console.error('请配置config.js中的默认坐标')
+                    return
+                }
+                getPositionSuccess({
+                    coords: {
+                        latitude: config.geoService.defaultLat,
+                        longitude: config.geoService.defaultLng,
+                    }
                 })
-                $('#' + editor.geoMenuIdGoogle + ' i').attr(
-                    'class',
-                    'iconfont icon-location1'
-                )
             }
             navigator.geolocation.getCurrentPosition(
                 getPositionSuccess,
