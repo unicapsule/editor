@@ -600,7 +600,8 @@ var config = {
             '拖动mp3到此或点击此处上传': 'Drag mp3 files here or click here to upload',
             '松下鼠标开始上传': 'Panasonic mouse starts uploading',
             '拖动图片到此或点击此处上传': 'Drag the image here or click here to upload',
-            '最多可同时上传10张图片': 'Upload up to 10 images at the same time'
+            '最多可同时上传10张图片': 'Upload up to 10 images at the same time',
+            '获取地址失败': 'Failed to get address'
         },
         'lang-zh': {
             '粗体': '粗体',
@@ -643,7 +644,8 @@ var config = {
             '拖动mp3到此或点击此处上传': '拖动mp3到此或点击此处上传',
             '松下鼠标开始上传': '松下鼠标开始上传',
             '拖动图片到此或点击此处上传': '拖动图片到此或点击此处上传',
-            '最多可同时上传10张图片': '最多可同时上传10张图片'
+            '最多可同时上传10张图片': '最多可同时上传10张图片',
+            '获取地址失败': '获取地址失败'
         }
     },
     locale: 'lang-en',
@@ -725,9 +727,11 @@ var config = {
     },
 
     geoService: {
-        baidu: 'rQbEQBxGQw1xEU94D7qXA1TrX8nbdkT3',
-        // google: 'AIzaSyAO_Ff-jJ8n6eujJkkdZ0gfgMugeZg2oRY',
-        weather: '49ed074129991973727340d6e9d61ed8'
+        // baidu: '123',
+        google: '1',
+        weather: '49ed074129991973727340d6e9d61ed8',
+        defaultLat: 37,
+        defaultLng: -112
     }
 };
 
