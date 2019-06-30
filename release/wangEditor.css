@@ -696,7 +696,7 @@
 .w-e-text-container {
   position: relative;
   background: #fff;
-  font-family: Cambria, Georgia, "Times New Roman", Times, serif;
+  font-family: CourierNewPSMT, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 .w-e-text-container .w-e-progress {
   position: absolute;
@@ -729,7 +729,7 @@
 }
 .w-e-text blockquote {
   display: block;
-  border-left: 8px solid #d0e5f2;
+  border-left: 2px solid #1ABC9C;
   padding: 5px 10px;
   margin: 10px 0;
   line-height: 1.4;
@@ -770,4 +770,21 @@
 }
 .w-e-text img:hover {
   box-shadow: 0 0 5px #333;
+}
+.w-e-text a {
+  color: #1ABC9C;
+  text-decoration: underline;
+  margin: 0 4px;
+}
+.w-e-text a:after {
+  font-family: 'w-e-icon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: " \e9cb";
 }

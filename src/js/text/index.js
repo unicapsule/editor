@@ -585,7 +585,11 @@ Text.prototype = {
 
             if ($figcaption.length) {
                 const fiContent = $figcaption.text().trim()
-                if (!fiContent || fiContent === DefaultFigcaptionText) $figcaption.remove()
+                if (!fiContent || fiContent === DefaultFigcaptionText) {
+                    $figcaption.remove()
+                } else {
+                    $figcaption[0].removeAttribute('contenteditable')
+                }
             }
 
             if (type === 'youtube') {

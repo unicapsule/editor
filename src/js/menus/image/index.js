@@ -148,7 +148,7 @@ Image.prototype = {
 
         // 创建 panel 并显示
         const panel = new Panel(this, {
-            width: 442,
+            width: 512,
             tabs: tabsConfigResult
         })
         panel.show()
@@ -165,7 +165,7 @@ Image.prototype = {
             reader.onload = function () {
                 let imgWrapperEl
                 const videoWithWrapper = new ContentWrapper({
-                    editor: this.editor,
+                    editor: self.editor,
                     contentHtml: `<img src="${reader.result}" style="max-width:500px">`,
                     contentType: 'image',
                     width: self.editor.config.customUploadImgWidth,

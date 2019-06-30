@@ -58,6 +58,7 @@ gulp.task('css', () => {
         .pipe(cssmin())
         .pipe(gulp.dest('./release'))
 
+    console.log('2233')
     gulp.src('./src/lib/css/*.less')
         .pipe(less())
         .pipe(concat('wangEditor.render.css'))
@@ -65,11 +66,9 @@ gulp.task('css', () => {
             autoprefixer,
             cssgrace
         ]))
-        // 产出文件的位置
-        .pipe(gulp.dest('./release/lib'))
         // 产出的压缩后的文件名
         .pipe(cssmin())
-        .pipe(gulp.dest('./release'))
+        .pipe(gulp.dest('./release/lib/css'))
 })
 
 // 处理 JS

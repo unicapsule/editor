@@ -1,9 +1,18 @@
 /* custom wangEditor Style */
 .we-custom-render {
-  font-family: Cambria, Georgia, "Times New Roman", Times, serif;
+  font-family: CourierNewPSMT, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 .we-custom-render .me-media-wrapper figure {
   margin: 0;
+}
+.we-custom-render blockquote {
+  display: block;
+  border-left: 2px solid #1ABC9C;
+  padding: 5px 10px;
+  margin: 10px 1em;
+  line-height: 1.4;
+  font-size: 100%;
+  background-color: #f1f1f1;
 }
 .we-custom-render.lang-zh {
   font-family: "思源黑体", "Source Han Sans", "黑体", "SimHei", "Microsoft YaHei";
