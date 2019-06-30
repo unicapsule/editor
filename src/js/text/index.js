@@ -71,13 +71,17 @@ Text.prototype = {
     html: function (val) {
         const editor = this.editor
         const $textElem = editor.$textElem
+        const config = editor.config
         let html
         if (val == null) {
             const $temp = this._dealMediaContentOnGet($textElem)
             html = $temp.html()
             // 未选中任何内容的时候点击“加粗”或者“斜体”等按钮，就得需要一个空的占位符 &#8203 ，这里替换掉
             html = html.replace(/\u200b/gm, '')
-            return html
+            // 为html整体加上一层容器以作后期渲染处理
+            return `<div class="we-custom-render ${config.locale || 'lang-zh'}">
+            ${html}
+            </div>`
         } else {
             $textElem.html(val)
 

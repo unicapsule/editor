@@ -23,7 +23,7 @@ gulp.task('copy-fonts', () => {
 })
 
 gulp.task('copy-lib', () => {
-    gulp.src('./src/lib/**')
+    gulp.src(['src/lib/**.js', 'src/lib/**.css'])
         .pipe(gulp.dest('./release/lib'))
 })
 
@@ -55,6 +55,19 @@ gulp.task('css', () => {
         .pipe(gulp.dest('./release'))
         // 产出的压缩后的文件名
         .pipe(rename('wangEditor.min.css'))
+        .pipe(cssmin())
+        .pipe(gulp.dest('./release'))
+
+    gulp.src('./src/lib/css/*.less')
+        .pipe(less())
+        .pipe(concat('wangEditor.render.css'))
+        .pipe(postcss([
+            autoprefixer,
+            cssgrace
+        ]))
+        // 产出文件的位置
+        .pipe(gulp.dest('./release/lib'))
+        // 产出的压缩后的文件名
         .pipe(cssmin())
         .pipe(gulp.dest('./release'))
 })

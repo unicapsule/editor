@@ -119,7 +119,7 @@ Editor.prototype = {
 
         // 设置通用的 class
         $toolbarElem.addClass('w-e-toolbar')
-        $textContainerElem.addClass('w-e-text-container')
+        $textContainerElem.addClass('w-e-text-container' + ' ' + config.locale || 'locale-zh')
         $textContainerElem.css('z-index', zIndex)
         $textElem.addClass('w-e-text')
 

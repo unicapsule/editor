@@ -106,13 +106,15 @@ MediaWrapper.prototype = {
             $el.removeClass('is-active')
             this.onBlur && this.onBlur($el)
         }).on('keyup', (e) => {
-            if (e.keyCode === 8) {
-                $el.parent().remove()
-                $textElem.focus()
-            } else if (e.keyCode === 13) {
-                $el.parent().remove()
-                this.editor.selection.createRangeByElem($('<p></p>'))
-                $textElem.focus()
+            if (e.target.tagName.toLowerCase() === 'div') {
+                if (e.keyCode === 8) {
+                    $el.parent().remove()
+                    $textElem.focus()
+                } else if (e.keyCode === 13) {
+                    $el.parent().remove()
+                    this.editor.selection.createRangeByElem($('<p></p>'))
+                    $textElem.focus()
+                }
             }
         })
     },
