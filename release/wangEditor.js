@@ -552,7 +552,7 @@ $.offAll = function () {
 var config = {
 
     // 默认菜单配置
-    menus: ['head', 'bold', 'italic', 'strikeThrough', 'underline', 'fontSize', 'foreColor', 'backColor', 'removeformat', 'spliter', 'justify', 'indent', 'lineHeight', 'orderedList', 'list', 'quote', 'spliter', 'youbute', 'instagram', 'link', 'audio', 'image', 'geo', 'emoticon', 'spliter', 'undo', 'redo', 'fullsize'],
+    menus: ['head', 'bold', 'italic', 'strikeThrough', 'underline', 'fontSize', 'foreColor', 'backColor', 'removeformat', 'spliter', 'justify', 'indent', 'lineHeight', 'orderedList', 'list', 'quote', 'spliter', 'youtube', 'instagram', 'link', 'audio', 'image', 'geo', 'emoticon', 'spliter', 'undo', 'redo', 'fullsize'],
 
     fontNames: ['宋体', '微软雅黑', 'Arial', 'Tahoma', 'Verdana'],
 
@@ -717,7 +717,7 @@ var config = {
     uploadFileName: '',
 
     // medium的三个尺寸： 700x393, 1015x570, 100%x1071
-    youbute: {
+    youtube: {
         width: 700,
         height: 393
     },
@@ -3472,15 +3472,15 @@ Youtube.prototype = {
                         // result: <iframe width="560" height="315" src="https://www.youtube.com/embed/-2r83aFgdBg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         if (val) {
                             var embedLink = getEmbedLink(val);
-                            var width = _this.editor.config.youbute.width || 'auto';
-                            var height = _this.editor.config.youbute.height || 'auto';
+                            var width = _this.editor.config.youtube.width || 'auto';
+                            var height = _this.editor.config.youtube.height || 'auto';
                             var htmlStr = '<iframe width="' + width + '" height="' + height + '" src="' + embedLink + '" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"></iframe>';
                             var videoWrapperEl = void 0;
                             var videoWithWrapper = new MediaWrapper({
                                 editor: _this.editor,
                                 contentHtml: htmlStr,
                                 contentType: 'youtube',
-                                // height: this.editor.config.youbute.height,
+                                // height: this.editor.config.youtube.height,
                                 width: width,
                                 onFocus: function onFocus($wrapper) {
                                     var fToolbar = new Toolbar({
@@ -3563,7 +3563,7 @@ Inst.prototype = {
                                 editor: _this.editor,
                                 contentHtml: htmlStr,
                                 contentType: 'instagram',
-                                // height: this.editor.config.youbute.height,
+                                // height: this.editor.config.youtube.height,
                                 width: _this.editor.config.instagram.width,
                                 onFocus: function onFocus($wrapper) {
                                     var fToolbar = new Toolbar({
@@ -4298,7 +4298,7 @@ MenuConstructors.video = Video;
 // import Image from './img/index.js'
 MenuConstructors.image = Image;
 
-MenuConstructors.youbute = Youtube;
+MenuConstructors.youtube = Youtube;
 
 MenuConstructors.instagram = Inst;
 

@@ -25,7 +25,7 @@ const config = {
         'quote',
         'spliter',
 
-        'youbute',
+        'youtube',
         'instagram',
         'link',
         'audio',
@@ -230,13 +230,14 @@ const config = {
     // 自定义配置 filename
     uploadFileName: '',
 
-    youbute: {
-        width: 332,
-        height: 184,
+    // medium的三个尺寸： 700x393, 1015x570, 100%x1071
+    youtube: {
+        width: 700,
+        height: 393,
     },
 
     instagram: {
-        width: 350,
+        width: 540,
         height: 500,
     },
 

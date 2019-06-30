@@ -70,7 +70,7 @@ import Image from './image/index.js'
 MenuConstructors.image = Image
 
 import Youtube from './youtube/index.js'
-MenuConstructors.youbute = Youtube
+MenuConstructors.youtube = Youtube
 
 import Inst from './instagram/index.js'
 MenuConstructors.instagram = Inst

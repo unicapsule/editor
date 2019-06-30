@@ -74,15 +74,15 @@ Youtube.prototype = {
                                 // result: <iframe width="560" height="315" src="https://www.youtube.com/embed/-2r83aFgdBg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 if (val) {
                                     const embedLink = getEmbedLink(val)
-                                    const width = this.editor.config.youbute.width || 'auto'
-                                    const height = this.editor.config.youbute.height || 'auto'
+                                    const width = this.editor.config.youtube.width || 'auto'
+                                    const height = this.editor.config.youtube.height || 'auto'
                                     const htmlStr = `<iframe width="${width}" height="${height}" src="${embedLink}" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"></iframe>`
                                     let videoWrapperEl
                                     const videoWithWrapper = new ContentWrapper({
                                         editor: this.editor,
                                         contentHtml: htmlStr,
                                         contentType: 'youtube',
-                                        // height: this.editor.config.youbute.height,
+                                        // height: this.editor.config.youtube.height,
                                         width: width,
                                         onFocus: ($wrapper) => {
                                             const fToolbar = new FloatingToolbar({
