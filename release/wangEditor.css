@@ -777,14 +777,10 @@
   margin: 0 4px;
 }
 .w-e-text a:after {
-  font-family: 'w-e-icon' !important;
-  speak: none;
+  font-family: "iconfont" !important;
+  font-size: 16px;
   font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  content: " \e9cb";
+  content: " \e607";
 }

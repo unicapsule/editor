@@ -26,6 +26,20 @@
         background-color: #f1f1f1;
     }
 
+    a {
+        color: #1ABC9C;
+        text-decoration: underline;
+        margin: 0 4px;
+        &::after {
+            font-family: "iconfont" !important;
+            font-size: 16px;
+            font-style: normal;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            content: " \e607";
+        }
+    }
+
     #editor-geo {
         position: relative;
         padding: 10px 0;
