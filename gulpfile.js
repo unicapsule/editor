@@ -23,8 +23,11 @@ gulp.task('copy-fonts', () => {
 })
 
 gulp.task('copy-lib', () => {
-    gulp.src(['src/lib/**.js', 'src/lib/**.css'])
+    gulp.src(['src/lib/**.js'])
         .pipe(gulp.dest('./release/lib'))
+
+    gulp.src(['src/lib/css/*.css'])
+        .pipe(gulp.dest('./release/lib/css'))
 })
 
 // 处理 css
@@ -58,7 +61,6 @@ gulp.task('css', () => {
         .pipe(cssmin())
         .pipe(gulp.dest('./release'))
 
-    console.log('2233')
     gulp.src('./src/lib/css/*.less')
         .pipe(less())
         .pipe(concat('wangEditor.render.css'))
