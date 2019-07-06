@@ -244,7 +244,10 @@
   font-size: 14px;
 }
 .w-e-toolbar .w-e-droplist ul.w-e-list li.w-e-item:hover {
-  background-color: #f1f1f1;
+  color: #08D7B8;
+}
+.w-e-toolbar .w-e-droplist ul.w-e-list li.w-e-item:hover span > i {
+  color: #08D7B8;
 }
 .w-e-toolbar .w-e-droplist ul.w-e-block {
   list-style: none;
