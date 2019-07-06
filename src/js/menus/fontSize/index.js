@@ -16,8 +16,8 @@ function FontSize(editor) {
 
     // 初始化 droplist
     this.droplist = new DropList(this, {
-        width: 160,
-        $title: $(`<p>$t('字号')</p>`),
+        width: 200,
+        $title: '',
         type: 'list', // droplist 以列表形式展示
         list: [
             { $elem: $('<span style="font-size: x-small;">x-small</span>'), value: '1' },

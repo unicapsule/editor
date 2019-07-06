@@ -15,16 +15,16 @@ function Head(editor) {
 
     // 初始化 droplist
     this.droplist = new DropList(this, {
-        width: 100,
-        $title: $(`<p>$t('设置标题')</p>`),
+        width: 130,
+        $title: '',
         type: 'list', // droplist 以列表形式展示
         list: [
-            { $elem: $('<h1>H1</h1>'), value: '<h1>' },
-            { $elem: $('<h2>H2</h2>'), value: '<h2>' },
-            { $elem: $('<h3>H3</h3>'), value: '<h3>' },
-            { $elem: $('<h4>H4</h4>'), value: '<h4>' },
-            { $elem: $('<h5>H5</h5>'), value: '<h5>' },
-            { $elem: $(`<p>$t('正文')</p>`), value: '<p>' }
+            { $elem: $(`<p><b>H1 </b>$t('一级标题')</p>`), value: '<h1>' },
+            { $elem: $(`<p><b>H2 </b>$t('二级标题')</p>`), value: '<h2>' },
+            { $elem: $(`<p><b>H3 </b>$t('三级标题')</p>`), value: '<h3>' },
+            { $elem: $(`<p><b>H4 </b>$t('四级标题')</p>`), value: '<h4>' },
+            { $elem: $(`<p><b>H5 </b>$t('五级标题')</p>`), value: '<h5>' },
+            { $elem: $(`<p><b>P </b>$t('普通文本')</p>`), value: '<p>' }
         ],
         onClick: (value) => {
             // 注意 this 是指向当前的 Head 对象

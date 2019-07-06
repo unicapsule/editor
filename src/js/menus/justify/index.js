@@ -7,7 +7,7 @@ import DropList from '../droplist.js'
 // 构造函数
 function Justify(editor) {
     this.editor = editor
-    this.$elem = $('<div class="w-e-menu"><i class="w-e-icon-paragraph-left"></i></div>')
+    this.$elem = $(`<div class="w-e-menu hint--top" aria-label="$t('对齐方式')"><i class="w-e-icon-paragraph-left"></i></div>`)
     this.type = 'droplist'
 
     // 当前是否 active 状态
@@ -15,9 +15,10 @@ function Justify(editor) {
 
     // 初始化 droplist
     this.droplist = new DropList(this, {
-        width: 100,
-        $title: $(`<p>$t('对齐方式')</p>`),
+        width: 130,
+        $title: '',
         type: 'list', // droplist 以列表形式展示
+        classname: 'align-left',
         list: [
             { $elem: $(`<span><i class="w-e-icon-paragraph-left"></i> $t('靠左')</span>`), value: 'justifyLeft' },
             { $elem: $(`<span><i class="w-e-icon-paragraph-center"></i> $t('居中')</span>`), value: 'justifyCenter' },

@@ -12,8 +12,10 @@ function DropList(menu, opt) {
     const editor = menu.editor
     this.menu = menu
     this.opt = opt
+
+    const additionalClass = opt.classname || ''
     // 容器
-    const $container = $('<div class="w-e-droplist"></div>')
+    const $container = $(`<div class="w-e-droplist ${additionalClass}"></div>`)
 
     // 标题
     const $title = opt.$title

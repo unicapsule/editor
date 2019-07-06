@@ -8,7 +8,7 @@ import DropList from '../droplist.js'
 // 构造函数
 function LineHeight(editor) {
     this.editor = editor
-    this.$elem = $('<div class="w-e-menu"><i class="iconfont icon-ic_format_line_spaci"></i></div>')
+    this.$elem = $(`<div class="w-e-menu hint--top" aria-label="$t('行高')"><i class="iconfont icon-ic_format_line_spaci"></i></div>`)
     this.type = 'droplist'
 
     // 当前是否 active 状态
@@ -17,7 +17,7 @@ function LineHeight(editor) {
     // 初始化 droplist
     this.droplist = new DropList(this, {
         width: 80,
-        $title: $(`<p>$t('行高')</p>`),
+        $title: '',
         type: 'list', // droplist 以列表形式展示
         list: [
             { $elem: $('<span>1</span>'), value: '1' },
