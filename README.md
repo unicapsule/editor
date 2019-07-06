@@ -55,6 +55,14 @@
 ```
 4. 将输出的HTML拷贝到你的HTML文档中即可。
 
+## Dev
+```sh
+cp src/js/config.example.js src/js/config.js
+npm install
+npm run release
+npm run example
+```
+
 ## Ref
 - JSONP https://github.com/camsong/fetch-jsonp v1.1.3
 - https://github.com/chinchang/hint.css
