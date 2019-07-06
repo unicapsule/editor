@@ -58,6 +58,8 @@
 ## Dev
 ```sh
 cp src/js/config.example.js src/js/config.js
+# 按需修改 src/js/config.js
+
 npm install
 npm run release
 npm run example
