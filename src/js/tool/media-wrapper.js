@@ -58,7 +58,7 @@ MediaWrapper.prototype = {
         }
 
         htmlStrArr.push('</div>')
-        htmlStrArr.push(`<div class="${WRAPPER_NAME}--placeholder" style="background:${this.background}"></div>`)
+        htmlStrArr.push(`<div class="${WRAPPER_NAME}--placeholder"></div>`)
 
         if (isFigureType) htmlStrArr.push(`
         <figcaption contenteditable="true" data-default-value="Type caption for embed (optional)">

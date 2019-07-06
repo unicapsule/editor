@@ -166,7 +166,7 @@ Image.prototype = {
                 let imgWrapperEl
                 const videoWithWrapper = new ContentWrapper({
                     editor: self.editor,
-                    contentHtml: `<img src="${reader.result}" style="max-width:500px">`,
+                    contentHtml: `<div class="img-el-wrap"><img src="${reader.result}" style="max-width:500px"></div>`,
                     contentType: 'image',
                     width: self.editor.config.customUploadImgWidth,
                     progress: 1,

@@ -42,8 +42,19 @@
   font-size: 24px;
 }
 .audio-wrapper .audio-card--bar {
+  position: relative;
   background: #E5E5E5;
   height: 7px;
+}
+.audio-wrapper .audio-card--bar:after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 7px;
+  width: 60%;
+  background: #08D7B8;
+  border-radius: 4px;
 }
 
 .w-e-toolbar,
@@ -198,6 +209,12 @@
   margin-top: 3px;
   color: #666;
 }
+.img-el-wrap {
+  display: block;
+}
+.img-el-wrap > img {
+  display: block;
+}
 
 .w-e-toolbar .w-e-droplist {
   position: absolute;
@@ -247,12 +264,13 @@
 .me-floating-toolbar {
   position: absolute;
   z-index: 2;
-  top: 100%;
+  top: 101%;
   left: 50%;
   transform: translateX(-50%);
   padding: 10px;
   box-shadow: 0 5px 18px rgba(0, 0, 0, 0.2);
   background: #fff;
+  border-radius: 6px;
 }
 .me-floating-toolbar .clickable {
   cursor: pointer;
@@ -291,6 +309,7 @@
   font-variant: normal;
   text-transform: none;
   line-height: 1;
+  font-size: 12px;
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -436,6 +455,7 @@
 .me-media-wrapper {
   position: relative;
   outline: none;
+  font-size: 0;
 }
 .me-media-wrapper > figure {
   position: relative;
@@ -443,24 +463,18 @@
   *display: inline;
   *zoom: 1;
   box-sizing: content-box;
-}
-.me-media-wrapper > figure:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: 12px;
 }
 .me-media-wrapper .me-media-wrapper--content {
   position: relative;
   line-height: 1;
-}
-.me-media-wrapper .me-media-wrapper--content img {
-  display: inline-block;
-  *display: inline;
-  *zoom: 1;
 }
 .me-media-wrapper figcaption {
   display: none;
   margin-top: 3px;
   text-align: center;
   color: #777;
+  outline: none;
 }
 .me-media-wrapper .me-media-wrapper--placeholder {
   position: absolute;
@@ -468,7 +482,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  transition: background 1s linear;
+  border: 1px solid #eee;
 }
 .me-media-wrapper .progress-bar {
   position: absolute;
@@ -495,6 +509,7 @@
 .me-media-wrapper .progress-bar-text {
   position: absolute;
   z-index: 2;
+  font-size: 12px;
   top: 50%;
   left: 50%;
   margin-top: 5px;
@@ -503,23 +518,22 @@
   transition: opacity 1s;
   transform: translateX(-50%);
 }
-.me-media-wrapper.is-active iframe {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
-  border: 1px solid orange;
+.me-media-wrapper[data-type="audio"] .me-media-wrapper--placeholder {
+  border: 1px solid transparent;
+  transition: background 1s linear;
+}
+.me-media-wrapper.is-active iframe,
+.me-media-wrapper.is-active img:not(.no-active-effect) {
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.1);
+  border: 5px solid #fff;
 }
 .me-media-wrapper.is-active .me-media-wrapper--type-audio {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
-  border: 1px solid orange;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.1);
 }
-.me-media-wrapper.is-active .me-media-wrapper--type-image .me-media-wrapper--placeholder {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
-  border: 1px solid orange;
-  background: rgba(181, 181, 181, 0.8) !important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ccb5b5b5', endColorstr='#ccb5b5b5');
-  transition: none;
-}
-:root .me-media-wrapper.is-active .me-media-wrapper--type-image .me-media-wrapper--placeholder {
-  filter: none\9;
+.me-media-wrapper > figure:hover iframe,
+.me-media-wrapper > figure:hover img:not(.no-active-effect),
+.me-media-wrapper > figure.me-media-wrapper--type-audio:hover {
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.1);
 }
 
 .w-e-toolbar {

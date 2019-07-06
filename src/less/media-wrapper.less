@@ -2,14 +2,16 @@
     // display: inline-block;
     position: relative;
     outline: none;
+    font-size: 0;
 
     &>figure {
         position: relative;
         display: inline-block;
         box-sizing: content-box;
+        font-size: 12px;
 
         &:hover {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, .5);
+            // box-shadow: 0 2px 4px rgba(0, 0, 0, .5);
         }
     }
 
@@ -18,14 +20,12 @@
         line-height: 1;
     }
 
-    .me-media-wrapper--content img {
-        display: inline-block;
-    }
     figcaption {
         display: none;
         margin-top: 3px;
         text-align: center;
         color: #777;
+        outline: none;
     }
 
     .me-media-wrapper--placeholder {
@@ -34,8 +34,9 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        transition: background 1s linear;
+        border: 1px solid #eee;
     }
+
 
     .progress-bar {
         position: absolute;
@@ -63,6 +64,7 @@
     .progress-bar-text {
         position: absolute;
         z-index: 2;
+        font-size: 12px;
         top: 50%;
         left: 50%;
         margin-top: 5px;
@@ -74,21 +76,29 @@
     }
 }
 
+// 定制audio的背景蒙层
+.me-media-wrapper[data-type="audio"] {
+    .me-media-wrapper--placeholder {
+        border: 1px solid transparent;
+        transition: background 1s linear;
+    }
+}
+
+// 点击 active: 加阴影加白边
 .me-media-wrapper.is-active {
-    iframe {
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .7);
-        border: 1px solid orange;
+    iframe, img:not(.no-active-effect) {
+        box-shadow: 0 5px 18px rgba(0, 0, 0, .1);
+        border: 5px solid #fff;
     }
 
     .me-media-wrapper--type-audio {
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .7);
-        border: 1px solid orange;
+        box-shadow: 0 5px 18px rgba(0, 0, 0, .1);
     }
+}
 
-    .me-media-wrapper--type-image .me-media-wrapper--placeholder {
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .7);
-        border: 1px solid orange;
-        background: rgba(181,181,181,.8) !important;
-        transition: none;
-    }
+// hover 加阴影
+.me-media-wrapper>figure:hover iframe,
+.me-media-wrapper>figure:hover img:not(.no-active-effect),
+.me-media-wrapper>figure.me-media-wrapper--type-audio:hover {
+    box-shadow: 0 5px 18px rgba(0, 0, 0, .1);
 }

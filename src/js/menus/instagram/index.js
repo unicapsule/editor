@@ -43,7 +43,11 @@ Inst.prototype = {
                             type: 'click',
                             fn: () => {
                                 const $text = $('#' + textValId)
-                                const val = $text.val().trim()
+                                let val = $text.val().trim()
+                                if (val.indexOf('?') > -1) {
+                                    val = val.split('?')[0]
+                                }
+                                if (val.endsWith('/')) val = val.slice(0, -1)
 
                                 if (val) {
                                     const htmlStr = `<iframe src="${val}/embed/" width="${this.editor.config.instagram.width}" height="${this.editor.config.instagram.height}" frameborder="0" scrolling="no"></iframe>`

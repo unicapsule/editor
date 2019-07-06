@@ -219,7 +219,7 @@ Audio.prototype = {
             <div class="audio-card--info">
                 <div class="audio-card--info--left">
                     <div class="audio-card--info--img">
-                        <img src="${fileCover}" onerror="weAudioImgError('${this.audioCardName}')" />
+                        <img src="${fileCover}" class="no-active-effect" onerror="weAudioImgError('${this.audioCardName}')" />
                     </div>
                     <div class="audio-card--info--detail">
                         <span>${fileTitle} - ${fileArtist}</span>

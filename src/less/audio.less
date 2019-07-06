@@ -43,7 +43,18 @@
     }
 
     .audio-card--bar {
+        position: relative;
         background: #E5E5E5;
         height: 7px;
+        &::after {
+            content: " ";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 7px;
+            width: 60%;
+            background: #08D7B8;
+            border-radius: 4px;
+        }
     }
 }

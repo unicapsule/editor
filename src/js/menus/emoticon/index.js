@@ -95,8 +95,8 @@ Emoticon.prototype = {
         })
 
         const panel = new Panel(this, {
-            width: 300,
-            height: 200,
+            width: 402,
+            height: 227,
             // 一个 Panel 包含多个 tab
             tabs: tabConfig
         })
