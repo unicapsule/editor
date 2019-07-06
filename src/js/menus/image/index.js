@@ -52,7 +52,7 @@ Image.prototype = {
                         <i class="w-custom-icon-upload2"></i>
                         <p class="w-custom-up-img-tip">$t('拖动图片到此或点击此处上传')<br>
                         （$t('最多可同时上传10张图片')）</p>
-                        <p class="w-custom-up-img-tip-focus">松下鼠标开始上传</p>
+                        <p class="w-custom-up-img-tip-focus">$t('松下鼠标开始上传')</p>
                     </div>
                     <div style="display:none;">
                         <input id="${upFileId}" type="file" multiple="multiple" accept="image/jpg,image/jpeg,image/png,image/gif,image/bmp"/>
@@ -148,7 +148,7 @@ Image.prototype = {
 
         // 创建 panel 并显示
         const panel = new Panel(this, {
-            width: 512,
+            width: 402,
             tabs: tabsConfigResult
         })
         panel.show()

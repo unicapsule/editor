@@ -31,8 +31,7 @@ Inst.prototype = {
                 {
                     title: '插入Instagram',
                     tpl: `<div>
-                        <input id="${textValId}" type="text" class="block" placeholder="aaa"
-                        value="https://www.instagram.com/p/ByPDop1Bmwa"/>
+                        <input id="${textValId}" type="text" class="block" placeholder="https://www.instagram.com/p/ByPDop1Bmwa" />
                         <div class="w-e-button-container">
                             <button id="${btnId}" class="right">插入</button>
                         </div>

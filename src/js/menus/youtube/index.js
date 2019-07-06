@@ -47,16 +47,18 @@ Youtube.prototype = {
         // 创建 id
         const textValId = getRandom('text-val')
         const btnId = getRandom('btn')
+        const checkboxId = getRandom('checkbox')
 
         const p = new Panel(this, {
             width: 350,
             tabs: [
                 {
                     title: '插入Youtube',
+                    classname: 'pdt-12',
                     tpl: `<div>
-                        <input id="${textValId}" type="text" class="block" placeholder="https://www.youtube.com/watch?v=-2r83aFgdBg"
-                        value="https://www.youtube.com/watch?v=IKAk3nV7hY4&t=15s"/>
+                        <input id="${textValId}" type="text" class="block" placeholder="https://youtube.com/" />
                         <div class="w-e-button-container">
+                            <label class="w-e-checkbox"><input type="checkbox" id="${checkboxId}"> 自动播放</label>
                             <button id="${btnId}" class="right">$t('插入')</button>
                         </div>
                     </div>
@@ -76,7 +78,9 @@ Youtube.prototype = {
                                     const embedLink = getEmbedLink(val)
                                     const width = this.editor.config.youtube.width || 'auto'
                                     const height = this.editor.config.youtube.height || 'auto'
-                                    const htmlStr = `<iframe width="${width}" height="${height}" src="${embedLink}" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"></iframe>`
+                                    const isAutoPlay = document.getElementById(checkboxId).checked
+                                    const additionalAttr = isAutoPlay ? 'autoplay="1"' : ''
+                                    const htmlStr = `<iframe width="${width}" height="${height}" src="${embedLink}" frameborder="0" ${additionalAttr} allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"></iframe>`
                                     let videoWrapperEl
                                     const videoWithWrapper = new ContentWrapper({
                                         editor: this.editor,

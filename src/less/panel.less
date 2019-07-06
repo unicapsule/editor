@@ -1,56 +1,57 @@
 .w-e-text-container {
     .w-e-panel-container {
         position: absolute;
-        top: 0;
+        top: 8px;
         left: 50%;
         border: 1px solid #ccc;
         border-top: 0;
-        box-shadow: 1px 1px 2px #ccc;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        border-radius: 6px;
         color: #333;
         background-color: #fff;
         z-index: 2;
 
         .w-e-panel-close {
             position: absolute;
-            right: 0;
-            top: 0;
+            right: 4px;
+            top: 2px;
             padding: 5px;
             margin: 2px 5px 0 0;
             cursor: pointer;
-            color: #999;
-
-            &:hover {
-                color: #333;
-            }
+            font-size: 20px;
+            color: #000;
         }
 
         .w-e-panel-tab-title {
             list-style: none;
             display: flex;
+            align-items: center;
             font-size: 14px;
-            margin: 2px 10px 0 10px;
-            border-bottom: 1px solid #f1f1f1;
+            // margin: 2px 10px 0 10px;
+            padding-left: 10px;
+            height: 43px;
+            border-bottom: 1px solid #d8d8d8;
 
             .w-e-item {
                 padding: 3px 5px;
                 color: #999;
-                cursor: pointer;
+                // cursor: pointer;
                 margin: 0 3px;
                 position: relative;
                 top: 1px;
             }
 
             .w-e-active {
-                color: #333;
-                border-bottom: 1px solid #333;
-                cursor: default;
-                font-weight: 700;
+                color: #000;
+                // border-bottom: 1px solid #333;
+                // cursor: default;
+                // font-weight: 700;
             }
         }
 
         .w-e-panel-tab-content {
-            padding: 10px 15px 10px 15px;
-            font-size: 16px;
+            padding: 24px 12px;
+            font-size: 12px;
 
             /* 输入框的样式 */
             input,textarea,button {
@@ -68,12 +69,14 @@
                 }
             }
             input[type=text] {
-                border: none;
-                border-bottom: 1px solid #ccc;
-                font-size: 14px;
-                height: 20px;
+                border: 1px solid #e5e5e5;
+                font-size: 12px;
+                height: 32px;
+                line-height: 32px;
                 color: #333;
                 text-align: left;
+                border-radius: 4px;
+                padding: 0 4px;
             }
             input[type=text].small {
                 width: 30px;
@@ -83,32 +86,30 @@
             input[type=text].block {
                 display: block;
                 width: 100%;
-                margin: 10px 0;
-            }
-
-            input[type=text]:focus {
-                border-bottom: 2px solid #1e88e5;
+                margin: 4px 0 8px;
             }
 
             /* 按钮的样式 */
             .w-e-button-container {
-                button {
-                    font-size: 14px;
-                    color: #1e88e5;
-                    border: none;
-                    padding: 5px 10px;
-                    background-color: #fff;
-                    cursor: pointer;
-                    border-radius: 3px;
-                }
-                button.left {
-                    float: left;
-                    margin-right: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+
+                .w-e-checkbox {
+                    flex: 1;
+                    justify-self: flex-start;
                 }
 
-                button.right {
-                    float: right;
-                    margin-left: 10px;
+                button {
+                    background: #08D7B8;
+                    font-size: 12px;
+                    color: #fff;
+                    border: 1px solid #08D7B8;
+                    height: 32px;
+                    line-height: 32px;
+                    padding: 0 30px;
+                    cursor: pointer;
+                    border-radius: 4px;
                 }
 
                 button.gray {
@@ -119,15 +120,19 @@
                     color: rgb(194, 79, 74);
                 }
 
-                button:hover {
-                    background-color: #f1f1f1;
-                }
+                // button:hover {
+                //     background-color: #f1f1f1;
+                // }
             }
             .w-e-button-container:after {
                 content: "";
                 display: table;
                 clear: both;
             }
+        }
+        .w-e-panel-tab-content.pdt-12 {
+            padding-top: 12px;
+            padding-bottom: 12px;
         }
 
         /* 为 emotion panel 定制的样式 */

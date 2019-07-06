@@ -39,15 +39,16 @@ Panel.prototype = {
                 .css('margin-left', (0 - width)/2 + 'px')
 
         // 添加关闭按钮
-        const $closeBtn = $('<i class="w-e-icon-close w-e-panel-close"></i>')
+        const $closeBtn = $('<i class="iconfont icon-baseline-close-px w-e-panel-close"></i>')
         $container.append($closeBtn)
         $closeBtn.on('click', () => {
             this.hide()
         })
 
         // 准备 tabs 容器
+        const tabs = opt.tabs || []
         const $tabTitleContainer = $('<ul class="w-e-panel-tab-title"></ul>')
-        const $tabContentContainer = $('<div class="w-e-panel-tab-content"></div>')
+        const $tabContentContainer = $(`<div class="w-e-panel-tab-content ${(tabs[0] && tabs[0].classname)||''}"></div>`)
         $container.append($tabTitleContainer).append($tabContentContainer)
 
         // 设置高度
@@ -57,7 +58,6 @@ Panel.prototype = {
         }
 
         // tabs
-        const tabs = opt.tabs || []
         const tabTitleArr = []
         const tabContentArr = []
         tabs.forEach((tab, tabIndex) => {
