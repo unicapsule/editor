@@ -39,7 +39,8 @@ fontColor.prototype = {
     // 执行命令
     _command: function (value) {
         const editor = this.editor
-        editor.cmd.do('fontColor', value)
+        // Forecolor not Fontcolor
+        editor.cmd.do('Forecolor', value)
     }
 }
 

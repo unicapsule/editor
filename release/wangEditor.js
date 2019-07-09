@@ -1942,7 +1942,8 @@ fontColor.prototype = {
     // 执行命令
     _command: function _command(value) {
         var editor = this.editor;
-        editor.cmd.do('fontColor', value);
+        // Forecolor not Fontcolor
+        editor.cmd.do('Forecolor', value);
     }
 };
 
