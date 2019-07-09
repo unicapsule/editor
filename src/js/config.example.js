@@ -12,7 +12,7 @@ const config = {
         'strikeThrough',
         'underline',
         'fontSize',
-        'foreColor',
+        'fontColor',
         'backColor',
         'removeformat',
         'spliter',

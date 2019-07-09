@@ -21,6 +21,15 @@
 
 4. 最后在html文件加入初始化代码
 ```html
+<!-- 请将 toolbar 和 text 区域放在一个容器下 -->
+<div class="editor-container">
+    <div id="div1" class="toolbar">
+    </div>
+    <div id="div2" class="text"> <!--可使用 min-height 实现编辑区域自动增加高度-->
+        <p>请输入内容</p>
+    </div>
+</div>
+
 <script type="text/javascript">
     var E = window.wangEditor
     var editor2 = new E('#div1', '#div2')
@@ -70,6 +79,7 @@ npm run example
 - https://github.com/chinchang/hint.css
 - i18n  https://github.com/CommanderXL/D-i18n
 - hint.css https://github.com/chinchang/hint.css
+- screenfull https://www.npmjs.com/package/screenfull
 
 ## 说明
 若需要兼容IE 11及以下才须加载 `es6-promise.auto.[min].js`，详见 [Promise Polyfill for IE](https://github.com/camsong/fetch-jsonp#promise-polyfill-for-ie)

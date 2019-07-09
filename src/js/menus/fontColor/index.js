@@ -1,11 +1,11 @@
 /*
-    menu - Forecolor
+    menu - fontColor
 */
 import $ from '../../util/dom-core.js'
 import DropList from '../droplist.js'
 
 // 构造函数
-function ForeColor(editor) {
+function fontColor(editor) {
     this.editor = editor
     this.$elem = $('<div class="w-e-menu"><i class="iconfont icon-wenziyanse"></i></div>')
     this.type = 'droplist'
@@ -26,21 +26,21 @@ function ForeColor(editor) {
             return { $elem: $(`<i style="color:${color};" class="w-e-icon-pencil2"></i>`), value: color }
         }),
         onClick: (value) => {
-            // 注意 this 是指向当前的 ForeColor 对象
+            // 注意 this 是指向当前的 fontColor 对象
             this._command(value)
         }
     })
 }
 
 // 原型
-ForeColor.prototype = {
-    constructor: ForeColor,
+fontColor.prototype = {
+    constructor: fontColor,
 
     // 执行命令
     _command: function (value) {
         const editor = this.editor
-        editor.cmd.do('foreColor', value)
+        editor.cmd.do('fontColor', value)
     }
 }
 
-export default ForeColor
+export default fontColor

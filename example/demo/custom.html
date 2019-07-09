@@ -19,11 +19,14 @@
 </head>
 <body>
     <p>自定义编辑器</p>
-    <div id="div1" class="toolbar">
+    <div>
+        <div id="div1" class="toolbar">
+        </div>
+        <div id="div2" class="text"> <!--可使用 min-height 实现编辑区域自动增加高度-->
+            <p>请输入内容</p>
+        </div>
     </div>
-    <div id="div2" class="text"> <!--可使用 min-height 实现编辑区域自动增加高度-->
-        <p>请输入内容</p>
-    </div>
+
     <div>
         <button id="btn">获取html内容</button>
         <button id="count">字数统计</button>
@@ -40,6 +43,7 @@
     <script type="text/javascript" src="../../release/lib/es6-promise.auto.min.js"></script>
     <script type="text/javascript" src="../../release/lib/axios.min.js"></script>
     <script type="text/javascript" src="../../release/lib/fetch-jsonp.min.js"></script>
+    <script type="text/javascript" src="https://cdn.staticfile.org/screenfull.js/4.2.0/screenfull.min.js"></script>
     <script type="text/javascript" src="../../release/wangEditor.js"></script>
     <script type="text/javascript" src="../../release/lib/di18n.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lite-toast@1.0.2/dist/toast.min.js"></script>

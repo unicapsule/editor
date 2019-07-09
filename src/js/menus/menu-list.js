@@ -44,8 +44,8 @@ MenuConstructors.orderedList = OrderedList
 import Justify from './justify/index.js'
 MenuConstructors.justify = Justify
 
-import ForeColor from './foreColor/index.js'
-MenuConstructors.foreColor = ForeColor
+import fontColor from './fontColor/index.js'
+MenuConstructors.fontColor = fontColor
 
 import BackColor from './backColor/index.js'
 MenuConstructors.backColor = BackColor

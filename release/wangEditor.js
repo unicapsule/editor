@@ -552,7 +552,7 @@ $.offAll = function () {
 var config = {
 
     // 默认菜单配置
-    menus: ['head', 'bold', 'italic', 'strikeThrough', 'underline', 'fontSize', 'foreColor', 'backColor', 'removeformat', 'spliter', 'justify', 'indent', 'lineHeight', 'orderedList', 'list', 'quote', 'spliter', 'youtube', 'instagram', 'link', 'audio', 'image', 'geo', 'emoticon', 'spliter', 'undo', 'redo', 'fullsize'],
+    menus: ['head', 'bold', 'italic', 'strikeThrough', 'underline', 'fontSize', 'fontColor', 'backColor', 'removeformat', 'spliter', 'justify', 'indent', 'lineHeight', 'orderedList', 'list', 'quote', 'spliter', 'youtube', 'instagram', 'link', 'audio', 'image', 'geo', 'emoticon', 'spliter', 'undo', 'redo', 'fullsize'],
 
     fontNames: ['宋体', '微软雅黑', 'Arial', 'Tahoma', 'Verdana'],
 
@@ -1903,10 +1903,10 @@ Justify.prototype = {
 };
 
 /*
-    menu - Forecolor
+    menu - fontColor
 */
 // 构造函数
-function ForeColor(editor) {
+function fontColor(editor) {
     var _this = this;
 
     this.editor = editor;
@@ -1929,20 +1929,20 @@ function ForeColor(editor) {
             return { $elem: $('<i style="color:' + color + ';" class="w-e-icon-pencil2"></i>'), value: color };
         }),
         onClick: function onClick(value) {
-            // 注意 this 是指向当前的 ForeColor 对象
+            // 注意 this 是指向当前的 fontColor 对象
             _this._command(value);
         }
     });
 }
 
 // 原型
-ForeColor.prototype = {
-    constructor: ForeColor,
+fontColor.prototype = {
+    constructor: fontColor,
 
     // 执行命令
     _command: function _command(value) {
         var editor = this.editor;
-        editor.cmd.do('foreColor', value);
+        editor.cmd.do('fontColor', value);
     }
 };
 
@@ -4213,27 +4213,24 @@ Fullsize.prototype = {
 
     // 点击事件
     onClick: function onClick(e) {
+        var _this = this;
+
         // 点击菜单将触发这里
         var $elem = this.$elem;
         var $toolbarElem = this.editor.$toolbarElem[0];
-        var isActive = Array.from($elem[0].classList).includes('w-e-active');
+        var screenfull = window.screenfull;
 
-        if (isActive) {
-            this._active = false;
-            $elem.removeClass('w-e-active');
+        screenfull.on('change', function () {
+            _this._active = screenfull.isFullscreen;
+            if (_this._active) {
+                $elem.addClass('w-e-active');
+            } else {
+                $elem.removeClass('w-e-active');
+            }
+        });
 
-            $toolbarElem.removeAttribute('style');
-            var $text = this.editor.$textElem.parent();
-            $text[0].removeAttribute('style');
-        } else {
-            this._active = true;
-            $elem.addClass('w-e-active');
-
-            var toolbarHeight = $toolbarElem.offsetHeight;
-            this.editor.$toolbarElem.css('position', 'absolute').css('width', '100%').css('left', '0').css('top', '0');
-
-            var _$text = this.editor.$textElem.parent();
-            _$text.css('position', 'absolute').css('width', '100%').css('left', '0').css('top', toolbarHeight + 'px').css('height', 'calc(100vh - ' + toolbarHeight + 'px)');
+        if (screenfull.enabled) {
+            screenfull.toggle($toolbarElem.parentElement);
         }
     }
 };
@@ -4292,7 +4289,7 @@ MenuConstructors.orderedList = OrderedList;
 
 MenuConstructors.justify = Justify;
 
-MenuConstructors.foreColor = ForeColor;
+MenuConstructors.fontColor = fontColor;
 
 MenuConstructors.backColor = BackColor;
 
