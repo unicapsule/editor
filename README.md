@@ -14,6 +14,7 @@
 <script type="text/javascript" src="path/to/release/lib/es6-promise.auto.min.js"></script>
 <script type="text/javascript" src="path/to/release/lib/axios.min.js"></script>
 <script type="text/javascript" src="path/to/release/lib/fetch-jsonp.min.js"></script>
+<script type="text/javascript" src="https://cdn.staticfile.org/screenfull.js/4.2.0/screenfull.min.js"></script>
 <script type="text/javascript" src="path/to/release/wangEditor.js"></script>
 <script type="text/javascript" src="path/to/release/lib/di18n.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lite-toast@1.0.2/dist/toast.min.js"></script>
