@@ -422,6 +422,7 @@
   border: 3px dashed #999;
   background: #E5E5E5;
   text-align: center;
+  line-height: 1.5;
 }
 .w-custom-up-img-container-inner.active {
   border: 3px dashed #08D7B8;
