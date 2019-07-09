@@ -175,7 +175,7 @@ const config = {
     ],
 
     // 编辑区域的 z-index
-    zIndex: 10000,
+    zIndex: 1,
 
     // 是否开启 debug 模式（debug 模式下错误会 throw error 形式抛出）
     debug: false,
@@ -238,7 +238,7 @@ const config = {
 
     instagram: {
         width: 540,
-        height: 500,
+        height: 880,
     },
 
     geoService: {
