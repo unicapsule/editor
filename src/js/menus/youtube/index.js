@@ -12,9 +12,13 @@ import FloatingToolbar from '../../tool/floating-toolbar.js'
 //                https://www.youtube.com/embed/-2r83aFgdBg?start=60
 //                https://youtu.be/hS7oFgOw1Ic
 function getEmbedLink(videoLink) {
+    if (videoLink.indexOf('youtube.com') === -1 && videoLink.indexOf('youtu.be') === -1) {
+        return ''
+    }
+
     if (videoLink.indexOf('youtube.com/embed/') > -1) return videoLink
 
-    if (videoLink.indexOf('.be/') > -1) {
+    if (videoLink.indexOf('youtu.be/') > -1) {
         const vid = videoLink.split('.be/')[1]
         return `https://www.youtube.com/embed/${vid}`
     }
@@ -76,6 +80,10 @@ Youtube.prototype = {
                                 // result: <iframe width="560" height="315" src="https://www.youtube.com/embed/-2r83aFgdBg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 if (val) {
                                     const embedLink = getEmbedLink(val)
+                                    if (!embedLink) {
+                                        this._insertText(val)
+                                        return true
+                                    }
                                     const width = this.editor.config.youtube.width || 'auto'
                                     const height = this.editor.config.youtube.height || 'auto'
                                     const isAutoPlay = document.getElementById(checkboxId).checked
@@ -126,6 +134,10 @@ Youtube.prototype = {
         // this.editor.cmd.do('insertElem', [document.createElement('p')])
         this.editor.cmd.do('insertHTML', '<p><br></p>')
     },
+
+    _insertText: function (text) {
+        this.editor.cmd.do('insertHTML', `<p>${text}</p>`)
+    }
 }
 
 export default Youtube
