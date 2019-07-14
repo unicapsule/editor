@@ -2787,9 +2787,14 @@ MediaWrapper.prototype = {
         }
 
         htmlStrArr.push('</div>');
-        htmlStrArr.push('<div class="' + WRAPPER_NAME + '--placeholder"></div>');
 
-        if (isFigureType) htmlStrArr.push('\n        <figcaption contenteditable="true" data-default-value="Type caption for embed (optional)">\n        <span class="defaultValue">Caption</span>\n        <br></figcaption>\n        ');
+        if (isFigureType) {
+            htmlStrArr.push('<div class="' + WRAPPER_NAME + '--placeholder" style="background:rgba(181,181,181,1)"></div>');
+
+            htmlStrArr.push('\n            <figcaption contenteditable="true" data-default-value="Type caption for embed (optional)">\n            <span class="defaultValue">Caption</span>\n            <br></figcaption>\n            ');
+        } else {
+            htmlStrArr.push('<div class="' + WRAPPER_NAME + '--placeholder"></div>');
+        }
 
         htmlStrArr.push('</figure>');
         // <figure>
@@ -2848,21 +2853,22 @@ MediaWrapper.prototype = {
 
     // 设置进度条，传入参数 0.1, 0.2, 0,3 ... 1
     setProgress: function setProgress(num) {
+        var $wrap = $('#' + this.id);
         var percentText = parseFloat(num * 100).toFixed(2) + '%';
-        $('#' + this.id).find('.progress-bar i')[0].style.width = percentText;
-        $('#' + this.id).find('.progress-bar-text')[0].innerHTML = this.progressText + percentText;
+        $wrap.find('.progress-bar i')[0].style.width = percentText;
+        $wrap.find('.progress-bar-text')[0].innerHTML = this.progressText + percentText;
 
         if (Number(this.progress) === 1) {
             // style 1 逐渐隐藏
-            $('#' + this.id).find('.progress-bar')[0].style.opacity = 1 - num;
-            $('#' + this.id).find('.progress-bar-text')[0].style.opacity = 1 - num;
-            $('#' + this.id).find('.' + WRAPPER_NAME + '--placeholder')[0].style.background = 'rgba(181,181,181,' + (1 - num) + ')';
+            $wrap.find('.progress-bar')[0].style.opacity = 1 - num;
+            $wrap.find('.progress-bar-text')[0].style.opacity = 1 - num;
+            $wrap.find('.' + WRAPPER_NAME + '--placeholder')[0].style.background = 'rgba(181,181,181,' + (1 - num) + ')';
         } else {
             if (num >= 1) {
                 // other style 最后才隐藏
-                $('#' + this.id).find('.progress-bar')[0].style.opacity = 1 - num;
-                $('#' + this.id).find('.progress-bar-text')[0].style.opacity = 1 - num;
-                $('#' + this.id).find('.' + WRAPPER_NAME + '--placeholder')[0].style.background = 'rgba(181,181,181,' + (1 - num) + ')';
+                $wrap.find('.progress-bar')[0].style.opacity = 0;
+                $wrap.find('.progress-bar-text')[0].style.opacity = 0;
+                $wrap.find('.' + WRAPPER_NAME + '--placeholder')[0].style.background = 'rgba(181,181,181,0)';
             }
         }
     }
@@ -2909,18 +2915,49 @@ function Toolbar(options) {
                 var $img = $(_this.justifyContainer).find('img');
                 var $toolItem = $(_this.justifyContainer).find('.tool--fullsize');
                 var $el = $iframe.length ? $iframe : $img;
+                var $figure = $el.parentUntil('figure');
+                var tempWidth = $el[0].offsetWidth;
+                var tempHeight = $el[0].offsetHeight;
+                var tempRate = tempWidth / tempHeight;
 
                 if ($el.length && $el.attr('allowfullscreen') === '1') {
                     $toolItem.addClass('active');
                 }
 
                 $toolItem.on('click', function (e) {
-                    if (Array.from($toolItem[0].classList).includes('active')) {
-                        $toolItem.removeClass('active');
-                        $el[0].removeAttribute('allowfullscreen');
+                    if ($iframe.length) {
+                        // iframe 全屏宽
+                        if (Array.from($toolItem[0].classList).includes('active')) {
+                            // 已激活时
+                            $toolItem.removeClass('active');
+                            $el[0].removeAttribute('allowfullscreen');
+                            $el.css('width', tempWidth);
+                            $el.css('height', tempHeight);
+                            $figure.css('width', 'auto');
+                        } else {
+                            // 未激活时
+                            $toolItem.addClass('active');
+                            $el.attr('allowfullscreen', '1');
+                            console.log(tempWidth, tempHeight);
+                            $el.css('width', '100%');
+                            $figure.css('width', '100%');
+                            $el.css('height', $el[0].offsetWidth / tempRate + 'px');
+                        }
                     } else {
-                        $toolItem.addClass('active');
-                        $el.attr('allowfullscreen', '1');
+                        // 图片全屏宽
+                        if (Array.from($toolItem[0].classList).includes('active')) {
+                            // 已激活时
+                            $toolItem.removeClass('active');
+                            $el[0].removeAttribute('allowfullscreen');
+                            $el.css('max-width', '500px').css('width', 'auto');
+                            $figure.css('width', 'auto');
+                        } else {
+                            // 未激活时
+                            $toolItem.addClass('active');
+                            $el.attr('allowfullscreen', '1');
+                            $el.css('max-width', 'auto').css('width', '100%');
+                            $figure.css('width', '100%');
+                        }
                     }
                 });
             }
@@ -2954,25 +2991,31 @@ function Toolbar(options) {
                     var $img = $(_this.justifyContainer).find('img');
                     console.log($img);
                     var r = $img.attr('data-rotate');
+                    if ($img[0].src.indexOf('http') === -1) return;
+
                     if (!r) {
                         $img.attr('data-rotate', '90');
-                        $img[0].style.transform = 'rotate(90deg)';
+                        $img[0].src += '?x-oss-process=image/rotate,90';
                     } else {
                         var r2 = parseInt(r) + 90;
+                        if (r2 >= 360) r2 = r2 - 360;
                         $img.attr('data-rotate', r2);
-                        $img[0].style.transform = 'rotate(' + r2 + 'deg)';
+                        $img[0].src = $img[0].src.replace(/rotate,\d{1,3}/, 'rotate,' + r2);
                     }
                 });
                 $('.J-r-2').on('click', function (e) {
                     var $img = $(_this.justifyContainer).find('img');
                     var r = $img.attr('data-rotate');
+                    if ($img[0].src.indexOf('http') === -1) return;
+
                     if (!r) {
-                        $img.attr('data-rotate', '-90');
-                        $img[0].style.transform = 'rotate(-90deg)';
+                        $img.attr('data-rotate', '270');
+                        $img[0].src += '?x-oss-process=image/rotate,270';
                     } else {
                         var r2 = parseInt(r) - 90;
+                        if (r2 <= 0) r2 = r2 + 360;
                         $img.attr('data-rotate', r2);
-                        $img[0].style.transform = 'rotate(' + r2 + 'deg)';
+                        $img[0].src = $img[0].src.replace(/rotate,\d{1,3}/, 'rotate,' + r2);
                     }
                 });
             }

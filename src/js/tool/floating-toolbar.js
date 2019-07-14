@@ -39,18 +39,47 @@ function Toolbar(options) {
                 var $img = $(this.justifyContainer).find('img')
                 var $toolItem = $(this.justifyContainer).find('.tool--fullsize')
                 var $el = $iframe.length ? $iframe : $img
+                var $figure = $el.parentUntil('figure')
+                var tempWidth = $el[0].offsetWidth
+                var tempHeight = $el[0].offsetHeight
+                var tempRate = tempWidth / tempHeight
 
                 if ($el.length && $el.attr('allowfullscreen') === '1') {
                     $toolItem.addClass('active')
                 }
 
                 $toolItem.on('click', (e) => {
-                    if (Array.from($toolItem[0].classList).includes('active')) {
-                        $toolItem.removeClass('active')
-                        $el[0].removeAttribute('allowfullscreen')
-                    } else {
-                        $toolItem.addClass('active')
-                        $el.attr('allowfullscreen', '1')
+                    if ($iframe.length) { // iframe 全屏宽
+                        if (Array.from($toolItem[0].classList).includes('active')) {
+                            // 已激活时
+                            $toolItem.removeClass('active')
+                            $el[0].removeAttribute('allowfullscreen')
+                            $el.css('width', tempWidth)
+                            $el.css('height', tempHeight)
+                            $figure.css('width', 'auto')
+                        } else {
+                            // 未激活时
+                            $toolItem.addClass('active')
+                            $el.attr('allowfullscreen', '1')
+                            console.log(tempWidth, tempHeight)
+                            $el.css('width', '100%')
+                            $figure.css('width', '100%')
+                            $el.css('height', `${$el[0].offsetWidth / tempRate}px`)
+                        }
+                    } else { // 图片全屏宽
+                        if (Array.from($toolItem[0].classList).includes('active')) {
+                            // 已激活时
+                            $toolItem.removeClass('active')
+                            $el[0].removeAttribute('allowfullscreen')
+                            $el.css('max-width', '500px').css('width', 'auto')
+                            $figure.css('width', 'auto')
+                        } else {
+                            // 未激活时
+                            $toolItem.addClass('active')
+                            $el.attr('allowfullscreen', '1')
+                            $el.css('max-width', 'auto').css('width', '100%')
+                            $figure.css('width', '100%')
+                        }
                     }
                 })
             }
@@ -84,25 +113,31 @@ function Toolbar(options) {
                     const $img = $(this.justifyContainer).find('img')
                     console.log($img)
                     const r = $img.attr('data-rotate')
+                    if ($img[0].src.indexOf('http') === -1) return
+
                     if (!r) {
                         $img.attr('data-rotate', '90')
-                        $img[0].style.transform = 'rotate(90deg)'
+                        $img[0].src += `?x-oss-process=image/rotate,90`
                     } else {
-                        const r2 = parseInt(r) + 90
+                        let r2 = parseInt(r) + 90
+                        if (r2 >= 360) r2 = r2 -360
                         $img.attr('data-rotate', r2)
-                        $img[0].style.transform = `rotate(${r2}deg)`
+                        $img[0].src = $img[0].src.replace(/rotate,\d{1,3}/, `rotate,${r2}`)
                     }
                 })
                 $('.J-r-2').on('click', (e) => {
                     const $img = $(this.justifyContainer).find('img')
                     const r = $img.attr('data-rotate')
+                    if ($img[0].src.indexOf('http') === -1) return
+
                     if (!r) {
-                        $img.attr('data-rotate', '-90')
-                        $img[0].style.transform = 'rotate(-90deg)'
+                        $img.attr('data-rotate', '270')
+                        $img[0].src += `?x-oss-process=image/rotate,270`
                     } else {
-                        const r2 = parseInt(r) - 90
+                        let r2 = parseInt(r) - 90
+                        if (r2 <= 0) r2 = r2 + 360
                         $img.attr('data-rotate', r2)
-                        $img[0].style.transform = `rotate(${r2}deg)`
+                        $img[0].src = $img[0].src.replace(/rotate,\d{1,3}/, `rotate,${r2}`)
                     }
                 })
             }

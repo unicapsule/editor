@@ -58,13 +58,19 @@ MediaWrapper.prototype = {
         }
 
         htmlStrArr.push('</div>')
-        htmlStrArr.push(`<div class="${WRAPPER_NAME}--placeholder"></div>`)
 
-        if (isFigureType) htmlStrArr.push(`
-        <figcaption contenteditable="true" data-default-value="Type caption for embed (optional)">
-        <span class="defaultValue">Caption</span>
-        <br></figcaption>
-        `)
+
+        if (isFigureType) {
+            htmlStrArr.push(`<div class="${WRAPPER_NAME}--placeholder" style="background:rgba(181,181,181,1)"></div>`)
+
+            htmlStrArr.push(`
+            <figcaption contenteditable="true" data-default-value="Type caption for embed (optional)">
+            <span class="defaultValue">Caption</span>
+            <br></figcaption>
+            `)
+        } else {
+            htmlStrArr.push(`<div class="${WRAPPER_NAME}--placeholder"></div>`)
+        }
 
         htmlStrArr.push('</figure>')
         // <figure>
@@ -121,19 +127,20 @@ MediaWrapper.prototype = {
 
     // 设置进度条，传入参数 0.1, 0.2, 0,3 ... 1
     setProgress: function (num) {
+        const $wrap = $('#' + this.id)
         const percentText = parseFloat(num * 100).toFixed(2) + '%'
-        $('#' + this.id).find('.progress-bar i')[0].style.width = percentText
-        $('#' + this.id).find('.progress-bar-text')[0].innerHTML = this.progressText + percentText
+        $wrap.find('.progress-bar i')[0].style.width = percentText
+        $wrap.find('.progress-bar-text')[0].innerHTML = this.progressText + percentText
 
         if (Number(this.progress) === 1) { // style 1 逐渐隐藏
-            $('#' + this.id).find('.progress-bar')[0].style.opacity = 1 - num
-            $('#' + this.id).find('.progress-bar-text')[0].style.opacity = 1 - num
-            $('#' + this.id).find(`.${WRAPPER_NAME}--placeholder`)[0].style.background = `rgba(181,181,181,${1 - num})`
+            $wrap.find('.progress-bar')[0].style.opacity = 1 - num
+            $wrap.find('.progress-bar-text')[0].style.opacity = 1 - num
+            $wrap.find(`.${WRAPPER_NAME}--placeholder`)[0].style.background = `rgba(181,181,181,${1 - num})`
         } else {
             if (num >= 1) { // other style 最后才隐藏
-                $('#' + this.id).find('.progress-bar')[0].style.opacity = 1 - num
-                $('#' + this.id).find('.progress-bar-text')[0].style.opacity = 1 - num
-                $('#' + this.id).find(`.${WRAPPER_NAME}--placeholder`)[0].style.background = `rgba(181,181,181,${1 - num})`
+                $wrap.find('.progress-bar')[0].style.opacity = 0
+                $wrap.find('.progress-bar-text')[0].style.opacity = 0
+                $wrap.find(`.${WRAPPER_NAME}--placeholder`)[0].style.background = `rgba(181,181,181,0)`
             }
         }
     }
