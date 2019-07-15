@@ -218,7 +218,10 @@ Text.prototype = {
 
             const nodeName = $selectionElem.getNodeName()
             if (nodeName === 'P') {
-                // 当前的标签是 P ，不用做处理
+                if ($selectionElem[0].classList.contains('placeholder')) {
+                    $parentElem.html('')
+                    editor.cmd.do('insertHTML', '<p><br></p><p><br></p>')
+                }
                 return
             }
 
@@ -313,6 +316,8 @@ Text.prototype = {
     _clearHandle: function () {
         const editor = this.editor
         const $textElem = editor.$textElem
+        const config = editor.config
+        const placeholderHtml = `<p class="placeholder" placeholder="${config.placeholder}"></p>`
 
         $textElem.on('keydown', e => {
             if (e.keyCode !== 8) {
@@ -331,12 +336,18 @@ Text.prototype = {
                 return
             }
             let $p
-            const txtHtml = $textElem.html().toLowerCase().trim()
+            let txtHtml = $textElem.html().toLowerCase().trim()
+            // console.log(txtHtml)
+            if (txtHtml === placeholderHtml.replace('</p>', '<br></p>').toLowerCase().trim() || txtHtml === '<p><br></p>') {
+                // 清空进入下一个if
+                txtHtml = ''
+            }
 
             // firefox 时用 txtHtml === '<br>' 判断，其他用 !txtHtml 判断
             if (!txtHtml || txtHtml === '<br>') {
                 // 内容空了
-                $p = $('<p><br/></p>')
+                // $p = $('<p><br/></p>')
+                $p = $(placeholderHtml)
                 $textElem.html('') // 一定要先清空，否则在 firefox 下有问题
                 $textElem.append($p)
                 editor.selection.createRangeByElem($p, false, true)

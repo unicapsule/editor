@@ -95,3 +95,8 @@
         }
     }
 }
+p.placeholder[placeholder]:empty::before {
+    content: attr(placeholder);
+    display: block; /* For Firefox */
+    color: #aaa;
+}
