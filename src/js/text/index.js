@@ -219,8 +219,9 @@ Text.prototype = {
             const nodeName = $selectionElem.getNodeName()
             if (nodeName === 'P') {
                 if ($selectionElem[0].classList.contains('placeholder')) {
+                    const innerHtml = $selectionElem[0].previousSibling.innerHTML || '<br>'
                     $parentElem.html('')
-                    editor.cmd.do('insertHTML', '<p><br></p><p><br></p>')
+                    editor.cmd.do('insertHTML', `<p>${innerHtml}</p><p><br></p>`)
                 }
                 return
             }
