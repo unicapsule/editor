@@ -154,6 +154,8 @@ const config = {
     },
     locale: 'lang-en',
 
+    placeholder: 'This is placeholder',
+
     // 表情
     emotions: [
         {
