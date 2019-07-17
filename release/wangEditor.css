@@ -581,9 +581,9 @@
   position: absolute;
   top: 8px;
   left: 50%;
-  border: 1px solid #ccc;
+  border: 1px solid #fff;
   border-top: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
   color: #333;
   background-color: #fff;
