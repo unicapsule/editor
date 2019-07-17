@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const gulp = require('gulp')
+const addsrc = require('gulp-add-src')
 const rollup = require('rollup')
 const uglify = require('gulp-uglify')
 const sourcemaps = require('gulp-sourcemaps')
@@ -22,13 +23,13 @@ gulp.task('copy-fonts', () => {
         .pipe(gulp.dest('./release/fonts'))
 })
 
-gulp.task('copy-lib', () => {
-    gulp.src(['src/lib/**.js'])
-        .pipe(gulp.dest('./release/lib'))
+// gulp.task('copy-lib', () => {
+//     gulp.src(['src/lib/**.js'])
+//         .pipe(gulp.dest('./release/lib'))
 
-    gulp.src(['src/lib/css/*.css'])
-        .pipe(gulp.dest('./release/lib/css'))
-})
+//     gulp.src(['src/lib/css/*.css'])
+//         .pipe(gulp.dest('./release/lib/css'))
+// })
 
 // 处理 css
 gulp.task('css', () => {
@@ -56,12 +57,20 @@ gulp.task('css', () => {
         }))
         // 产出文件的位置
         .pipe(gulp.dest('./release'))
-        // 产出的压缩后的文件名
-        .pipe(rename('wangEditor.min.css'))
-        .pipe(cssmin())
-        .pipe(gulp.dest('./release'))
+        .on('end', () => {
+            // 引入库文件
+            gulp.src(['./src/lib/editor/hint.base.min.css', './release/wangEditor.css'])
+            .pipe(concat('wangEditor.css'))
+            // 产出文件的位置
+            .pipe(gulp.dest('./release'))
+            // 产出的压缩后的文件名
+            .pipe(rename('wangEditor.min.css'))
+            .pipe(cssmin())
+            .pipe(gulp.dest('./release'))
+        })
 
-    gulp.src('./src/lib/css/*.less')
+    // 处理 render
+    gulp.src('./src/lib/render/wangEditor.render.less')
         .pipe(less())
         .pipe(concat('wangEditor.render.css'))
         .pipe(postcss([
@@ -70,7 +79,16 @@ gulp.task('css', () => {
         ]))
         // 产出的压缩后的文件名
         .pipe(cssmin())
-        .pipe(gulp.dest('./release/lib/css'))
+        .pipe(gulp.dest('./release-render'))
+        .on('end', () => {
+            gulp.src([
+                './src/lib/render/APlayer.min.css',
+                './release-render/wangEditor.render.css',
+                './src/lib/render/wangEditor.render.hack.css'
+            ])
+            .pipe(concat('wangEditor.render.css'))
+            .pipe(gulp.dest('./release-render'))
+        })
 })
 
 // 处理 JS
@@ -116,6 +134,47 @@ gulp.task('script', () => {
                 // 生成 sourcemap
                 .pipe(sourcemaps.write(''))
                 .pipe(gulp.dest('./release'))
+                .on('end', () => {
+                    // 将依赖的库文件打包进去
+                    gulp.src([
+                        './src/lib/editor/axios.min.js',
+                        './src/lib/editor/fetch-jsonp.min.js',
+                        './src/lib/editor/screenfull.min.js',
+                        './src/lib/editor/di18n.min.js',
+                        './src/lib/editor/toast.min.js',
+                        './release/wangEditor.js'
+                    ])
+                    .pipe(concat('wangEditor.js'))
+                    .pipe(gulp.dest('./release'))
+
+                    gulp.src([
+                        './src/lib/editor/axios.min.js',
+                        './src/lib/editor/fetch-jsonp.min.js',
+                        './src/lib/editor/screenfull.min.js',
+                        './src/lib/editor/di18n.min.js',
+                        './src/lib/editor/toast.min.js',
+                        './release/wangEditor.min.js'
+                    ])
+                    .pipe(concat('wangEditor.min.js'))
+                    .pipe(gulp.dest('./release'))
+
+                    // 打包 "render"
+                    gulp.src([
+                        './src/lib/render/APlayer.min.js',
+                        './src/lib/render/wangEditor.render.js'
+                    ])
+                    .pipe(concat('wangEditor.render.js'))
+                        // inline css
+                    .pipe(gulpReplace(/__INLINE_CSS__/gm, function () {
+                        // 读取 css 文件内容
+                        var filePath = path.resolve(__dirname, 'release-render', 'wangEditor.render.css')
+                        var content = fs.readFileSync(filePath).toString('utf-8')
+                        // 替换 \n \ ' 三个字符
+                        content = content.replace(/\n/g, '').replace(/\\/g, '\\\\').replace(/'/g, '\\\'')
+                        return content
+                    }))
+                    .pipe(gulp.dest('./release-render'))
+                })
         })
     })
 })
@@ -124,14 +183,14 @@ gulp.task('script', () => {
 // 默认任务配置
 gulp.task('default', () => {
     gulp.run('copy-fonts', 'css', 'script')
-    gulp.run('copy-lib')
+    // gulp.run('copy-lib')
 
     // 监听 js 原始文件的变化
     gulp.watch('./src/js/**/*.js', () => {
         gulp.run('script')
     })
     // 监听 css 原始文件的变化
-    gulp.watch('./src/less/**/*.less', () => {
+    gulp.watch(['./src/less/**/*.less', './src/lib/render/*.render.*'], () => {
         gulp.run('css', 'script')
     })
     // 监听 icon.less 的变化，变化时重新拷贝 fonts 文件

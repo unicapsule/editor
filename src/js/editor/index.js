@@ -189,6 +189,12 @@ Editor.prototype = {
             })
         }
 
+        // 插入 iconfont css
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.type = 'text/css'
+        link.href = _config.iconfontCss || '//at.alicdn.com/t/font_1222619_uq2lp26rddp.css'
+        document.getElementsByTagName('head')[0].appendChild(link)
     },
 
     // 封装 command

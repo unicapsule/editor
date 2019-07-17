@@ -249,7 +249,9 @@ const config = {
         weather: '123',
         defaultLat: 37,
         defaultLng: -112,
-    }
+    },
+
+    iconfontCss: '//at.alicdn.com/t/font_1222619_uq2lp26rddp.css'
 }
 
 export default config
