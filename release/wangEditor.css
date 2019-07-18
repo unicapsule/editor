@@ -231,6 +231,7 @@
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   border-radius: 4px;
+  z-index: 3;
 }
 .w-e-toolbar .w-e-droplist .w-e-dp-title {
   text-align: center;

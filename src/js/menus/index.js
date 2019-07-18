@@ -62,7 +62,7 @@ Menus.prototype = {
             const $elem = menu.$elem
             if ($elem) {
                 // 设置 z-index
-                $elem.css('z-index', zIndex)
+                // $elem.css('z-index', zIndex)
                 $toolbarElem.append($elem)
             }
         })
