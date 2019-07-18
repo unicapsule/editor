@@ -1,6 +1,21 @@
 
 # wangEditor 扩展版
 
+## 安装
+方式1. `script`引入`wangEditor.full.js`，会全局注册 `window.wangEditor`
+
+方式2. Vue 中使用
+```sh
+yarn add https://github.com/GallenHu/wangEditor.git#dev-standalone
+```
+
+```js
+import E from 'wangeditorplus'
+
+const editor = new E(this.$refs.editor)
+editor.create()
+```
+
 ## 使用
 ### 生成编辑器
 与[原版 wangEditor](https://github.com/wangfupeng1988/wangEditor) 一致

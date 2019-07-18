@@ -125,7 +125,7 @@ gulp.task('script', () => {
                     content = content.replace(/\n/g, '').replace(/\\/g, '\\\\').replace(/'/g, '\\\'')
                     return content
                 }))
-                .pipe(gulp.dest('./release'))
+                .pipe(gulp.dest('./release/separated'))
                 .pipe(sourcemaps.init())
                 // 压缩
                 .pipe(uglify())
@@ -133,7 +133,7 @@ gulp.task('script', () => {
                 .pipe(rename('wangEditor.min.js'))
                 // 生成 sourcemap
                 .pipe(sourcemaps.write(''))
-                .pipe(gulp.dest('./release'))
+                .pipe(gulp.dest('./release/separated'))
                 .on('end', () => {
                     // 将依赖的库文件打包进去
                     gulp.src([
@@ -142,9 +142,9 @@ gulp.task('script', () => {
                         './src/lib/editor/screenfull.min.js',
                         './src/lib/editor/di18n.min.js',
                         './src/lib/editor/toast.min.js',
-                        './release/wangEditor.js'
+                        './release/separated/wangEditor.js'
                     ])
-                    .pipe(concat('wangEditor.js'))
+                    .pipe(concat('wangEditor.full.js'))
                     .pipe(gulp.dest('./release'))
 
                     gulp.src([
@@ -153,9 +153,9 @@ gulp.task('script', () => {
                         './src/lib/editor/screenfull.min.js',
                         './src/lib/editor/di18n.min.js',
                         './src/lib/editor/toast.min.js',
-                        './release/wangEditor.min.js'
+                        './release/separated/wangEditor.min.js'
                     ])
-                    .pipe(concat('wangEditor.min.js'))
+                    .pipe(concat('wangEditor.full.min.js'))
                     .pipe(gulp.dest('./release'))
 
                     // 打包 "render"
@@ -199,3 +199,17 @@ gulp.task('default', () => {
     })
 })
 
+gulp.task('build', () => {
+    gulp.run('script', () => {
+        console.log('Separated')
+        gulp.src([
+            './src/lib/editor/axios.min.js',
+            './src/lib/editor/fetch-jsonp.min.js',
+            './src/lib/editor/screenfull.min.js',
+            './src/lib/editor/di18n.min.js',
+            './src/lib/editor/toast.min.js'
+        ])
+        .pipe(concat('dependent.js'))
+        .pipe(gulp.dest('./release/separated'))
+    })
+})

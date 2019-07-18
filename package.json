@@ -1,7 +1,7 @@
 {
-  "name": "wangeditor",
-  "title": "wangEditor",
-  "version": "3.1.1",
+  "name": "wangeditorplus",
+  "title": "wangEditorPlus",
+  "version": "1.0.0",
   "description": "wangEditor - 基于javascript和css开发的 web 富文本编辑器， 轻量、简洁、易用、开源免费",
   "homepage": "http://wangeditor.github.io/",
   "author": {
@@ -12,7 +12,7 @@
     "wangEditor",
     "web 富文本编辑器"
   ],
-  "main": "release/wangEditor.js",
+  "main": "release/separated/wangEditor.js",
   "maintainers": [
     {
       "name": "wangfupeng1988",
@@ -28,6 +28,7 @@
   ],
   "scripts": {
     "release": "gulp",
+    "build": "gulp build",
     "win-example": "node ./example/server/index.js",
     "example": "/bin/rm -rf ./example/upload-files && mkdir ./example/upload-files && npm run win-example"
   },
