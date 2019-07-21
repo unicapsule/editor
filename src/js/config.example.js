@@ -251,7 +251,9 @@ const config = {
         defaultLng: -112,
     },
 
-    iconfontCss: '//at.alicdn.com/t/font_1222619_uq2lp26rddp.css'
+    iconfontCss: '//at.alicdn.com/t/font_1222619_uq2lp26rddp.css',
+
+    fullScreenMode: 'web'
 }
 
 export default config
