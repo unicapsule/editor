@@ -126,13 +126,13 @@ gulp.task('script', () => {
                     return content
                 }))
                 .pipe(gulp.dest('./release/separated'))
-                .pipe(sourcemaps.init())
+                // .pipe(sourcemaps.init())
                 // 压缩
                 .pipe(uglify())
                 // 产出的压缩的文件名
                 .pipe(rename('wangEditor.min.js'))
                 // 生成 sourcemap
-                .pipe(sourcemaps.write(''))
+                // .pipe(sourcemaps.write(''))
                 .pipe(gulp.dest('./release/separated'))
                 .on('end', () => {
                     // 将依赖的库文件打包进去

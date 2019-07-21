@@ -737,7 +737,9 @@ var config = {
         defaultLng: -112
     },
 
-    iconfontCss: '//at.alicdn.com/t/font_1222619_uq2lp26rddp.css'
+    iconfontCss: '//at.alicdn.com/t/font_1222619_uq2lp26rddp.css',
+
+    fullScreenMode: 'web'
 };
 
 /*
@@ -4260,6 +4262,7 @@ Audio.prototype = {
 // 构造函数
 function Fullsize(editor) {
     this.editor = editor;
+    this.config = editor.config;
     this.$elem = $('<div class="w-e-menu hint--top" aria-label="$t(\'\u5168\u5C4F\')">\n            <i class="iconfont icon-quanping"></i>\n        </div>');
     this.type = 'click';
 
@@ -4275,22 +4278,52 @@ Fullsize.prototype = {
     onClick: function onClick(e) {
         var _this = this;
 
+        console.log(this.config);
         // 点击菜单将触发这里
         var $elem = this.$elem;
         var $toolbarElem = this.editor.$toolbarElem[0];
         var screenfull = window.screenfull;
+        var mode = this.config.fullScreenMode;
 
-        screenfull.on('change', function () {
-            _this._active = screenfull.isFullscreen;
-            if (_this._active) {
+        // 网页中全屏，返回执行后的结果：是否已全屏
+        function screenfullInWeb(el) {
+            var oldStyle = el.getAttribute('data-style');
+            var isFullState = !!oldStyle;
+            if (isFullState) {
+                // 退出全屏
+                var _oldStyle = el.getAttribute('data-style');
+                if (_oldStyle && _oldStyle !== 'temp') el.setAttribute('style', _oldStyle);
+                el.removeAttribute('style');
+                el.removeAttribute('data-style');
+                return false;
+            } else {
+                var tempStyle = el.getAttribute('style') || 'temp';
+                el.setAttribute('data-style', tempStyle);
+                el.setAttribute('style', 'position:fixed;top:0;left:0;bottom:0;right:0;z-index:999');
+                return true;
+            }
+        }
+
+        if (mode === 'web') {
+            var isActive = screenfullInWeb($toolbarElem.parentElement);
+            if (isActive) {
                 $elem.addClass('w-e-active');
             } else {
                 $elem.removeClass('w-e-active');
             }
-        });
+        } else {
+            screenfull.on('change', function () {
+                _this._active = screenfull.isFullscreen;
+                if (_this._active) {
+                    $elem.addClass('w-e-active');
+                } else {
+                    $elem.removeClass('w-e-active');
+                }
+            });
 
-        if (screenfull.enabled) {
-            screenfull.toggle($toolbarElem.parentElement);
+            if (screenfull.enabled) {
+                screenfull.toggle($toolbarElem.parentElement);
+            }
         }
     }
 };
