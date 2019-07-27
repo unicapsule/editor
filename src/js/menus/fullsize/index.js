@@ -24,7 +24,7 @@ Fullsize.prototype = {
 
     // 点击事件
     onClick: function (e) {
-        console.log(this.config)
+        // console.log(this.config)
         // 点击菜单将触发这里
         const $elem = this.$elem
         const $toolbarElem = this.editor.$toolbarElem[0]
@@ -37,14 +37,27 @@ Fullsize.prototype = {
             const isFullState = !!oldStyle
             if (isFullState) { // 退出全屏
                 const oldStyle = el.getAttribute('data-style')
-                if (oldStyle && oldStyle !== 'temp') el.setAttribute('style', oldStyle)
-                el.removeAttribute('style')
+                if (oldStyle && oldStyle !== 'temp') {
+                    el.setAttribute('style', oldStyle)
+                } else {
+                    el.removeAttribute('style')
+                }
                 el.removeAttribute('data-style')
+
+                const $textContainer = $(el).find('.w-e-text-container')[0]
+                const textContainerOldStyle = $textContainer.getAttribute('data-style')
+                if (textContainerOldStyle && textContainerOldStyle !== 'temp') $textContainer.setAttribute('style', textContainerOldStyle)
+                $textContainer.removeAttribute('data-style')
                 return false
             } else {
                 const tempStyle = el.getAttribute('style') || 'temp'
                 el.setAttribute('data-style', tempStyle)
                 el.setAttribute('style', 'position:fixed;top:0;left:0;bottom:0;right:0;z-index:999')
+                // console.log($(el).find('.w-e-text-container'))
+
+                const $textContainer = $(el).find('.w-e-text-container')[0]
+                $textContainer.setAttribute('data-style', $textContainer.getAttribute('style') || 'temp')
+                $textContainer.style.height = '100%'
                 return true
             }
         }

@@ -4278,7 +4278,7 @@ Fullsize.prototype = {
     onClick: function onClick(e) {
         var _this = this;
 
-        console.log(this.config);
+        // console.log(this.config)
         // 点击菜单将触发这里
         var $elem = this.$elem;
         var $toolbarElem = this.editor.$toolbarElem[0];
@@ -4292,14 +4292,27 @@ Fullsize.prototype = {
             if (isFullState) {
                 // 退出全屏
                 var _oldStyle = el.getAttribute('data-style');
-                if (_oldStyle && _oldStyle !== 'temp') el.setAttribute('style', _oldStyle);
-                el.removeAttribute('style');
+                if (_oldStyle && _oldStyle !== 'temp') {
+                    el.setAttribute('style', _oldStyle);
+                } else {
+                    el.removeAttribute('style');
+                }
                 el.removeAttribute('data-style');
+
+                var $textContainer = $(el).find('.w-e-text-container')[0];
+                var textContainerOldStyle = $textContainer.getAttribute('data-style');
+                if (textContainerOldStyle && textContainerOldStyle !== 'temp') $textContainer.setAttribute('style', textContainerOldStyle);
+                $textContainer.removeAttribute('data-style');
                 return false;
             } else {
                 var tempStyle = el.getAttribute('style') || 'temp';
                 el.setAttribute('data-style', tempStyle);
                 el.setAttribute('style', 'position:fixed;top:0;left:0;bottom:0;right:0;z-index:999');
+                // console.log($(el).find('.w-e-text-container'))
+
+                var _$textContainer = $(el).find('.w-e-text-container')[0];
+                _$textContainer.setAttribute('data-style', _$textContainer.getAttribute('style') || 'temp');
+                _$textContainer.style.height = '100%';
                 return true;
             }
         }
