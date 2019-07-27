@@ -743,6 +743,7 @@
 .w-e-text {
   padding: 0 10px;
   overflow-y: scroll;
+  height: 100%;
 }
 .w-e-text p,
 .w-e-text h1,
