@@ -4742,6 +4742,17 @@ Text.prototype = {
         }
     },
 
+    // 获取原始内容html(用于临时保存后还原内容)
+    getOriginalHtml: function getOriginalHtml() {
+        var editor = this.editor;
+        var $textElem = editor.$textElem;
+        var config = editor.config;
+        var html = $textElem.html();
+        // 未选中任何内容的时候点击“加粗”或者“斜体”等按钮，就得需要一个空的占位符 &#8203 ，这里替换掉
+        html = html.replace(/\u200b/gm, '');
+        return html;
+    },
+
     // 获取 JSON
     getJSON: function getJSON() {
         var editor = this.editor;
